@@ -7,7 +7,6 @@ import Layout from '../layouts/Layout.astro';
   description="Mach Ø 3.300 € in 4 Wochen. Für den guten Zweck von Tür zu Tür. Jetzt anfragen."
 >
 
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 
 <div id="app">
 
@@ -1135,10 +1134,6 @@ import Layout from '../layouts/Layout.astro';
       if (!fn?.value?.trim())  { markInvalid(fn);  return; } markValid(fn);
       if (!ln?.value?.trim())  { markInvalid(ln);  return; } markValid(ln);
       if (!age?.value?.trim()) { markInvalid(age); return; } markValid(age);
-      // TikTok: user started form (high-intent signal)
-      if (window.ttq) window.ttq.track('InitiateCheckout', {
-        contents: [{ content_id: 'hsp_bewerbung', content_name: 'HSP Ferienjob Bewerbung' }],
-      });
     }
     if (n === 3) {
       const email = document.getElementById('f-email');
@@ -1196,10 +1191,6 @@ import Layout from '../layouts/Layout.astro';
       _hp:           document.getElementById('f-hp')?.value || '',
     };
 
-    // TikTok deduplication ID (same ID goes to pixel + Events API)
-    const ttEventId = 'hsp_lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
-    payload.tiktok_event_id = ttEventId;
-
     // A/B variant
     payload.ab_variant = 'a';
 
@@ -1211,15 +1202,6 @@ import Layout from '../layouts/Layout.astro';
         body: JSON.stringify(payload),
       });
       if (res.ok) {
-        // TikTok pixel Lead event (fires before redirect, same event_id as server)
-        if (window.ttq) {
-          window.ttq.identify({ email: payload.email, phone_number: payload.phone });
-          window.ttq.track('Lead', {
-            contents: [{ content_id: 'hsp_bewerbung', content_name: 'HSP Ferienjob Bewerbung' }],
-            currency: 'EUR',
-            value: '0',
-          }, { event_id: ttEventId });
-        }
         window.location.href = '/danke';
       } else {
         throw new Error('Server error');
@@ -1252,8 +1234,6 @@ import Layout from '../layouts/Layout.astro';
     <a href="/impressum" style="color:rgba(255,255,255,0.55);text-decoration:none;">Impressum</a>
     &nbsp;·&nbsp;
     <a href="/datenschutz" style="color:rgba(255,255,255,0.55);text-decoration:none;">Datenschutz</a>
-    &nbsp;·&nbsp;
-    <a href="#" onclick="window.openCookieSettings && window.openCookieSettings(); return false;" style="color:rgba(255,255,255,0.55);text-decoration:none;">Cookie-Einstellungen</a>
   </p>
 </footer>
 
