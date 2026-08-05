@@ -8,15 +8,15 @@ export interface Props {
 const {
   title = "hsp – Der Ferienjob mit dem gewissen Etwas",
   description = "Ø 3.300 € in 4 Wochen. Für den guten Zweck von Tür zu Tür. Das ist für dich drin – jetzt anfragen.",
-  ogImage = "https://starten.hsp-derjob.de/images/og-image.jpg",
+  ogImage = "https://starten.hsp-derjob.at/images/og-image.jpg",
 } = Astro.props;
 
 const phKey = import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN || '';
 const phHost = import.meta.env.PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com';
-const canonicalURL = "https://starten.hsp-derjob.de";
+const canonicalURL = "https://starten.hsp-derjob.at";
 ---
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de-AT">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,7 +36,7 @@ const canonicalURL = "https://starten.hsp-derjob.de";
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale" content="de_AT" />
     <meta property="og:site_name" content="hsp – Die Fundraiser" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
