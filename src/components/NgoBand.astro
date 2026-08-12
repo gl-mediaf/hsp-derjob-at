@@ -1,0 +1,29 @@
+---
+import LogoSlider from './LogoSlider.astro';
+
+export interface Props { titel?: string }
+const { titel = 'Unterwegs für die wichtigsten NGOs:' } = Astro.props;
+
+const ngos = [
+  { src: '/images/ngo-oerk.webp',      alt: 'Logo des Österreichischen Roten Kreuzes' },
+  { src: '/images/ngo-malteser.webp',  alt: 'Logo des Malteser Hilfsdienstes' },
+  { src: '/images/ngo-bund.webp',      alt: 'Logo des Bund für Umwelt und Naturschutz Deutschland' },
+  { src: '/images/ngo-brk.webp',       alt: 'Logo des Bayerischen Roten Kreuzes' },
+  { src: '/images/ngo-bn-bayern.webp', alt: 'Logo des Bund Naturschutz in Bayern' },
+];
+---
+<section class="bg-hsp-light pb-8 pt-[35px]" aria-labelledby="ngo-titel">
+  <div class="container-hsp">
+    <h2 id="ngo-titel" class="mb-8 text-center text-[17px] leading-6 text-hsp-ink sm:text-[20px]">
+      {titel}
+    </h2>
+
+    <LogoSlider
+      id="ngo-slider"
+      logos={ngos}
+      hoehe="h-24 sm:h-24 lg:h-28"
+      abstand="sm:gap-x-10 sm:gap-y-6"
+      intervall={3000}
+    />
+  </div>
+</section>

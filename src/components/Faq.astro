@@ -1,0 +1,78 @@
+---
+const fragen = [
+  {
+    q: 'Mit wem arbeite ich als Fundraiser zusammen?',
+    a: ['Mit anderen Fundraisern – meist junge Menschen zwischen 18 und 25 Jahren, die genau wie du leistungsbasiert richtig Geld machen wollen und gleichzeitig etwas Sinnvolles tun.'],
+  },
+  {
+    q: 'Wie alt muss ich für einen flexiblen Fundraising Job sein?',
+    a: ['Da es sich um eine selbstständige Tätigkeit handelt, musst du ein Gewerbe anmelden und deshalb 18 Jahre alt sein. Darüber hinaus gibt es keine Altersgrenze, um die guten Taten einer Hilfsorganisation zu promoten.'],
+  },
+  {
+    q: 'Wie starte ich?',
+    a: [
+      'Da es immer Menschen gibt, die Hilfe benötigen und die Hilfsorganisationen alle Hände voll zu tun haben, können wir immer tatkräftige Unterstützung gebrauchen.',
+      'Da die Zusammenarbeit mit hsp DIE FUNDRAISER auf selbständiger Basis läuft, brauchst du eine Gewerbeberechtigung. Wenn du noch kein Gewerbe angemeldet hast, stellen wir gerne den Kontakt zu den richtigen Stellen her, damit du top beraten wirst.',
+    ],
+  },
+  {
+    q: 'Kann ich meine Freunde mitbringen?',
+    a: ['Natürlich. Du bekommst sogar bis zu 1.000 € Prämien, wenn deine Freunde erfolgreich sind!'],
+  },
+  {
+    q: 'Wie helfe ich mit Fundraising einer Hilfsorganisation?',
+    a: ['Wir arbeiten mit unterschiedlichen Organisationen dieser Art zusammen, die wir mit deiner Hilfe weiter unterstützen können. Deine Aufgabe dabei ist es, andere Menschen mit deinem Enthusiasmus für die gute Sache anzustecken und sie dazu zu bewegen, diese Hilfsorganisationen finanziell zu unterstützen.'],
+  },
+  {
+    q: 'Was haben die Organisationen davon?',
+    a: [
+      'Uns sind nachhaltige Erfolge wichtig und wir zielen auf Langfristigkeit ab. Im Durchschnitt bleiben die durch dich dazugewonnenen Unterstützer 10 Jahre mit dabei.',
+      'Dabei kommt eine große Menge Geld zusammen, von der dein Anteil dann nicht mehr so groß scheint. Aber trotzdem ist dieser gerechtfertigt, denn ohne deine Tätigkeit käme die Mitgliedschaft gar nicht erst zustande!',
+    ],
+  },
+  {
+    q: 'Bekomme ich nichts, wenn es nicht von Anfang an klappt?',
+    a: ['Theoretisch ja – da die Zusammenarbeit auf selbständiger Basis läuft, machst du leistungsbasiert über Provision dein Geld. Im Schnitt gehen neue Fundraiser aber mit 3.300 € in ihren ersten vier Wochen raus.'],
+  },
+  {
+    q: 'Ich habe so etwas noch nie gemacht. Kann ich das überhaupt?',
+    a: ['Vorkenntnisse sind nicht nötig. Du legst direkt los und entwickelst deinen eigenen Stil – dabei kannst du dich jederzeit mit anderen selbstständigen Fundraisern austauschen und gegenseitig von den Erfahrungen profitieren.'],
+  },
+];
+
+const links  = fragen.slice(0, 4);
+const rechts = fragen.slice(4);
+---
+<section class="bg-white py-[70px]" aria-labelledby="faq-titel">
+  <div class="container-hsp">
+    <h2 id="faq-titel"
+        class="reveal mb-10 text-center text-[34px] font-bold leading-[44px] text-black sm:text-[50px] sm:leading-[70px]">
+      Häufige Fragen und Antworten
+    </h2>
+
+    <div class="reveal grid gap-x-12 md:grid-cols-2">
+      {[links, rechts].map((spalte) => (
+        <div>
+          {spalte.map((f) => (
+            <details class="group border-b border-black/10">
+              <summary class="flex cursor-pointer list-none items-start gap-3 py-4
+                              text-[16px] font-semibold leading-5 text-[#333] marker:hidden">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-hsp-teal transition-transform duration-200
+                            group-open:rotate-90"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="4" y1="12" x2="19" y2="12" />
+                  <polyline points="13 6 19 12 13 18" />
+                </svg>
+                <span>{f.q}</span>
+              </summary>
+              <div class="space-y-3 pb-4 pl-7 text-[15px] leading-relaxed text-hsp-body">
+                {f.a.map((p) => <p>{p}</p>)}
+              </div>
+            </details>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

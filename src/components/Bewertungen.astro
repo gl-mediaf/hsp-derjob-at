@@ -1,0 +1,50 @@
+---
+const reviews = Array.from({ length: 6 }, (_, i) => `/images/review-${i + 1}.webp`);
+const googleReviewsUrl = 'https://www.google.com/search?q=hsp+DIE+FUNDRAISER+GmbH+Rezensionen';
+---
+<section class="bg-white pb-[70px] pt-6" aria-labelledby="reviews-titel">
+  <div class="container-hsp">
+    <h2 id="reviews-titel" class="sr-only">Bewertungen auf Google</h2>
+
+    <!-- Waagerechter Slider: wischen bzw. mit den Pfeilen blättern -->
+    <div class="reveal relative">
+      <ul id="review-track"
+          class="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4
+                 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {reviews.map((r, i) => (
+          <li class="w-[85%] shrink-0 snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+            <img src={r} alt={`Fünf-Sterne-Bewertung auf Google, Erfahrungsbericht ${i + 1}`}
+                 width="825" height="550" loading="lazy" decoding="async"
+                 class="w-full rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)]" />
+          </li>
+        ))}
+      </ul>
+
+      {['zurueck', 'vor'].map((richtung) => (
+        <button type="button" data-review-nav={richtung}
+                aria-label={richtung === 'vor' ? 'Weitere Bewertungen' : 'Vorherige Bewertungen'}
+                class={`absolute top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 place-items-center
+                        rounded-full bg-white text-hsp-ink shadow-md ring-1 ring-black/10
+                        transition hover:bg-hsp-light sm:grid
+                        ${richtung === 'vor' ? '-right-3' : '-left-3'}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points={richtung === 'vor' ? '9 6 15 12 9 18' : '15 6 9 12 15 18'} />
+          </svg>
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-10 text-center">
+      <p class="mb-3 text-[17px] leading-[34px] text-[#141414] sm:text-[20px]">
+        Lies weitere Bewertungen auf Google:
+      </p>
+      <a href={googleReviewsUrl} target="_blank" rel="noopener"
+         class="inline-block transition-opacity hover:opacity-80">
+        <img src="/images/google-logo.webp"
+             alt="4,9 von 5 Sternen auf Google – Bewertungen ansehen"
+             width="540" height="280" loading="lazy" class="h-16 w-auto sm:h-20" />
+      </a>
+    </div>
+  </div>
+</section>

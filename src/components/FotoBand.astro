@@ -1,0 +1,40 @@
+---
+/**
+ * Vollbreiter Abschnitt mit Foto im Hintergrund und heller Schrift darueber.
+ *
+ * Das Foto liegt als CSS-Hintergrund auf dem Abschnitt selbst – so wie auf der
+ * Originalseite. Ein <img> mit loading="lazy" wurde hier bewusst NICHT benutzt:
+ * es wurde in Chrome nicht geladen, solange es hinter dem Inhalt lag.
+ *
+ * Der Abdunkler (scrim) liegt als Verlauf ueber dem Foto, damit die weisse
+ * Schrift auf jedem Motiv lesbar bleibt.
+ */
+export interface Props {
+  bild:      string;
+  position?: string;   // background-position, z. B. 'center 30%'
+  scrim?:    string;   // rgba-Farbe des Abdunklers
+  abstand?:  string;   // Tailwind-Klassen fuer die vertikalen Innenabstaende
+}
+
+const {
+  bild,
+  position = 'center',
+  scrim    = 'rgba(0,0,0,0.45)',
+  abstand  = 'py-[60px] sm:py-[100px]',
+} = Astro.props;
+
+const hintergrund = [
+  `linear-gradient(${scrim}, ${scrim})`,
+  `url('${bild}')`,
+].join(', ');
+---
+
+<!--
+  bg-hsp-ink als Notnagel: sollte das Foto einmal nicht laden, steht die weisse
+  Schrift auf Dunkelgrau statt auf Weiss und bleibt damit lesbar.
+-->
+<section
+  class={`bg-hsp-ink bg-cover bg-no-repeat text-white ${abstand}`}
+  style={`background-image:${hintergrund};background-position:${position};`}>
+  <slot />
+</section>

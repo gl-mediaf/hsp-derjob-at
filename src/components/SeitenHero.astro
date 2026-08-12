@@ -1,0 +1,25 @@
+---
+export interface Props {
+  bild: string;
+  alt: string;
+  titel: string;
+  unterzeile: string;
+}
+const { bild, alt, titel, unterzeile } = Astro.props;
+---
+<section class="relative isolate flex min-h-[380px] items-end overflow-hidden
+                sm:min-h-[500px] lg:min-h-[640px]">
+  <img src={bild} alt={alt} width="1500" height="600"
+       fetchpriority="high" decoding="async"
+       class="absolute inset-0 -z-10 h-full w-full object-cover object-center" />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/45 via-black/10 to-transparent"></div>
+
+  <div class="container-hsp pb-14 lg:pb-16">
+    <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
+      {titel}
+    </h1>
+    <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
+      {unterzeile}
+    </p>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+// Zeigt Logos auf dem Handy einzeln als automatisch wechselnden Slider,
+// ab sm-Breite als normale Reihe. Auf dem Handy standen sie vorher
+// untereinander, was die Seite unnötig lang gemacht hat.
+export interface Props {
+  logos: { src: string; alt: string }[];
+  hoehe?: string;      // Tailwind-Klassen für die Bildhöhe
+  abstand?: string;    // Abstand zwischen den Logos ab sm
+  id: string;          // eindeutig, da mehrere Slider pro Seite möglich sind
+  intervall?: number;  // Millisekunden bis zum nächsten Logo
+}
+
+const {
+  logos,
+  hoehe = 'h-20 sm:h-24 lg:h-28',
+  abstand = 'sm:gap-x-10 sm:gap-y-6',
+  id,
+  intervall = 3000,
+} = Astro.props;
+---
+
+<div class="relative">
+  <ul id={id} data-slider data-intervall={intervall}
+      class:list={[
+        'flex snap-x snap-mandatory overflow-x-auto scroll-smooth',
+        '[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+        'sm:flex-wrap sm:justify-center sm:overflow-visible',
+        abstand,
+      ]}>
+    {logos.map((l) => (
+      <li class="flex w-full shrink-0 snap-center items-center justify-center px-4 sm:w-auto sm:px-0">
+        <img src={l.src} alt={l.alt} width="600" height="400" loading="lazy" decoding="async"
+             class:list={['w-auto object-contain', hoehe]} />
+      </li>
+    ))}
+  </ul>
+
+  <!-- Punkte zeigen nur auf dem Handy, wo man gerade ist -->
+  <ul data-punkte={id} class="mt-5 flex justify-center gap-2 sm:hidden" aria-hidden="true">
+    {logos.map(() => (
+      <li class="h-2 w-2 rounded-full bg-black/20 transition-colors"></li>
+    ))}
+  </ul>
+</div>

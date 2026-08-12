@@ -1,0 +1,76 @@
+---
+import ArtikelLayout from '../components/ArtikelLayout.astro';
+
+const abschnitte = [
+  {
+    h: 'Du suchst einen Ferienjob ab 18 – wir haben genau das Richtige für dich',
+    p: [
+      'Bist du auf der Suche nach einem spannenden Ferienjob ab 18? Willst du mit echten Menschen arbeiten und hast Bock darauf, ständig neue Leute kennenzulernen? Dann haben wir genau das Richtige für dich! Starte jetzt als Fundraiser für den guten Zweck durch und mache 3.300 € in deinen ersten vier Wochen. Wenn du also auf der Suche nach einer heftigen Experience bist, komm vorbei!',
+    ],
+  },
+  {
+    h: 'Ein Ferienjob ab 18, der Spaß macht und bei dem du gut Kohle machen kannst',
+    p: [
+      'Es ist nicht einfach, einen Ferienjob ab 18 zu finden, bei dem du ordentlich Geld machen kannst, der sinnvoll ist und der dir Spaß macht. Vor allem, wenn du etwas Außergewöhnliches suchst. Aber die Suche muss nicht so kompliziert sein: Es gibt tatsächlich einen besonders attraktiven Weg für Schüler und Studenten, der Freude bereitet und bei dem du massiv Kohle machen kannst.',
+      'Die Zusammenarbeit bei unserem Ferienjob ab 18 hilft dir dabei, völlig neue Perspektiven zu entdecken. Als Fundraiser kannst du kreativ und strategisch vorgehen, wenn es darum geht, Mittel für wichtige Projekte zu sammeln. Mit einem provisionsbasierten Modell sicherst du dir persönliche Zufriedenheit und jede Menge zusätzliches Cash. Wir stellen dir die neuesten Tools, Trainings und Ressourcen zur Verfügung, damit du beim Geld machen keine Zeit verlierst.',
+    ],
+    liste: [
+      'Arbeite mit Menschen und lerne neue Leute kennen.',
+      'Freundliche Crew mit echtem Vibe.',
+      'Hammer Möglichkeiten beim Geld machen.',
+    ],
+  },
+  {
+    h: 'Ferienjob ab 18 in ganz Österreich – wir suchen dich!',
+    p: [
+      'Wir sind auf der Suche nach Menschen, die einen Ferienjob ab 18 suchen und unsere Crews aus Machern verstärken wollen. Wir glauben, dass der Schlüssel zum Erfolg darin liegt, Leute zu haben, die gerne mit anderen zusammenarbeiten. Wir suchen Menschen mit Enthusiasmus, Optimismus und dem Wunsch, bei der Arbeit etwas zu bewirken. Wenn du also glaubst, dass du zu uns passen könntest, dann zögere nicht – wir freuen uns darauf, von dir zu hören.',
+    ],
+  },
+  {
+    h: 'Ferienjob ab 18 für gute Zwecke',
+    p: [
+      'Bei unserem Ferienjob ab 18 geht es vor allem darum, Menschen für gemeinnützige Zwecke zu gewinnen. Dabei überzeugst du sie nicht nur davon, Organisationen finanziell zu unterstützen, sondern zeigst ihnen auch, wie ihr Einsatz wirklich etwas verändert. Mit authentischen Storys eroberst du die Herzen der Menschen und motivierst sie mitzuhelfen. Menschen werden inspiriert, wenn sie eine echte Verbindung spüren.',
+    ],
+    liste: [
+      'Emotionales Engagement für deine Sache.',
+      'Appelliere an die Großzügigkeit der Menschen.',
+      'Zeig die greifbaren Ergebnisse der Hilfe auf.',
+      'Motiviere Leute, sich für den guten Zweck einzusetzen.',
+    ],
+  },
+  {
+    h: 'Offen, freundlich und kommunikativ im Ferienjob ab 18',
+    p: [
+      'Die Interaktion mit anderen ist der Schlüssel für ein glückliches Leben. Sie hilft uns nicht nur, Beziehungen aufzubauen, sondern pusht auch unsere persönliche Entwicklung massiv. Deshalb ist es wichtig, offen und freundlich zu sein. Dadurch schaffst du ein Umfeld aus Vertrauen und Sicherheit, das das Beste in jedem zum Vorschein bringt. Ein aufrichtiges Interesse an anderen erweitert deinen eigenen Horizont.',
+    ],
+  },
+  {
+    h: 'Wie viel Geld kann ich bei diesem Ferienjob ab 18 machen?',
+    p: [
+      'Besonderes Engagement wird bei uns auch belohnt. Deine Mission als Fundraiser wird provisionsbasiert vergütet – nach oben gibt es kein Limit. In der Regel liegt man bei etwa 3.300 € in den ersten vier Wochen. Das gute Gefühl, etwas für die Welt getan zu haben, gibt es als Bonus obendrauf.',
+    ],
+  },
+  {
+    h: 'Was genau muss ich beim Ferienjob ab 18 machen?',
+    p: [
+      'Im Wesentlichen geht es darum, dass du als Fundraiser Menschen dazu bewegst, sich finanziell zu engagieren. So sammelst du zum Beispiel für das Rote Kreuz oder verschiedene Organisationen aus dem Umweltschutz.',
+    ],
+  },
+  {
+    h: 'Was muss ich für den Ferienjob ab 18 mitbringen?',
+    p: [
+      'In erster Linie solltest du ambitioniert, kommunikativ und freundlich sein. Wenn du dich motiviert einsetzt, wirst du andere im Nu mit deinem Enthusiasmus anstecken und sie dazu bewegen, gemeinsam mit dir etwas für den guten Zweck zu bewegen.',
+    ],
+  },
+];
+---
+
+<ArtikelLayout
+  titel="Ferienjob ab 18 – Sinnvoll Geld machen!"
+  beschreibung="Ferienjob ab 18 gesucht? Arbeite als Fundraiser, sammle Erfahrung, lerne neue Leute kennen und mache gutes Geld – österreichweit."
+  ueberschrift="Ferienjob ab 18 – Frag jetzt an!"
+  bild="/images/hero-fundraising.webp"
+  alt="Eine Crew von Fundraisern läuft gemeinsam über einen Weg"
+  pfad="/ferienjob-ab-18"
+  abschnitte={abschnitte}
+/>

@@ -1,0 +1,37 @@
+---
+const stimmen = [
+  { bild: '/images/testimonial-melanie.webp', name: 'Melanie', alter: 22, rolle: 'Studentin' },
+  { bild: '/images/testimonial-linda.webp',   name: 'Linda',   alter: 21, rolle: 'Studentin' },
+  { bild: '/images/testimonial-jasmin.webp',  name: 'Jasmin',  alter: 22, rolle: 'Studentin' },
+];
+---
+<section class="bg-white pb-5 pt-[70px]" aria-labelledby="stimmen-titel">
+  <div class="container-hsp">
+    <h2 id="stimmen-titel"
+        class="reveal mb-10 text-center text-[34px] font-bold leading-[44px] text-black sm:text-[50px] sm:leading-[70px]">
+      Eindrücke &amp; Erfahrungen
+    </h2>
+
+    <ul class="reveal karten-slider mx-auto max-w-[940px] gap-8 sm:grid-cols-3">
+      {stimmen.map((s) => (
+        <li class="overflow-hidden rounded-2xl bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+          <div class="relative overflow-hidden rounded-xl">
+            <img src={s.bild} alt={`${s.name}, ${s.alter} Jahre, ${s.rolle}`}
+                 width="400" height="225" loading="lazy" decoding="async"
+                 class="aspect-video w-full object-cover" />
+            <span class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
+              <svg class="h-16 w-16 drop-shadow-lg" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" stroke="white" stroke-width="3" />
+                <path d="M26 21l18 11-18 11V21z" fill="white" />
+              </svg>
+            </span>
+          </div>
+          <div class="pt-3">
+            <p class="text-[18px] font-bold leading-[25px] text-hsp-muted">{s.name} ({s.alter})</p>
+            <p class="text-[13px] text-hsp-body">{s.rolle}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 export interface Props {
   title?: string;
   description?: string;
@@ -6,39 +8,39 @@ export interface Props {
 }
 
 const {
-  title = "hsp – Der Ferienjob mit dem gewissen Etwas",
-  description = "Ø 3.300 € in 4 Wochen. Für den guten Zweck von Tür zu Tür. Das ist für dich drin – jetzt anfragen.",
-  ogImage = new URL("/images/og-image.jpg", Astro.site).href,
+  title = "Ferienjob mit Sinn: NGOs helfen & gutes Geld machen!",
+  description = "Starte jetzt deinen flexiblen Ferienjob als Fundraiser: Geld machen, reisen, neue Leute treffen und NGOs unterstützen. Jetzt anfragen!",
+  ogImage = new URL("/images/og-image.webp", Astro.site).href,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!DOCTYPE html>
-<html lang="de-AT">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#1B2A4A" />
+    <meta name="theme-color" content="#319ea3" />
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Solange nur die Platzhalterseite steht: nicht indexieren lassen.
-         Vor dem Livegang der echten Inhalte entfernen. -->
+    <!-- Solange die Seite noch nicht offiziell live ist: nicht indexieren lassen.
+         Vor dem Umzug der Domain entfernen (auch public/robots.txt). -->
     <meta name="robots" content="noindex, nofollow" />
 
-    <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/favicon.png" />
 
-    <!-- OG / Social -->
+    <!-- Hausschrift vorladen: verhindert den Schriftsprung beim ersten Rendern -->
+    <link rel="preload" href="/fonts/BundaySlab-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/BundaySlab-Light.woff2" as="font" type="font/woff2" crossorigin />
+
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="de_AT" />
+    <meta property="og:locale" content="de_DE" />
     <meta property="og:site_name" content="hsp – Die Fundraiser" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -47,8 +49,121 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
     <title>{title}</title>
 
+    <!-- Markiert, dass JavaScript läuft. Erst dann werden Sektionen zum Einblenden
+         versteckt — ohne JS bleibt die Seite vollständig sichtbar. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
-  <body class="bg-white text-hsp-dark antialiased overflow-x-hidden">
+  <body class="bg-white">
+    <a href="#inhalt"
+       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100]
+              focus:rounded-lg focus:bg-hsp-teal focus:px-4 focus:py-2 focus:text-white">
+      Zum Inhalt springen
+    </a>
     <slot />
+
+    <script is:inline>
+      // Sektionen beim Hereinscrollen einblenden
+      (function () {
+        var els = document.querySelectorAll('.reveal');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach(function (e) { e.classList.add('is-visible'); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+          // Grosszuegig vorladen, damit bei schnellem Scrollen keine leeren
+          // Flaechen sichtbar werden.
+        }, { rootMargin: '300px 0px 300px 0px' });
+        els.forEach(function (e) { io.observe(e); });
+      })();
+
+      // Logo-Slider: auf dem Handy eins nach dem anderen, automatisch wechselnd
+(function () {
+    if (window.__hspSliderInit) return;
+    window.__hspSliderInit = true;
+
+    function start() {
+      var langsam = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelectorAll('[data-slider]').forEach(function (spur) {
+        var punkte = document.querySelector('[data-punkte="' + spur.id + '"]');
+        var timer = null;
+
+        function aktuellerIndex() {
+          var karte = spur.querySelector('li');
+          if (!karte || !karte.offsetWidth) return 0;
+          return Math.round(spur.scrollLeft / karte.offsetWidth);
+        }
+
+        function punkteAktualisieren() {
+          if (!punkte) return;
+          var i = aktuellerIndex();
+          [].forEach.call(punkte.children, function (p, n) {
+            p.className = 'h-2 w-2 rounded-full transition-colors ' +
+                          (n === i ? 'bg-hsp-teal' : 'bg-black/20');
+          });
+        }
+
+        function weiter() {
+          // Ab sm liegen die Logos nebeneinander, dann nicht scrollen
+          if (window.innerWidth >= 640) return;
+          var karte = spur.querySelector('li');
+          if (!karte) return;
+          var naechster = aktuellerIndex() + 1;
+          if (naechster >= spur.children.length) naechster = 0;
+          spur.scrollTo({ left: naechster * karte.offsetWidth, behavior: 'smooth' });
+        }
+
+        function starten() {
+          if (langsam || timer) return;
+          timer = setInterval(weiter, parseInt(spur.dataset.intervall, 10) || 3000);
+        }
+        function stoppen() {
+          clearInterval(timer);
+          timer = null;
+        }
+
+        spur.addEventListener('scroll', punkteAktualisieren, { passive: true });
+        // Beim Wischen oder Zeigen pausieren, danach weiterlaufen
+        ['pointerdown', 'mouseenter', 'focusin'].forEach(function (e) {
+          spur.addEventListener(e, stoppen);
+        });
+        ['pointerup', 'mouseleave', 'focusout'].forEach(function (e) {
+          spur.addEventListener(e, starten);
+        });
+
+        punkteAktualisieren();
+        starten();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+
+      // Waagerechter Slider der Google-Bewertungen
+      (function () {
+        var track = document.getElementById('review-track');
+        if (!track) return;
+        document.querySelectorAll('[data-review-nav]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var card = track.querySelector('li');
+            var step = card ? card.offsetWidth + 24 : track.clientWidth;
+            track.scrollBy({
+              left: btn.dataset.reviewNav === 'vor' ? step : -step,
+              behavior: 'smooth'
+            });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

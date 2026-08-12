@@ -1,0 +1,42 @@
+---
+export interface Props {
+  titel?: string;
+  unterzeile?: string;
+  buttonText?: string;
+}
+const {
+  titel = 'Bist du bereit für den Sommer deines Lebens?',
+  unterzeile = 'Sichere dir jetzt deinen Platz in der Crew und starte dein Abenteuer als Fundraiser.',
+  buttonText = 'Jetzt Anfragen',
+} = Astro.props;
+---
+<section id="anfrage" class="relative isolate overflow-hidden" aria-labelledby="cta-titel">
+  <img src="/images/cta-sonnenuntergang.webp"
+       alt="Drei Fundraiser gehen bei Sonnenuntergang über einen Feldweg"
+       width="900" height="600" loading="lazy" decoding="async"
+       class="absolute inset-0 -z-10 h-full w-full object-cover" />
+  <div class="absolute inset-0 -z-10 bg-black/35"></div>
+
+  <div class="container-hsp">
+    <div class="py-[100px] text-center sm:py-[120px]">
+      <h2 id="cta-titel"
+          class="mx-auto max-w-[1000px] text-[30px] font-bold leading-[1.15] text-white sm:text-[50px] sm:leading-[60px]">
+        {titel}
+      </h2>
+      <p class="mx-auto mt-4 max-w-[727px] text-[17px] font-bold leading-[34px] text-white sm:text-[20px]">
+        {unterzeile}
+      </p>
+
+      <p class="mt-8 text-[15px] text-white">Neugierig?</p>
+
+      <!-- Platzhalter: bekommt sein Ziel, sobald das Anfrage-Formular existiert -->
+      <button type="button" class="btn-primary mt-3 gap-2 px-8 py-3.5 text-[15px]">
+        <span aria-hidden="true">›</span> {buttonText}
+      </button>
+
+      <p class="mt-4 text-[12px] text-white/90">
+        * Auf Anfragen wird in der Regel innerhalb von 24 Stunden geantwortet
+      </p>
+    </div>
+  </div>
+</section>

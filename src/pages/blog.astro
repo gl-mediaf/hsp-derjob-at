@@ -1,0 +1,116 @@
+---
+import Layout       from '../layouts/Layout.astro';
+import Nav          from '../components/Nav.astro';
+import Footer       from '../components/Footer.astro';
+import AbschlussCta from '../components/AbschlussCta.astro';
+
+const artikel = [
+  {
+    titel: 'Studentenjob finden: Welche Jobs sich wirklich lohnen',
+    anriss: 'Bewerbungen ohne Antwort, Mindestlohn und eintönige Aufgaben? Warum sich ein genauer Blick auf Fundraising lohnt – inklusive Verdienst und Steuerregeln.',
+    pfad:  '/studentenjob',
+    bild:  '/images/blog-studentenjob.webp',
+    alt:   'Zwei Fundraiserinnen lachen gemeinsam im Einsatz',
+  },
+  {
+    titel: 'Spenden sammeln und Gutes tun? Das geht gemeinsam mit dir!',
+    anriss: 'Wie aus einem Gespräch an der Haustür eine Fördermitgliedschaft wird – und warum genau das den Unterschied macht.',
+    pfad:  '/spenden-sammeln',
+    bild:  '/images/blog-studentenjob.webp',
+    alt:   'Fundraiserinnen im Gespräch während ihres Einsatzes',
+  },
+  {
+    titel: 'Schülerjob ab 18 – jetzt etwas Wertvolles bewirken',
+    anriss: 'Direkt nach dem Abi loslegen: Was dich erwartet, wenn du deinen ersten Job für eine Hilfsorganisation machst.',
+    pfad:  '/schuelerjob-ab-18',
+    bild:  '/images/hero-organisationen.webp',
+    alt:   'Eine lächelnde Fundraiserin im BUND-Shirt an einem Gartentor',
+  },
+  {
+    titel: 'Mit einem Job eine Hilfsorganisation effektiv unterstützen',
+    anriss: 'Rotes Kreuz, Malteser, BUND: Wie deine Arbeit dafür sorgt, dass Projekte langfristig weiterlaufen.',
+    pfad:  '/job-hilfsorganisation',
+    bild:  '/images/hero.webp',
+    alt:   'Fundraiserin lehnt an einem Einsatzfahrzeug',
+  },
+  {
+    titel: 'Ferienjob-Verdienst durch gute Taten generieren – so gehts',
+    anriss: 'Provisionsbasiert und ohne Limit: Wie sich dein Verdienst in vier Wochen zusammensetzt.',
+    pfad:  '/ferienjob-verdienst',
+    bild:  '/images/blog-ferienjob-verdienst.webp',
+    alt:   'Fundraiser bei ihrem Einsatz im Freien',
+  },
+  {
+    titel: 'Ferienjob ab 18 – Frag jetzt an!',
+    anriss: 'Was du mitbringen musst, wie der Einstieg abläuft und warum Vorkenntnisse keine Rolle spielen.',
+    pfad:  '/ferienjob-ab-18',
+    bild:  '/images/hero-fundraising.webp',
+    alt:   'Eine Crew von Fundraisern läuft gemeinsam über einen Weg',
+  },
+];
+---
+
+<Layout
+  title="Blog – Dein flexibler Ferienjob und alles was du drüber wissen musst!"
+  description="Alles rund um deinen flexiblen Ferienjob als Fundraiser: Verdienst, Einstieg, Organisationen und Erfahrungen aus der Crew."
+>
+  <Nav />
+
+  <main id="inhalt">
+
+    <!-- ══ Kopf ══ -->
+    <section class="bg-hsp-light py-[60px]">
+      <div class="container-hsp">
+        <h1 class="text-[34px] font-bold leading-tight text-hsp-ink sm:text-[50px] sm:leading-[60px]">
+          Dein Ferienjob mit Sinn
+        </h1>
+        <p class="mt-3 max-w-[700px] text-[17px] leading-relaxed text-hsp-body sm:text-[20px]">
+          Arbeite als Fundraiser für bekannte NGOs und entscheide selbst, wann und wie lange du
+          tätig bist. Hier findest du alles, was du vor deinem Start wissen solltest.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ Artikelübersicht ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="artikel-titel">
+      <div class="container-hsp">
+        <h2 id="artikel-titel" class="sr-only">Alle Blogartikel</h2>
+
+        <ul class="reveal karten-slider gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {artikel.map((a) => (
+            <li class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]
+                       transition-transform duration-300 hover:-translate-y-1">
+              <a href={a.pfad} class="block">
+                <img src={a.bild} alt={a.alt} width="900" height="600" loading="lazy" decoding="async"
+                     class="aspect-[3/2] w-full object-cover" />
+              </a>
+              <div class="flex flex-1 flex-col p-6">
+                <h3 class="mb-3 text-[20px] font-bold leading-snug text-[#222] sm:text-[22px]">
+                  <a href={a.pfad}
+                     class="transition-colors hover:text-hsp-teal">
+                    {a.titel}
+                  </a>
+                </h3>
+                <p class="mb-6 flex-1 text-[15px] leading-relaxed text-hsp-body">{a.anriss}</p>
+                <a href={a.pfad}
+                   class="inline-flex items-center gap-2 self-start text-[15px] font-bold text-hsp-teal
+                          transition-colors hover:text-hsp-teal-dark">
+                  Weiterlesen
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="4" y1="12" x2="19" y2="12" />
+                    <polyline points="13 6 19 12 13 18" />
+                  </svg>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <AbschlussCta />
+  </main>
+
+  <Footer />
+</Layout>

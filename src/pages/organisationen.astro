@@ -1,0 +1,235 @@
+---
+import Layout       from '../layouts/Layout.astro';
+import Nav          from '../components/Nav.astro';
+import Footer       from '../components/Footer.astro';
+import Faq          from '../components/Faq.astro';
+import NgoBand      from '../components/NgoBand.astro';
+import Stimmen      from '../components/Stimmen.astro';
+import Bewertungen  from '../components/Bewertungen.astro';
+import AbschlussCta from '../components/AbschlussCta.astro';
+import SeitenHero   from '../components/SeitenHero.astro';
+import FotoBand     from '../components/FotoBand.astro';
+
+const stimmenOesterreich = [
+  {
+    bild:  '/images/org-ambrozy.webp',
+    alt:   'Logo des Österreichischen Roten Kreuzes mit Porträt von Dr. Peter Ambrozy',
+    name:  'Dr. Peter Ambrozy',
+    rolle: 'ehem. Präsident Österreichisches Rotes Kreuz Landesverband Kärnten',
+    text: [
+      '„Die Beiträge aus der persönlichen Mitgliederwerbung sichern den Fortbestand unserer Leistungen im Rettungsdienst und in vielen anderen sozialen Bereichen. Diese Art des Spendenmarketings ist für uns als Rotes Kreuz Kärnten unverzichtbar geworden.“',
+    ],
+  },
+  {
+    bild:  '/images/org-haneschlaeger.webp',
+    alt:   'Logo des Österreichischen Roten Kreuzes mit Porträt von Mag. Erich Haneschläger',
+    name:  'Mag. Erich Haneschläger',
+    rolle: 'Landesgeschäftsleiter Österreichisches Rotes Kreuz Landesverband Oberösterreich',
+    text: [
+      '„Aus Liebe zum Menschen – getreu diesem Motto sind unsere Mitarbeiterinnen und Mitarbeiter 365 Tage im Jahr rund um die Uhr im Einsatz. Das braucht auch einen starken finanziellen Einsatz. Die Fundraiser sichern nicht nur ein wichtiges Beitragsvolumen, sie sind auch Botschafter einer starken Marke.“',
+    ],
+    gedreht: true,
+  },
+];
+
+const stimmenUmwelt = [
+  {
+    bild:  '/images/org-bund-bayern.webp',
+    alt:   'Logo des BUND Naturschutz in Bayern mit Porträt von Lucas Schäfer',
+    name:  'Lucas Schäfer',
+    rolle: 'Landesgeschäftsführer BUND Naturschutz in Bayern e.V.',
+    text: [
+      '„Jede Woche unterstützen uns großartige hsp-Botschafterinnen in ganz Bayern dabei, neue Unterstützer*innen zu gewinnen. Sie bringen unsere Themen in die Öffentlichkeit und prägen entscheidend das Bild unseres Verbandes.',
+      'Der BUND Naturschutz hat heute schon fast 270.000 Mitglieder und ist seit über 100 Jahren einer der wirkmächtigsten Verbände im gesamten deutschsprachigen Raum.',
+      'Ich selbst habe nach meinem Abi als Haustürbotschafter beim BUND Naturschutz angefangen. Ganz klare Empfehlung!“',
+    ],
+  },
+  {
+    bild:  '/images/org-bund.webp',
+    alt:   'Logo des BUND – Freunde der Erde mit Porträt von Nicole Anton',
+    name:  'Nicole Anton',
+    rolle: 'Leitung Bereich Kommunikation, Bund für Umwelt und Naturschutz Deutschland (BUND) e.V.',
+    text: [
+      '„Umwelt und Natur brauchen eine starke Stimme: Die ist der BUND. Wir engagieren uns regional und bundesweit für die Erhaltung der natürlichen Lebensgrundlagen. Vor Ort packen wir an und schaffen Lebensräume.“',
+    ],
+    gedreht: true,
+  },
+];
+
+const stimmenHumanitaer = [
+  {
+    bild:  '/images/org-malteser.webp',
+    alt:   'Logo des Malteser Hilfsdienstes mit Porträt von Christoph Friedrich',
+    name:  'Christoph Friedrich',
+    rolle: 'Diözesangeschäftsführer der Malteser in der Erzdiözese München und Freising',
+    text: [
+      '„Unsere Hilfeleistungen reichen von Katastrophenschutz über Sanitätsdienste und ehrenamtliche Sozialdienste bis hin zu Einsätzen in Krisenregionen weltweit. Dieser Beitrag für die Gesellschaft braucht nicht nur helfende Hände, sondern auch verlässliche Unterstützung.“',
+    ],
+  },
+  {
+    bild:  '/images/org-drk.webp',
+    alt:   'Logo des Deutschen Roten Kreuzes mit Porträt von Manfred Lau',
+    name:  'Manfred Lau',
+    rolle: 'Kreisgeschäftsführer DRK Kreisverband Schwalm-Eder',
+    text: [
+      '„Das Deutsche Rote Kreuz ist Teil der über 150 Jahre alten internationalen Rotkreuz- und Rothalbmondbewegung. Die vielfältigen Aufgaben des DRK brauchen die Unterstützung aus der breiten Bevölkerung.“',
+    ],
+    gedreht: true,
+  },
+];
+
+const erfolge = [
+  {
+    bild:  '/images/org-karte-umwelt.webp',
+    alt:   'Deutschlandkarte mit Umweltschutzprojekten des BUND',
+    titel: 'Erfolge für Natur und Umwelt',
+    text:  'Der BUND für Umwelt und Naturschutz Deutschland und der Bund Naturschutz Bayern haben bedeutende Erfolge für den Naturschutz erzielt. Der BUND konnte bundesweit zahlreiche Naturschutzgebiete sichern und erreichte wichtige Erfolge in der Renaturierung von Flüssen und Mooren. Der Bund Naturschutz Bayern setzte sich erfolgreich für den Erhalt bayerischer Wälder ein, stärkte den Artenschutz durch Kampagnen wie das Volksbegehren „Rettet die Bienen“ und trug maßgeblich zur Reduzierung von Pestiziden in der Landwirtschaft bei. Beide Organisationen zeigen, wie viel für den Erhalt unserer Natur erreicht werden kann.',
+  },
+  {
+    bild:  '/images/org-karte-humanitaer.webp',
+    alt:   'Deutschlandkarte mit Projekten der humanitären Hilfe',
+    titel: 'Im Einsatz für Menschlichkeit',
+    text:  'Der Malteser Hilfsdienst hat zahlreiche Projekte zur Unterstützung von Menschen in Not, insbesondere im Bereich der Flüchtlingshilfe und Altenpflege, ins Leben gerufen. Das Deutsche Rote Kreuz hat mit seinen umfangreichen Maßnahmen zur Ersten Hilfe und Blutspendeaktionen Lebensrettung und Versorgung in Krisensituationen sichergestellt. Beide Organisationen zeigen, wie wichtig solidarisches Handeln ist und leisten einen unverzichtbaren Beitrag zur Unterstützung der Gesellschaft.',
+    gedreht: true,
+  },
+];
+---
+
+<Layout
+  title="Hilfsorganisationen – Dein flexibler Ferienjob mit Wirkung"
+  description="Arbeiten für den guten Zweck: Als Fundraiser unterstützt du BUND, Malteser und Rotes Kreuz dabei, neue Fördermitglieder zu gewinnen."
+>
+  <Nav />
+
+  <main id="inhalt">
+    <SeitenHero
+      bild="/images/hero-organisationen.webp"
+      alt="Eine lächelnde Fundraiserin im BUND-Shirt steht an einem Gartentor"
+      titel="Die NGOs."
+      unterzeile="Unterstütze was zählt!"
+    />
+
+    <!-- ══ Einstieg ══ -->
+    <section class="bg-white pb-[35px] pt-10" aria-labelledby="intro-titel">
+      <div class="container-hsp grid gap-x-12 gap-y-8 lg:grid-cols-2">
+        <div>
+          <h2 id="intro-titel"
+              class="text-[30px] font-bold leading-[1.1] text-black sm:text-[40px] sm:leading-[44px]">
+            Arbeiten für den guten Zweck. Ein Gewinn für beide Seiten!
+          </h2>
+          <p class="mt-5 max-w-[555px] text-[16px] leading-[1.7] text-hsp-ink sm:text-[18px] sm:leading-[30.6px]">
+            Erfolgreiches Fundraising ist auch für renommierte Organisationen eine Notwendigkeit,
+            um ihre vielfältigen Leistungen aufrechtzuerhalten. Als Fundraiser sicherst du nicht nur
+            laufende Einnahmen ab. Durch die zahlreichen persönlichen Kontakte an der Haustüre wird
+            das Image der Organisation gefestigt und die Leistungen bekannter gemacht. Ein flexibler
+            Ferienjob, der Sinn macht – sowohl für dich, als auch für unsere Partner!
+          </p>
+        </div>
+
+        <div class="flex items-center">
+          <a href="#anfrage" class="btn-primary w-fit px-8 py-3.5 text-[17px]">
+            Jetzt loslegen und Hilfsorganisationen unterstützen!
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <NgoBand />
+
+    <!-- ══ Stimmen: Österreichisches Rotes Kreuz ══ -->
+    <FotoBand bild="/images/org-bg-oerk.webp"
+              scrim="rgba(0,0,0,0.5)" abstand="space-y-16 py-[70px] sm:space-y-24 sm:py-[120px]">
+      {stimmenOesterreich.map((s) => (
+        <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <img src={s.bild} alt={s.alt} width="600" height="400" loading="lazy" decoding="async"
+               class={`reveal w-full rounded-2xl object-cover ${s.gedreht ? 'lg:order-2' : ''}`} />
+          <div class="reveal">
+            <p class="mb-1 text-[30px] font-bold leading-tight sm:text-[44px]">{s.name}</p>
+            <p class="mb-5 text-[17px] text-white/80 sm:text-[20px]">{s.rolle}</p>
+            {s.text.map((t) => (
+              <p class="mb-4 text-[16px] leading-relaxed last:mb-0 sm:text-[20px]">{t}</p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </FotoBand>
+
+    <!-- ══ Stimmen: Umwelt & Natur, auf Naturfoto ══ -->
+    <FotoBand bild="/images/org-natur-luftbild.webp"
+              scrim="rgba(0,0,0,0.45)" abstand="space-y-16 py-[70px] sm:space-y-24 sm:py-[120px]">
+      {stimmenUmwelt.map((s) => (
+        <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <img src={s.bild} alt={s.alt} width="600" height="400" loading="lazy" decoding="async"
+               class={`reveal w-full rounded-2xl object-cover ${s.gedreht ? 'lg:order-2' : ''}`} />
+          <div class="reveal">
+            <p class="mb-1 text-[30px] font-bold leading-tight sm:text-[44px]">{s.name}</p>
+            <p class="mb-5 text-[17px] text-white/80 sm:text-[20px]">{s.rolle}</p>
+            {s.text.map((t) => (
+              <p class="mb-4 text-[16px] leading-relaxed last:mb-0 sm:text-[20px]">{t}</p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </FotoBand>
+
+    <!-- ══ Erfolge: Natur und Umwelt ══ -->
+    <section class="bg-white py-[60px]">
+      <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+        <img src={erfolge[0].bild} alt={erfolge[0].alt} width="600" height="400" loading="lazy" decoding="async"
+             class="reveal w-full rounded-2xl object-cover" />
+        <div class="reveal">
+          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[0].titel}</h2>
+          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[0].text}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Zwischen-CTA ══ -->
+    <section class="bg-white pb-[60px]">
+      <div class="container-hsp text-center">
+        <p class="text-[18px] font-bold text-hsp-ink sm:text-[20px]">Engagiere dich als Fundraiser!</p>
+        <p class="mt-1 text-[16px] text-hsp-body">und hilf der Organisation zu wachsen</p>
+        <a href="#anfrage" class="btn-primary mt-6 gap-2 px-8 py-3.5 text-[15px]">
+          <span aria-hidden="true">›</span> Jetzt anfragen
+        </a>
+      </div>
+    </section>
+
+    <!-- ══ Stimmen: Humanitäre Hilfe, auf Pflegefoto ══ -->
+    <FotoBand bild="/images/org-pflege.webp"
+              scrim="rgba(0,0,0,0.58)" abstand="space-y-16 py-[70px] sm:space-y-24 sm:py-[120px]">
+      {stimmenHumanitaer.map((s) => (
+        <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <img src={s.bild} alt={s.alt} width="600" height="400" loading="lazy" decoding="async"
+               class={`reveal w-full rounded-2xl object-cover ${s.gedreht ? 'lg:order-2' : ''}`} />
+          <div class="reveal">
+            <p class="mb-1 text-[30px] font-bold leading-tight sm:text-[44px]">{s.name}</p>
+            <p class="mb-5 text-[17px] text-white/80 sm:text-[20px]">{s.rolle}</p>
+            {s.text.map((t) => (
+              <p class="mb-4 text-[16px] leading-relaxed last:mb-0 sm:text-[20px]">{t}</p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </FotoBand>
+
+    <!-- ══ Erfolge: Humanitäre Hilfe ══ -->
+    <section class="bg-hsp-light py-[60px]">
+      <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+        <img src={erfolge[1].bild} alt={erfolge[1].alt} width="600" height="400" loading="lazy" decoding="async"
+             class="reveal w-full rounded-2xl object-cover lg:order-2" />
+        <div class="reveal">
+          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[1].titel}</h2>
+          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[1].text}</p>
+        </div>
+      </div>
+    </section>
+
+    <Stimmen />
+    <Bewertungen />
+    <Faq />
+    <AbschlussCta />
+  </main>
+
+  <Footer />
+</Layout>

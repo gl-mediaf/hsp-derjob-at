@@ -4,34 +4,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        'hsp-lime':      '#97BF0D',
-        'hsp-lime-dark': '#7da00b',
-        'hsp-red':       '#E30613',
-        'hsp-dark':      '#0f0f0f',
-        'hsp-gray':      '#5a5a5a',
-        'hsp-light':     '#f7f7f3',
+        // Aus der Live-Seite ausgelesen (computed styles, 05.08.2026)
+        'hsp-teal':      '#319ea3',  // Primärfarbe, alle CTAs
+        'hsp-teal-dark': '#278185',  // Hover-Zustand
+        'hsp-yellow':    '#e9b425',  // Akzent
+        'hsp-ink':       '#1c1e21',  // Überschriften
+        'hsp-body':      '#565656',  // Fließtext
+        'hsp-muted':     '#424242',  // Namen unter Testimonials
+        'hsp-light':     '#f9f9f9',  // graue Baender (NGO, Kununu)
+        'hsp-red':       '#e2001a',  // Logo-Kreis
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans:  ['"Bunday Slab"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        slab:  ['"Bunday Slab"', 'Georgia', 'serif'],
+      },
+      maxWidth: {
+        content: '1140px',
       },
       keyframes: {
         fadeUp: {
-          '0%':   { opacity: '0', transform: 'translateY(28px)' },
+          '0%':   { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%':      { transform: 'translateY(-10px)' },
-        },
-        slideRight: {
-          '0%':   { opacity: '0', transform: 'translateX(-20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
+        marquee: {
+          '0%':   { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       animation: {
-        'fade-up':    'fadeUp 0.7s ease forwards',
-        'float':      'float 5s ease-in-out infinite',
-        'slide-right':'slideRight 0.6s ease forwards',
+        'fade-up': 'fadeUp 0.6s ease forwards',
+        'marquee': 'marquee 28s linear infinite',
       },
     },
   },

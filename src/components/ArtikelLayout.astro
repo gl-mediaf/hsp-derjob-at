@@ -1,0 +1,126 @@
+---
+import Layout       from '../layouts/Layout.astro';
+import Nav          from './Nav.astro';
+import Footer       from './Footer.astro';
+import AbschlussCta from './AbschlussCta.astro';
+
+export interface Abschnitt {
+  h?: string;      // Hauptueberschrift des Abschnitts (h2)
+  h3?: string;     // Unterueberschrift (h3)
+  p?: string[];
+  liste?: string[];
+}
+
+export interface Props {
+  titel: string;
+  beschreibung: string;
+  ueberschrift: string;
+  bild: string;
+  alt: string;
+  pfad: string;
+  abschnitte: Abschnitt[];
+}
+
+const { titel, beschreibung, ueberschrift, bild, alt, pfad, abschnitte } = Astro.props;
+
+// Alle Artikel, damit unten die jeweils anderen fuenf verlinkt werden koennen
+const alleArtikel = [
+  { pfad: '/studentenjob',          titel: 'Studentenjob – Geld machen, indem du Gutes tust' },
+  { pfad: '/spenden-sammeln',       titel: 'Spenden sammeln und Gutes tun? Das geht gemeinsam mit dir!' },
+  { pfad: '/schuelerjob-ab-18',     titel: 'Schülerjob ab 18 – jetzt etwas Wertvolles bewirken' },
+  { pfad: '/job-hilfsorganisation', titel: 'Mit einem Job eine Hilfsorganisation effektiv unterstützen' },
+  { pfad: '/ferienjob-verdienst',   titel: 'Ferienjob-Verdienst durch gute Taten generieren – so gehts' },
+  { pfad: '/ferienjob-ab-18',       titel: 'Ferienjob ab 18 – Frag jetzt an!' },
+];
+const weitere = alleArtikel.filter((a) => a.pfad !== pfad);
+---
+
+<Layout title={titel} description={beschreibung} ogImage={new URL(bild, Astro.site).href}>
+  <Nav />
+
+  <main id="inhalt">
+
+    <!-- ══ Artikelkopf ══ -->
+    <section class="bg-hsp-light py-[50px]">
+      <div class="container-hsp max-w-[860px]">
+        <nav aria-label="Brotkrumen" class="mb-4 text-[14px] text-hsp-body">
+          <a href="/blog" class="transition-colors hover:text-hsp-teal">Blog</a>
+          <span aria-hidden="true" class="px-2">›</span>
+          <span>{ueberschrift}</span>
+        </nav>
+        <h1 class="text-[30px] font-bold leading-tight text-hsp-ink sm:text-[44px] sm:leading-[1.15]">
+          {ueberschrift}
+        </h1>
+      </div>
+    </section>
+
+    <img src={bild} alt={alt} width="1500" height="600" fetchpriority="high" decoding="async"
+         class="h-[220px] w-full object-cover sm:h-[340px] lg:h-[420px]" />
+
+    <!-- ══ Artikeltext ══ -->
+    <article class="bg-white py-[60px]">
+      <div class="container-hsp max-w-[720px]">
+        {abschnitte.map((a) => (
+          <section class:list={["last:mb-0", a.h3 ? "mb-6" : "mb-10"]}>
+            {a.h && (
+              <h2 class="mb-4 text-[22px] font-bold leading-snug text-hsp-ink sm:text-[26px]">{a.h}</h2>
+            )}
+            {a.h3 && (
+              <h3 class="mb-3 text-[18px] font-bold leading-snug text-hsp-ink sm:text-[20px]">{a.h3}</h3>
+            )}
+            {a.p?.map((t) => (
+              <p class="mb-4 text-[16px] leading-[1.75] text-hsp-ink last:mb-0">{t}</p>
+            ))}
+            {a.liste && (
+              <ul class="mt-4 space-y-3">
+                {a.liste.map((t) => (
+                  <li class="flex items-start gap-3 text-[16px] leading-[1.7] text-hsp-ink">
+                    <svg class="mt-1.5 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 20 20" fill="none"
+                         stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="4 11 8 15 16 5" />
+                    </svg>
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+    </article>
+
+    <!-- ══ Weitere Artikel ══ -->
+    <section class="bg-hsp-light py-[60px]" aria-labelledby="weitere-titel">
+      <div class="container-hsp max-w-[860px]">
+        <h2 id="weitere-titel" class="mb-6 text-[22px] font-bold text-hsp-ink sm:text-[26px]">
+          Weitere Blogartikel
+        </h2>
+        <ul class="space-y-3">
+          {weitere.map((a) => (
+            <li>
+              <a href={a.pfad}
+                 class="flex items-start gap-3 text-[16px] font-bold text-hsp-ink transition-colors hover:text-hsp-teal">
+                <svg class="mt-1 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.6" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <line x1="4" y1="12" x2="19" y2="12" />
+                  <polyline points="13 6 19 12 13 18" />
+                </svg>
+                <span>{a.titel}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <AbschlussCta
+      titel="Dein Ferienjob mit Sinn"
+      unterzeile="Arbeite als Fundraiser für bekannte NGOs und entscheide selbst, wann und wie lange du tätig bist."
+      buttonText="Jetzt anfragen"
+    />
+  </main>
+
+  <Footer />
+</Layout>
