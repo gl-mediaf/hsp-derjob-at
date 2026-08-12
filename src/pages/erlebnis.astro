@@ -1,0 +1,157 @@
+---
+import Layout       from '../layouts/Layout.astro';
+import Nav          from '../components/Nav.astro';
+import Footer       from '../components/Footer.astro';
+import Faq          from '../components/Faq.astro';
+import NgoBand      from '../components/NgoBand.astro';
+import Stimmen      from '../components/Stimmen.astro';
+import AbschlussCta from '../components/AbschlussCta.astro';
+import SeitenHero   from '../components/SeitenHero.astro';
+import FotoBand     from '../components/FotoBand.astro';
+
+const highlights = [
+  { titel: 'Arbeite wann du willst',  text: 'Du entscheidest selbst, wann und wie lange du unterwegs bist.' },
+  { titel: 'Ø 3.300 € in 4 Wochen',   text: 'So viel machen neue Fundraiser im Schnitt in ihren ersten vier Wochen.' },
+  { titel: 'Mit deinen Freunden',     text: 'Kommt gemeinsam fundraisen – mit uns geht das.' },
+];
+
+const galerie = [
+  { n: '01', alt: 'Drei Fundraiser laufen von hinten über ein Feld' },
+  { n: '02', alt: 'Drei Fundraiser schauen grinsend aus dem Auto' },
+  { n: '03', alt: 'Ein Fundraiser steht an der Tür und sammelt Spenden' },
+  { n: '04', alt: 'Ein Fundraiser sitzt mit einem Bürger am Tablet' },
+  { n: '05', alt: 'Eine Gruppe Fundraiser sitzt am Bordstein zusammen' },
+  { n: '06', alt: 'Zwei Fundraiserinnen umarmen sich' },
+  { n: '07', alt: 'Zwei Fundraiser halten ihre Tablets hoch' },
+  { n: '08', alt: 'Zwei lächelnde Fundraiserinnen in Rote-Kreuz-Uniform' },
+  { n: '09', alt: 'Zwei Fundraiserinnen putzen gemeinsam Zähne' },
+  { n: '10', alt: 'Eine Gruppe Fundraiser schlägt im Kreis ein' },
+  { n: '11', alt: 'Ein Fundraiser in Rote-Kreuz-Uniform mit Fahne' },
+  { n: '12', alt: 'Ein Fundraiser bei seinem Ferienjob an einer Tür' },
+];
+
+const clips = [
+  { titel: 'Coachings auf Malle',       bild: '/images/erl-krankenwagen.webp', alt: 'Eine Fundraiserin lehnt lächelnd an einem Einsatzfahrzeug' },
+  { titel: 'Ein ganz normales Coaching', bild: '/images/galerie-04.webp',      alt: 'Ein Fundraiser sitzt mit einem Bürger am Tablet' },
+  { titel: 'Das Leben in der Crew',      bild: '/images/galerie-05.webp',      alt: 'Eine Gruppe Fundraiser sitzt am Bordstein zusammen' },
+];
+---
+
+<Layout
+  title="Flexibler Ferienjob – Neues erleben & Hilfsorganisationen stärken"
+  description="Dein Erlebnis beim Fundraisen: Crew-Leben, Coachings, Abenteuer und Momente, die bleiben."
+>
+  <Nav />
+
+  <main id="inhalt">
+    <SeitenHero
+      bild="/images/hero-erlebnis.webp"
+      alt="Eine Gruppe Fundraiser klatscht gemeinsam ab"
+      titel="Dein Erlebnis"
+      unterzeile="Für unvergessliche Momente!"
+    />
+
+    <!-- ══ Einstieg ══ -->
+    <section class="bg-white pb-[35px] pt-10" aria-labelledby="intro-titel">
+      <div class="container-hsp grid gap-x-12 gap-y-8 lg:grid-cols-2">
+        <div>
+          <h2 id="intro-titel"
+              class="text-[30px] font-bold leading-[1.1] text-black sm:text-[40px] sm:leading-[44px]">
+            Momente, die bleiben – dein Sommer beim Fundraisen
+          </h2>
+          <div class="mt-5 max-w-[555px] space-y-4 text-[16px] leading-[1.7] text-hsp-ink sm:text-[18px] sm:leading-[30.6px]">
+            <p>Stell dir vor: Sommerabend, Sonnenuntergang nach einem langen Tag voller Begegnungen. Du hast mit Menschen gesprochen, sie für eine gute Sache begeistert und spürst, dass du wirklich etwas bewegt hast.</p>
+            <p>Du lachst mit deinen Leuten über verrückte Momente des Tages, feierst kleine Erfolge und merkst, wie sehr dich diese Zeit zusammenschweißt.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <a href="#anfrage" class="btn-primary w-fit px-8 py-3.5 text-[17px]">Zeig's mir</a>
+        </div>
+      </div>
+    </section>
+
+    <NgoBand />
+
+    <!-- ══ Clips ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="clips-titel">
+      <div class="container-hsp">
+        <h2 id="clips-titel" class="sr-only">Eindrücke aus dem Crew-Alltag</h2>
+        <ul class="reveal karten-slider gap-8 md:grid-cols-3">
+          {clips.map((c) => (
+            <li class="overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+              <div class="relative">
+                <img src={c.bild} alt={c.alt} width="600" height="400" loading="lazy" decoding="async"
+                     class="aspect-[3/2] w-full object-cover" />
+                <span class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
+                  <svg class="h-14 w-14 drop-shadow-lg" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="30" stroke="white" stroke-width="3" />
+                    <path d="M26 21l18 11-18 11V21z" fill="white" />
+                  </svg>
+                </span>
+              </div>
+              <p class="px-5 py-4 text-center text-[20px] font-bold text-hsp-ink sm:text-[24px]">{c.titel}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ Highlights auf Einsatzfoto ══ -->
+    <FotoBand bild="/images/erl-krankenwagen.webp" position="center 35%"
+              scrim="rgba(0,0,0,0.5)" abstand="py-[60px] sm:py-[100px]">
+      <div class="container-hsp text-center" aria-labelledby="highlights-titel">
+        <h2 id="highlights-titel"
+            class="reveal mx-auto mb-12 max-w-[900px] text-[28px] font-bold leading-tight sm:text-[40px]">
+          Mache gutes Geld, sammle Erfahrungen und lerne Skills fürs Leben.
+        </h2>
+
+        <ul class="reveal karten-slider gap-8 text-left md:grid-cols-3">
+          {highlights.map((h) => (
+            <li class="rounded-2xl bg-white px-6 py-8 shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+              <p class="mb-2 text-[22px] font-bold text-hsp-teal sm:text-[25px]">{h.titel}</p>
+              <p class="text-[16px] leading-relaxed text-hsp-ink">{h.text}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p class="reveal mt-12 text-[20px] font-bold leading-snug sm:text-[24px]">
+          Das ist die Chance, mit deinen Freunden zu arbeiten und Ø 3.300 € in 4 Wochen zu machen.
+        </p>
+        <p class="mt-2 text-[18px]">
+          Nutze deine Zeit sinnvoll und erwerbe Fähigkeiten fürs Leben
+        </p>
+        <a href="#anfrage" class="btn-primary mt-6 px-8 py-3.5 text-[17px]">Sichere dir deinen Ferienjob</a>
+      </div>
+    </FotoBand>
+
+    <!-- ══ Galerie ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="galerie-titel">
+      <div class="container-hsp">
+        <h2 id="galerie-titel"
+            class="reveal text-[30px] font-bold leading-tight text-hsp-ink sm:text-[40px]">
+          Erinnerungen, die bleiben.
+        </h2>
+        <p class="reveal mb-10 mt-2 text-[20px] text-hsp-body sm:text-[30px]">
+          Teile unvergessliche Momente zusammen mit deinen Freunden.
+        </p>
+
+        <ul class="reveal karten-slider gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {galerie.map((g) => (
+            <li>
+              <img src={`/images/galerie-${g.n}.webp`} alt={g.alt}
+                   width="600" height="400" loading="lazy" decoding="async"
+                   class="aspect-[3/2] w-full rounded-xl object-cover" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <Stimmen />
+    <Faq />
+    <AbschlussCta />
+  </main>
+
+  <Footer />
+</Layout>

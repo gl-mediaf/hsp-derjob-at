@@ -1,0 +1,68 @@
+---
+import ArtikelLayout from '../components/ArtikelLayout.astro';
+
+const abschnitte = [
+  {
+    h: 'Dein Ferienjob-Verdienst bei hsp',
+    p: [
+      'Wenn du die Welt wirklich verändern willst, ist Support für Hilfsorganisationen einer der krassesten Hebel überhaupt. Spenden helfen nicht nur Menschen in Not, sondern schärfen auch unseren Blick für globale Krisen. Cash dafür zu bekommen, dass du andere von dieser Vision überzeugst, ist eine der erfüllendsten Aufgaben überhaupt und pusht deine Persönlichkeit massiv. Wir freuen uns, dass du hier bist, damit du dir durch deinen Einsatz für die gute Sache einen stabilen Ferienjob-Verdienst und fette Perspektiven sichern kannst.',
+    ],
+  },
+  {
+    h: 'Einen Ferienjob-Verdienst mit Impact kombinieren',
+    p: [
+      'Klar, selbst Geld zu geben ist super, aber noch wichtiger ist es, andere Leute mit ins Boot zu holen. Wenn alle mitmachen, bewegen wir am Ende viel mehr. Hier sind die Gründe, warum es so wichtig ist, andere für den guten Zweck zu gewinnen:',
+    ],
+    liste: [
+      'Mehr Impact: Je mehr Leute du überzeugst, desto mehr Mittel stehen den Hilfsorganisationen für ihre Projekte zur Verfügung.',
+      'Awareness: Wer spendet, fängt an nachzudenken. Du steigerst das kollektive Bewusstsein für Themen, die uns alle angehen.',
+      'Starke Community: Andere zu begeistern stärkt den Zusammenhalt und verwandelt passive Zuschauer in echte Weltretter.',
+    ],
+  },
+  {
+    h: 'So setzt sich dein Ferienjob-Verdienst zusammen',
+    p: [
+      'Dein Einsatz – Wann du Gas gibst, entscheidest du. Du kannst nach zwei Wochen eine Pause machen und später wieder einsteigen. Deine Erfolge werden tagesaktuell übermittelt und sind die Basis für deine Auszahlung. Die Aussage „Du bekommst, was du verdient hast" war selten so positiv gemeint wie hier.',
+      'Gemeinsam wohnen – Während der Zeit bist du nicht zu Hause, sondern endlich mal weg vom Nest. Mit deiner Crew teilst du dir eine Ferienwohnung. Das Ganze hat Schulausflug-Charakter – nur dass du Verantwortung übernimmst und dabei ordentlich Geld machen kannst. Gemeinsam entdeckt ihr die schönsten Ecken Österreichs.',
+      'Deine Kohle – Fundraiser haben einen anspruchsvollen Job, der extrem gut bezahlt wird. Du machst dein Geld provisionsbasiert – nach oben gibt es kein Limit. Im Schnitt liegt der Ferienjob-Verdienst nach den ersten vier Wochen bei rund 3.300 €. Da deine Bezahlung vom Erfolg abhängt, macht sich dein Durchhaltevermögen direkt bezahlt.',
+      'Dein persönlicher Mehrwert – Ein paar Wochen fern der Heimat mit Gleichgesinnten bringt dir mehr, als man rein über den Verdienst ausdrücken kann. Du findest Freunde fürs Leben, absolvierst Trainings in Rhetorik und Kommunikation und übernimmst Verantwortung. Wochen, die dein Leben verändern werden.',
+    ],
+  },
+  {
+    h: 'Welche Organisationen werden unterstützt?',
+    p: [
+      'Wir arbeiten bewusst nur mit einer exklusiven Auswahl an Partnern zusammen. Diese sind aber so groß, dass ihre Themen jeden von uns betreffen. Wenn du bei uns Geld machen willst, unterstützt du die größten Hilfsorganisationen wie das Österreichische Rote Kreuz, die Malteser oder den BUND.',
+    ],
+  },
+  {
+    h: 'Was brauche ich für diesen Ferienjob?',
+    p: [
+      'Um eine erfolgreiche Zeit bei uns zu haben, solltest du fließend Deutsch sprechen, Bock auf Gespräche mit fremden Menschen haben und ein „Nein" locker wegstecken können. Wer Spaß daran hat, den ganzen Tag auf den Beinen zu sein, wird hier richtig viel Kohle machen.',
+    ],
+  },
+  {
+    h: 'Wie lange kann ich mitwirken?',
+    p: [
+      'Auch wenn sich die Mission perfekt als Ferienjob anbietet, kannst du uns natürlich auch länger unterstützen. Es gibt keine Grenze nach oben, wenn es darum geht, moralische Werte zu vertreten und dabei erfolgreich Geld zu machen. Du entscheidest, wann und wie lange du unterwegs bist.',
+    ],
+  },
+  {
+    h: 'Häufige Fragen zum Ferienjob-Verdienst',
+    p: [
+      'Wie viel kann ich als Fundraiser im Ferienjob machen? Im Schnitt 3.300 € in vier Wochen. Du machst dein Geld leistungsbasiert über Provision – ohne Limit nach oben.',
+      'Welche Voraussetzungen brauche ich? Du musst mindestens 18 Jahre alt sein, fließend Deutsch sprechen, Spaß an Gesprächen mit fremden Menschen haben und ein Nein locker wegstecken können. Vorkenntnisse sind nicht nötig.',
+      'Wie lange kann ich als Fundraiser arbeiten? Du entscheidest selbst, wann und wie lange du unterwegs bist. Es gibt keine Obergrenze – ideal für Ferien, Semesterpausen oder längere Auszeiten.',
+    ],
+  },
+];
+---
+
+<ArtikelLayout
+  titel="Ferienjob Verdienst durch gute Taten generieren – so gehts"
+  beschreibung="Guten Verdienst im Ferienjob mit sinnvollen Tätigkeiten, persönlicher Weiterentwicklung und neuen Kontakten – das sind wir."
+  ueberschrift="Ferienjob-Verdienst durch gute Taten generieren – so gehts"
+  bild="/images/blog-ferienjob-verdienst.webp"
+  alt="Fundraiser bei ihrem Einsatz im Freien"
+  pfad="/ferienjob-verdienst"
+  abschnitte={abschnitte}
+/>

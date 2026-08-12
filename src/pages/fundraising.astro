@@ -1,0 +1,144 @@
+---
+import Layout       from '../layouts/Layout.astro';
+import Nav          from '../components/Nav.astro';
+import Footer       from '../components/Footer.astro';
+import Faq          from '../components/Faq.astro';
+import NgoBand      from '../components/NgoBand.astro';
+import Stimmen      from '../components/Stimmen.astro';
+import AbschlussCta from '../components/AbschlussCta.astro';
+import SeitenHero   from '../components/SeitenHero.astro';
+import FotoBand     from '../components/FotoBand.astro';
+
+const einsatz = [
+  'Du bist ein paar Wochen unterwegs und hast die Möglichkeit, mit anderen Fundraisern in einer Ferienwohnung zu wohnen und von dort ins Einsatzgebiet zu starten. Du kannst das Ganze aber auch von zu Hause aus machen – das ist komplett dir überlassen.',
+  'Von Haus zu Haus, ehrliche Gespräche, echtes Feedback.',
+  'Die großen Hilfsorganisationen brauchen Fördermitglieder und du hilfst ihnen, diese zu gewinnen. Wichtige Sache, starke Mission.',
+];
+
+const bloecke = [
+  {
+    bild:  '/images/fr-apfel.webp',
+    alt:   'Eine Fundraiserin pflückt einen grünen Apfel auf einer Streuobstwiese',
+    titel: 'Sommer-Vibes & Abenteuer',
+    text:  [
+      'Selbständig unterwegs, freie Zeiteinteilung – und trotzdem andere um dich, wenn du willst.',
+      'Die Möglichkeit, zusammen mit anderen Fundraisern zu wohnen, wilde Storys aus dem Tag zu teilen und kleine Erfolge gemeinsam zu feiern. Flexibel arbeiten, unterwegs sein, Neues erleben – alles in einem Paket.',
+    ],
+    gedreht: true,
+  },
+  {
+    bild:  '/images/fr-crew-gruppe.webp',
+    alt:   'Eine Crew von Fundraisern in roten Einsatzhosen steht zusammen',
+    titel: 'Mit Sinn & Wirkung',
+    text:  [
+      'Bei diesem flexiblen Ferienjob geht es nicht darum, einfach irgendwas in den Ferien zu machen.',
+      'Du bist unterwegs für eine Hilfsorganisation und sorgst mit deinen Gesprächen dafür, dass wichtige Projekte weiterlaufen können – ob im Rettungsdienst, bei Umweltaktionen oder in der Katastrophenhilfe. Du hilfst dabei, dass mehr Menschen erreicht werden, mehr Unterstützung ankommt und echte Hilfe möglich wird.',
+      'Und das Beste: Du machst dabei nicht nur gutes Geld, sondern lernst auch eine Menge fürs Leben – wie man Menschen begeistert, selbstbewusst auftritt und für eine Sache einsteht.',
+    ],
+  },
+  {
+    bild:  '/images/fr-bund-gruppe.webp',
+    alt:   'Eine fröhliche Fundraising-Crew in BUND-Shirts sitzt auf einer Bank',
+    titel: 'Persönliches Wachstum durch einen flexiblen Fundraising Job',
+    text:  [
+      'Ein flexibler Ferienjob bei einer Hilfsorganisation gibt dir mehr als nur Geld für die Reisekasse. Du bist draußen unterwegs, sprichst mit vielen verschiedenen Menschen und sammelst jeden Tag neue Erfahrungen.',
+      'Dabei wächst du automatisch über dich hinaus: Du lernst, Gespräche locker und selbstbewusst zu führen, Menschen für ein wichtiges Thema zu begeistern und auch dann motiviert zu bleiben, wenn mal jemand Nein sagt. Diese Skills nimmst du mit – fürs Studium, fürs Berufsleben und für alles, was danach kommt.',
+    ],
+    gedreht: true,
+  },
+];
+---
+
+<Layout
+  title="Hilfsorganisation flexibler Ferienjob – Geld machen & Gutes tun"
+  description="Starte jetzt deinen flexiblen Ferienjob bei einer Hilfsorganisation: Ø 3.300 €, unterwegs sein, Menschen bewegen und Erfahrungen sammeln, die bleiben."
+>
+  <Nav />
+
+  <main id="inhalt">
+    <SeitenHero
+      bild="/images/hero-fundraising.webp"
+      alt="Eine Crew von Fundraisern in roten Einsatzhosen läuft gemeinsam über einen Weg"
+      titel="Mach was Sinnvolles."
+      unterzeile="Unterstütze eine Hilfsorganisation!"
+    />
+
+    <!-- ══ Einstieg ══ -->
+    <section class="bg-white pb-[35px] pt-10" aria-labelledby="intro-titel">
+      <div class="container-hsp grid gap-x-12 gap-y-8 lg:grid-cols-2">
+        <div>
+          <h2 id="intro-titel"
+              class="text-[30px] font-bold leading-[1.1] text-black sm:text-[40px] sm:leading-[44px]">
+            So funktioniert´s
+          </h2>
+          <p class="mt-5 max-w-[555px] text-[16px] leading-[1.7] text-hsp-ink sm:text-[18px] sm:leading-[30.6px]">
+            Als Fundraiser gehst du raus, <strong>sprichst mit Menschen und gewinnst sie als
+            Fördermitglieder für bekannte Hilfsorganisationen</strong> – zum Beispiel das
+            <strong>Österreichische Rote Kreuz</strong>.
+            Das bedeutet: Du bewegst was, machst auf wichtige Themen aufmerksam und trägst dazu
+            bei, dass diese Organisationen langfristig ihre Arbeit machen können. Echt, direkt
+            und mit Wirkung.
+          </p>
+        </div>
+
+        <div class="flex items-center">
+          <a href="#anfrage" class="btn-primary w-fit gap-2 px-8 py-3.5 text-[15px]">
+            <span aria-hidden="true">›</span> Sichere dir deinen flexiblen Ferienjob
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <NgoBand />
+
+    <!-- ══ Einsatz-Band auf Crew-Foto ══ -->
+    <FotoBand bild="/images/fr-crew-gruppe.webp" position="center 30%" scrim="rgba(0,0,0,0.5)"
+              abstand="py-[60px] sm:py-[90px]">
+      <div class="container-hsp max-w-[860px] text-center">
+        <h2 class="reveal mb-6 text-[26px] font-bold leading-[1.2] sm:text-[34px]">
+          Unterwegs für Hilfsorganisationen! Dein Einsatz, deine Entscheidung
+        </h2>
+        <div class="reveal space-y-4 text-[16px] leading-[1.7] sm:text-[18px]">
+          {einsatz.map((t) => <p>{t}</p>)}
+        </div>
+      </div>
+    </FotoBand>
+
+    <!-- ══ Wechselnde Bild-Text-Blöcke ══ -->
+    {bloecke.map((b) => (
+      <section class="bg-white py-[60px]">
+        <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <img src={b.bild} alt={b.alt} width="600" height="400" loading="lazy" decoding="async"
+               class={`reveal w-full rounded-2xl object-cover ${b.gedreht ? 'lg:order-2' : ''}`} />
+          <div class="reveal">
+            <h2 class="mb-4 text-[24px] font-bold leading-[1.2] text-hsp-ink sm:text-[30px]">
+              {b.titel}
+            </h2>
+            {b.text.map((t) => (
+              <p class="mb-4 text-[16px] leading-[27.2px] text-hsp-ink last:mb-0">{t}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <!-- ══ Zwischen-CTA ══ -->
+    <section class="bg-hsp-light py-[60px]">
+      <div class="container-hsp text-center">
+        <p class="text-[20px] font-bold text-hsp-ink sm:text-[24px]">Das macht dich neugierig?</p>
+        <p class="mt-2 text-[18px] font-bold text-hsp-ink sm:text-[20px]">
+          Dann trau dich und starte dein Abenteuer in nur 2 Minuten.
+        </p>
+        <a href="#anfrage" class="btn-primary mt-6 gap-2 px-8 py-3.5 text-[15px]">
+          <span aria-hidden="true">›</span> Jetzt loslegen!
+        </a>
+      </div>
+    </section>
+
+    <Stimmen />
+    <Faq />
+    <AbschlussCta unterzeile="Sichere dir jetzt deinen Platz in der Crew und starte dein Abenteuer als Fundraiser." />
+  </main>
+
+  <Footer />
+</Layout>

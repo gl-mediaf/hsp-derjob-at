@@ -1,0 +1,103 @@
+---
+const links = [
+  { href: '/blog',        text: 'Blog' },
+  { href: '/fundraising', text: 'Was ist Fundraising' },
+  { href: '/geld',        text: 'Geld machen' },
+  { href: '/organisationen', text: 'Organisationen' },
+  { href: '/erlebnis',    text: 'Erlebnis' },
+];
+
+// Aktuelle Seite hervorheben; abschliessenden Schraegstrich ignorieren
+const pfad = Astro.url.pathname.replace(/\/$/, '') || '/';
+const aktiv = (href) => pfad === href;
+---
+<header class="relative z-50 bg-white">
+  <div class="container-hsp flex items-center justify-between gap-6 py-4">
+
+    <!-- Logo haengt ueber die Kopfzeile hinaus, wie im Original -->
+    <a href="/" class="relative z-10 shrink-0" aria-label="hsp – zur Startseite">
+      <img src="/images/hsp-logo.webp" alt="hsp – Die Fundraiser"
+           width="180" height="180"
+           class="h-[70px] w-[70px] lg:h-[90px] lg:w-[90px] lg:-mb-8" />
+    </a>
+
+    <ul class="hidden items-center gap-8 lg:flex">
+      {links.map((l) => (
+        <li>
+          <a href={l.href}
+             aria-current={aktiv(l.href) ? 'page' : null}
+             class:list={['text-[20px] font-bold leading-none transition-colors hover:text-hsp-teal',
+                          aktiv(l.href) ? 'text-hsp-teal' : 'text-hsp-ink']}>
+            {l.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <div class="hidden flex-col items-center gap-1.5 sm:flex">
+        <a href="#anfrage"
+           class="btn-primary gap-2 px-[23px] py-3 text-[15px] leading-none">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8M8 12h8" stroke-linecap="round" />
+          </svg>
+          JETZT ANFRAGEN
+        </a>
+
+        <!-- Google-Bewertung unter dem Button. Die Grafik enthaelt Logo,
+             Note und Sterne bereits - keine zusaetzlichen Sternzeichen. -->
+        <img src="/images/google-logo.webp"
+             alt="4,9 von 5 Sternen auf Google"
+             width="540" height="280" class="h-[34px] w-auto" />
+      </div>
+
+      <button type="button" id="menu-toggle"
+              class="inline-flex h-11 w-11 items-center justify-center rounded-lg text-hsp-ink lg:hidden"
+              aria-expanded="false" aria-controls="mobile-menu" aria-label="Menü öffnen">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-black/5 bg-white lg:hidden">
+    <ul class="container-hsp flex flex-col py-2">
+      {links.map((l) => (
+        <li>
+          <a href={l.href}
+             aria-current={aktiv(l.href) ? 'page' : null}
+             class:list={['block py-3 text-[18px] font-bold',
+                          aktiv(l.href) ? 'text-hsp-teal' : 'text-hsp-ink']}>{l.text}</a>
+        </li>
+      ))}
+      <li class="py-3">
+        <a href="#anfrage" class="btn-primary w-full px-6 py-3 text-[15px]">JETZT ANFRAGEN</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var btn  = document.getElementById('menu-toggle');
+    var menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function () {
+      var open = menu.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>

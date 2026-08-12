@@ -1,35 +1,406 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav    from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Faq    from '../components/Faq.astro';
+import NgoBand      from '../components/NgoBand.astro';
+import Stimmen      from '../components/Stimmen.astro';
+import AbschlussCta from '../components/AbschlussCta.astro';
+import LogoSlider   from '../components/LogoSlider.astro';
 
-const region = 'Österreich';
-const regionCode = 'AT';
+const vorteile = [
+  {
+    titel: 'Werde Teil einer Mission',
+    text:  'Du unterstützt Hilfsorganisationen dabei, fördernde Mitglieder zu gewinnen. Von Tür zu Tür im persönlichen Gespräch mit den Menschen!',
+    icon:  'M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4z',
+  },
+  {
+    titel: 'Endlich gutes Geld machen',
+    text:  'Mit jedem Schritt, den du machst, verbindest du eine sinnvolle Tätigkeit mit der Chance, dir ein finanzielles Polster aufzubauen.',
+    icon:  'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+    strich: true,
+  },
+  {
+    titel: 'Echte Gespräche',
+    text:  'Deinen flexiblen Ferienjob als Fundraiser lernst du von der Pike auf. Du startest direkt durch, draußen, im echten Gespräch mit Menschen. Wie du das angehst, entscheidest du selbst!',
+    icon:  'M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5',
+    strich: true,
+  },
+  {
+    titel: 'Ein flexibler Ferienjob mit Herz',
+    text:  'Jahr für Jahr setzen sich Hunderte junger Menschen als Fundraiser für den guten Zweck ein. Sie tragen dazu bei, das Leben vieler Menschen positiv zu beeinflussen.',
+    icon:  'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z',
+    strich: true,
+  },
+];
+
+const kununu = [
+  { src: '/images/kununu-2024.webp', alt: 'Kununu Top Company Auszeichnung 2024' },
+  { src: '/images/kununu-2023.webp', alt: 'Kununu Top Company Auszeichnung 2023' },
+  { src: '/images/kununu-2022.webp', alt: 'Kununu Top Company Auszeichnung 2022' },
+];
+
+const karten = [
+  {
+    bild:  '/images/karte-geld-crew.webp',
+    alt:   'Eine jubelnde Fundraising-Crew vor ihrer Unterkunft',
+    titel: 'Ø 3.300 € in 4 Wochen',
+    text:  'Du willst mit deinem flexiblen Ferienjob deine nächste Reise oder ein neues Projekt finanzieren? Dann bist du hier richtig!',
+    href:  '/geld',
+  },
+  {
+    bild:  '/images/karte-gute-sache.webp',
+    alt:   'Eine lächelnde Fundraiserin unterwegs mit ihrem Tablet',
+    titel: 'Für die gute Sache unterwegs',
+    text:  'Du möchtest dich für einen guten Zweck einsetzen und dabei die größte NGO des Landes unterstützen? Dann starte jetzt durch!',
+    href:  '/organisationen',
+  },
+  {
+    bild:  '/images/karte-freunde.webp',
+    alt:   'Drei Fundraiser winken fröhlich aus dem Auto auf dem Weg zum Einsatz',
+    titel: 'Zusammen mit deinen Freunden',
+    text:  'Du hast die Möglichkeit zusammen mit deinen Freunden zu arbeiten, denn du entscheidest selbst, wann, mit wem und wie lange du im Einsatz bist.',
+    href:  '/erlebnis',
+  },
+];
+
+const vorteileListe = ['Mach ⌀ 3.300 € in 4 Wochen', 'Unterwegs für den guten Zweck', 'Gemeinsam mit deinen Freunden'];
+
+const voraussetzungen = [
+  'Mindestens 18 Jahre alt (also auch als Schülerjob ab 18 möglich)',
+  'Motivation, im Fundraiser Job aktiv zu werden und dranzubleiben',
+  'Bereitschaft, mehrere Wochen am Stück unterwegs zu sein',
+  'Interesse daran, für eine gute Sache Spenden zu sammeln',
+  'Lust, mit anderen Fundraisern in einer Crew zusammenzuarbeiten',
+  'Überzeugungskraft ist von Vorteil, kann aber auch antrainiert werden',
+];
+
+const tagesablauf = [
+  {
+    n:     '01',
+    titel: 'Morgens in der Crew',
+    text:  'Ihr besprecht die Ziele des Tages, tauscht Erfahrungen aus und fahrt gemeinsam ins Einsatzgebiet.',
+    bild:  '/images/galerie-10.webp',
+    alt:   'Eine Gruppe Fundraiser schlägt im Kreis ein',
+  },
+  {
+    n:     '02',
+    titel: 'Unterwegs von Tür zu Tür',
+    text:  'Vor Ort gehst du auf Menschen zu und entwickelst schnell ein Gefühl dafür, wie du unterschiedliche Leute erreichst.',
+    bild:  '/images/galerie-01.webp',
+    alt:   'Drei Fundraiser laufen gemeinsam über einen Feldweg',
+  },
+  {
+    n:     '03',
+    titel: 'Das Gespräch an der Tür',
+    text:  'Du erklärst, wofür sich die Organisation einsetzt, beantwortest Fragen und gewinnst neue Unterstützer.',
+    bild:  '/images/galerie-04.webp',
+    alt:   'Ein Fundraiser sitzt mit einem Bürger am Tablet',
+  },
+];
+
+const einstieg = [
+  { n: '1', titel: 'Online anfragen',           text: 'Ein kurzes Formular ausfüllen – mehr braucht es nicht.' },
+  { n: '2', titel: 'Rückmeldung in 1–2 Tagen',  text: 'Wir melden uns, klären deine Fragen und zeigen dir, wie dein Start abläuft.' },
+  { n: '3', titel: 'Erster Einsatz',            text: 'Wenn alles passt, legst du direkt mit deiner Crew los.' },
+];
 ---
 
-<Layout
-  title="hsp – Der Ferienjob mit dem gewissen Etwas"
-  description="Neue Website in Arbeit. Bald mehr an dieser Stelle."
->
-  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-hsp-light text-center">
+<Layout>
+  <Nav />
 
-    <img src="/images/hsp-logo.svg" alt="hsp" class="h-12 md:h-14 mb-10" />
+  <main id="inhalt">
 
-    <span class="inline-block mb-6 px-3 py-1 rounded-full bg-hsp-lime/15 text-hsp-lime-dark text-xs font-bold tracking-widest uppercase">
-      {regionCode} &middot; Platzhalter
-    </span>
+    <!-- ══ Hero: Bildband mit nur zwei Zeilen, unten links ══ -->
+    <section class="relative isolate flex min-h-[420px] items-end overflow-hidden
+                    sm:min-h-[560px] lg:min-h-[760px]">
+      <img src="/images/hero.webp"
+           alt="Fundraiserin lehnt an einem Einsatzfahrzeug und blickt in die Ferne"
+           width="1500" height="600" fetchpriority="high" decoding="async"
+           class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/45 via-black/10 to-transparent"></div>
 
-    <h1 class="text-3xl md:text-5xl font-extrabold text-hsp-dark max-w-2xl leading-tight">
-      Hier entsteht die neue Website für {region}.
-    </h1>
+      <div class="container-hsp pb-14 lg:pb-16">
+        <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
+          Der flexible Ferienjob
+        </h1>
+        <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
+          Arbeite WANN du willst!
+        </p>
+      </div>
+    </section>
 
-    <p class="mt-5 max-w-md text-hsp-gray text-base md:text-lg leading-relaxed">
-      Diese Seite ist ein Platzhalter. Inhalte, Formular und Tracking folgen in den nächsten Schritten.
-    </p>
+    <!-- ══ Intro: zwei Spalten unter dem Hero ══ -->
+    <section class="bg-white pb-[35px] pt-10" aria-labelledby="intro-titel">
+      <div class="container-hsp grid gap-x-12 gap-y-8 lg:grid-cols-2">
 
-    <div class="mt-10 h-1 w-16 rounded-full bg-hsp-lime"></div>
+        <div>
+          <h2 id="intro-titel"
+              class="text-[30px] font-bold leading-[1.1] text-black sm:text-[40px] sm:leading-[44px]">
+            Werde jetzt Fundraiser für die gute Sache!
+          </h2>
+          <p class="mt-5 max-w-[555px] text-[16px] leading-[1.7] text-hsp-ink sm:text-[18px] sm:leading-[30.6px]">
+            Wir bieten aufgeschlossenen, neugierigen Menschen eine Tätigkeit, bei der sie in kurzer
+            Zeit nicht nur Geld, richtig viel Geld machen, sondern sich einen Schub sowohl für ihre
+            persönliche als auch für eine berufliche Entwicklung holen.
+          </p>
+        </div>
 
-    <footer class="mt-14 text-xs text-hsp-gray/70">
-      &copy; {new Date().getFullYear()} hsp Die Fundraiser GmbH
-    </footer>
+        <div class="flex flex-col justify-center gap-8">
+          <ul class="space-y-3">
+            {vorteileListe.map((p) => (
+              <li class="flex items-start gap-3 text-[15px] font-bold text-hsp-ink">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 20 20"
+                     fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="4 11 8 15 16 5" />
+                </svg>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- Bündig mit der Häkchenliste darüber, nicht zentriert -->
+          <a href="#anfrage" class="btn-primary w-fit gap-2 self-start px-8 py-3.5 text-[15px]">
+            <span aria-hidden="true">›</span> Sichere dir deinen flexiblen Ferienjob
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <NgoBand />
+
+    <!-- ══ Vorteile: Bild links, 2×2-Raster rechts ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="vorteile-titel">
+      <div class="container-hsp grid gap-10 lg:grid-cols-[280px_1fr] lg:gap-14">
+        <img src="/images/vorteile-huckepack.webp"
+             alt="Zwei Fundraiserinnen im Einsatz, eine trägt die andere lachend huckepack"
+             width="400" height="600" loading="lazy" decoding="async"
+             class="reveal mx-auto w-full max-w-[280px] rounded-2xl object-cover lg:mx-0" />
+
+        <div class="reveal">
+          <h2 id="vorteile-titel"
+              class="mb-8 text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px] sm:leading-[48px]">
+            Deine Vorteile als Fundraiser:
+          </h2>
+
+          <dl class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            {vorteile.map((v) => (
+              <div>
+                <dt class="mb-2 flex items-center gap-2.5 text-[18px] font-bold leading-7 text-hsp-ink sm:text-[20px]">
+                  <svg class="h-6 w-6 shrink-0 text-hsp-red" viewBox="0 0 24 24"
+                       fill={v.strich ? 'none' : 'currentColor'} stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d={v.icon} />
+                  </svg>
+                  <span>{v.titel}</span>
+                </dt>
+                <dd class="text-[15px] leading-[27.2px] text-hsp-ink sm:text-[16px]">{v.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Auszeichnungen ══ -->
+    <section class="bg-hsp-light py-[30px]" aria-labelledby="kununu-titel">
+      <div class="container-hsp text-center">
+        <h2 id="kununu-titel" class="mb-8 text-[17px] leading-[34px] font-medium text-hsp-ink sm:text-[20px]">
+          Auszeichnung zur besten Ferientätigkeit 3 Jahre in Folge
+        </h2>
+        <LogoSlider
+          id="kununu-slider"
+          logos={kununu}
+          hoehe="h-44 sm:h-48 lg:h-56"
+          abstand="sm:gap-10 lg:gap-20"
+          intervall={3500}
+        />
+      </div>
+    </section>
+
+    <!-- ══ Drei Karten ══ -->
+    <section class="bg-white pb-[70px] pt-[70px]" aria-labelledby="karten-titel">
+      <div class="container-hsp">
+        <h2 id="karten-titel"
+            class="reveal mx-auto mb-12 max-w-[900px] text-center text-[34px] font-bold leading-[44px] text-[#141414] sm:text-[50px] sm:leading-[70px]">
+          Das erwartet dich bei deinem flexiblen Ferienjob als Fundraiser:
+        </h2>
+
+        <ul class="reveal karten-slider gap-8 md:grid-cols-3">
+          {karten.map((k) => (
+            <li class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+              <img src={k.bild} alt={k.alt} width="935" height="624" loading="lazy" decoding="async"
+                   class="aspect-[3/2] w-full object-cover" />
+              <div class="flex flex-1 flex-col items-center px-6 pb-8 pt-6 text-center">
+                <h3 class="mb-3 text-[16px] font-bold leading-6 text-black">{k.titel}</h3>
+                <p class="mb-6 flex-1 text-[15px] leading-[22.4px] text-black sm:text-[16px]">{k.text}</p>
+                <a href={k.href} class="btn-primary px-6 py-3 text-[15px]">Mehr Infos</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ Was ist ein Fundraiser? ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="was-ist-titel">
+      <div class="container-hsp grid max-w-[1100px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
+
+        <div class="reveal">
+          <h2 id="was-ist-titel"
+              class="mb-5 text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px]">
+            Was ist ein Fundraiser?
+          </h2>
+          <div class="space-y-4 text-[16px] leading-[1.75] text-hsp-ink sm:text-[18px]">
+            <p>
+              Ein Fundraiser gewinnt im direkten Gespräch Menschen als Unterstützer für gemeinnützige
+              Organisationen und NGOs. Im Mittelpunkt von Fundraising steht der persönliche Kontakt:
+              Vertrauen aufbauen, Fragen klären und Menschen für eine gute Sache begeistern.
+            </p>
+            <p>
+              Dabei werden aktiv Spenden gesammelt, um Projekte in Bereichen wie Umwelt, Soziales oder
+              Katastrophenhilfe zu ermöglichen. Gerade im persönlichen Austausch entsteht die Basis für
+              langfristige Unterstützung.
+            </p>
+            <p>
+              Ein Fundraiser Job bedeutet daher vor allem Kommunikation, Überzeugungskraft und den
+              direkten Umgang mit Menschen. Mehr dazu findest du unter
+              <a href="/job-hilfsorganisation" class="font-bold text-hsp-teal hover:underline">Job Hilfsorganisation</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal relative pb-10 lg:pb-0">
+          <img src="/images/fr-haustuer.webp"
+               alt="Eine Fundraiserin steht mit ihrem Crew-Beutel vor einer Haustür"
+               width="600" height="400" loading="lazy" decoding="async"
+               class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
+          <div class="absolute bottom-0 left-4 rounded-2xl bg-hsp-teal px-6 py-4 text-white
+                      shadow-[0_8px_24px_rgba(0,0,0,0.18)] sm:left-6 lg:-bottom-7 lg:left-auto lg:right-6">
+            <p class="text-[24px] font-bold leading-none sm:text-[28px]">Ø 3.300 €</p>
+            <p class="mt-1.5 text-[13px] leading-tight sm:text-[14px]">in deinen ersten vier Wochen</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ Aufgaben und Herausforderungen ══ -->
+    <section class="bg-hsp-light py-[70px]" aria-labelledby="aufgaben-titel">
+      <div class="container-hsp">
+
+        <div class="reveal max-w-[720px]">
+          <h2 id="aufgaben-titel"
+              class="mb-5 text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px]">
+            Deine Arbeit als Fundraiser: Aufgaben und Herausforderungen
+          </h2>
+          <p class="text-[16px] leading-[1.75] text-hsp-ink sm:text-[18px]">
+            Als Fundraiser bist du direkt im Kontakt mit Menschen. Deine wichtigste Aufgabe ist es,
+            im persönlichen Gespräch neue Unterstützer für Hilfsorganisationen zu gewinnen und aktiv
+            Spenden zu sammeln. So sieht ein typischer Tag aus:
+          </p>
+        </div>
+
+        <ol class="reveal karten-slider mt-11 gap-8 md:grid-cols-3">
+          {tagesablauf.map((s) => (
+            <li class="rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+              <div class="relative">
+                <img src={s.bild} alt={s.alt} width="600" height="400" loading="lazy" decoding="async"
+                     class="aspect-[3/2] w-full rounded-t-2xl object-cover" />
+                <span class="absolute -bottom-6 left-6 grid h-12 w-12 place-items-center rounded-full
+                             bg-hsp-teal text-[17px] font-bold text-white shadow-[0_6px_18px_rgba(0,0,0,0.2)]"
+                      aria-hidden="true">{s.n}</span>
+              </div>
+              <div class="px-6 pb-7 pt-9">
+                <h3 class="mb-2 text-[20px] font-bold leading-snug text-hsp-ink sm:text-[22px]">{s.titel}</h3>
+                <p class="text-[15px] leading-relaxed text-hsp-body sm:text-[16px]">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="reveal mt-12 max-w-[720px] rounded-2xl border-l-4 border-hsp-teal bg-white p-7
+                    shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          <p class="mb-2 text-[19px] font-bold text-hsp-ink sm:text-[21px]">
+            Und die größte Herausforderung?
+          </p>
+          <p class="text-[16px] leading-[1.75] text-hsp-ink sm:text-[17px]">
+            Dranzubleiben. Du lernst, klar zu kommunizieren, auf Einwände einzugehen und auch nach
+            einem „Nein" motiviert zu bleiben. Genau daran wächst du: Mit jedem Gespräch wirst du
+            sicherer, überzeugender und erfolgreicher.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ Voraussetzungen und Einstieg ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="voraussetzungen-titel">
+      <div class="container-hsp grid max-w-[1100px] items-start gap-10 lg:grid-cols-2 lg:gap-16">
+
+        <div class="reveal rounded-2xl bg-hsp-light p-7 sm:p-9">
+          <h2 id="voraussetzungen-titel"
+              class="mb-5 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
+            Voraussetzungen für den Fundraiser Job
+          </h2>
+          <ul class="space-y-3">
+            {voraussetzungen.map((v) => (
+              <li class="flex items-start gap-3 text-[16px] leading-relaxed text-hsp-ink">
+                <svg class="mt-1.5 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 20 20" fill="none"
+                     stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="4 11 8 15 16 5" />
+                </svg>
+                <span>{v}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-6 border-t border-black/10 pt-5 text-[16px] leading-relaxed text-hsp-body">
+            Vorkenntnisse im Fundraising, Sales oder Marketing brauchst du nicht. Alles, was du für
+            deinen Start als Fundraiser brauchst, lernst du direkt im Job.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <img src="/images/galerie-06.webp"
+               alt="Zwei Fundraiserinnen stehen Arm in Arm vor ihrer Crew-Unterkunft"
+               width="600" height="400" loading="lazy" decoding="async"
+               class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
+
+          <h2 class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
+            Wie werde ich Fundraiser?
+          </h2>
+
+          <ol class="space-y-5">
+            {einstieg.map((e) => (
+              <li class="flex items-start gap-4">
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-hsp-teal
+                             text-[16px] font-bold text-white" aria-hidden="true">{e.n}</span>
+                <div>
+                  <p class="text-[17px] font-bold leading-snug text-hsp-ink sm:text-[18px]">{e.titel}</p>
+                  <p class="mt-1 text-[16px] leading-relaxed text-hsp-body">{e.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <a href="#anfrage" class="btn-primary mt-8 gap-2 px-8 py-3.5 text-[15px]">
+            <span aria-hidden="true">›</span> Sichere dir deinen Platz in der nächsten Crew
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <Stimmen />
+
+
+    <Faq />
+
+    <AbschlussCta />
 
   </main>
+
+  <Footer />
 </Layout>

@@ -2,63 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hausschrift, selbst gehostet — kein externer Font-Dienst */
+/* Die Gewichtsbereiche muessen luecklos sein. Sonst faellt z. B. Gewicht 500
+   auf den Light-Schnitt zurueck und Ueberschriften wirken duenn. */
+@font-face {
+  font-family: 'Bunday Slab';
+  src: url('/fonts/BundaySlab-Light.woff2') format('woff2');
+  font-weight: 100 449;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bunday Slab';
+  src: url('/fonts/BundaySlab-Bold.woff2') format('woff2');
+  font-weight: 450 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bunday Slab';
+  src: url('/fonts/BundaySlab-ThinItalic.woff2') format('woff2');
+  font-weight: 325;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply font-sans text-hsp-body antialiased;
   }
-
-  * {
-    box-sizing: border-box;
+  h1, h2, h3, h4 {
+    @apply font-slab text-hsp-ink;
+    text-wrap: balance;
+  }
+  /* Tastaturbedienung sichtbar machen */
+  :focus-visible {
+    outline: 3px solid theme('colors.hsp-teal');
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
 @layer components {
-  /* Reveal on scroll */
-  .reveal {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full font-bold
+           transition-colors duration-200 focus-visible:outline-offset-4;
+  }
+  .btn-primary {
+    @apply btn bg-hsp-teal text-white hover:bg-hsp-teal-dark;
+  }
+  .container-hsp {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6 lg:px-8;
+  }
+  /* Karten- und Bildreihen: auf dem Handy waagerechter Slider statt
+     untereinander. Verhindert endloses Scrollen bei Bildstrecken.
+     Ab sm greifen wieder die grid-cols-Klassen. */
+  .karten-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .karten-slider::-webkit-scrollbar { display: none; }
+  .karten-slider > * {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+  }
+  @media (min-width: 640px) {
+    .karten-slider {
+      display: grid;
+      overflow: visible;
+      padding-bottom: 0;
+    }
+    .karten-slider > * { flex: initial; }
+  }
+
+  /* Nur verstecken, wenn JavaScript läuft — sonst bliebe die Seite ohne JS leer.
+     Die Klasse .js setzt ein Inline-Skript im <head>, bevor gerendert wird. */
+  .js .reveal {
     opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    transition: opacity .45s ease-out, transform .45s ease-out;
   }
-
-  .reveal.visible {
+  .js .reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
+}
 
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-
-  /* Navbar glass effect */
-  .nav-scrolled {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
+/* Wer Bewegung reduziert haben will, bekommt keine Animationen */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
   }
-
-  /* Gradient text */
-  .text-gradient {
-    background: linear-gradient(135deg, #97BF0D, #b8e816);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Hover lift */
-  .hover-lift {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  }
+  .js .reveal { opacity: 1; transform: none; }
 }
