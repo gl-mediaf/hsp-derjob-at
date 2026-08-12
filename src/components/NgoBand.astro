@@ -2,14 +2,10 @@
 import LogoSlider from './LogoSlider.astro';
 
 export interface Props { titel?: string }
-const { titel = 'Unterwegs für die wichtigsten NGOs:' } = Astro.props;
+const { titel = 'Unterwegs für die größte NGO Österreichs:' } = Astro.props;
 
 const ngos = [
-  { src: '/images/ngo-oerk.webp',      alt: 'Logo des Österreichischen Roten Kreuzes' },
-  { src: '/images/ngo-malteser.webp',  alt: 'Logo des Malteser Hilfsdienstes' },
-  { src: '/images/ngo-bund.webp',      alt: 'Logo des Bund für Umwelt und Naturschutz Deutschland' },
-  { src: '/images/ngo-brk.webp',       alt: 'Logo des Bayerischen Roten Kreuzes' },
-  { src: '/images/ngo-bn-bayern.webp', alt: 'Logo des Bund Naturschutz in Bayern' },
+  { src: '/images/ngo-oerk.webp', alt: 'Logo des Österreichischen Roten Kreuzes' },
 ];
 ---
 <section class="bg-hsp-light pb-8 pt-[35px]" aria-labelledby="ngo-titel">

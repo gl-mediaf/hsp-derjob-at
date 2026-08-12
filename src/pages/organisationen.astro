@@ -5,7 +5,6 @@ import Footer       from '../components/Footer.astro';
 import Faq          from '../components/Faq.astro';
 import NgoBand      from '../components/NgoBand.astro';
 import Stimmen      from '../components/Stimmen.astro';
-import Bewertungen  from '../components/Bewertungen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import SeitenHero   from '../components/SeitenHero.astro';
 import FotoBand     from '../components/FotoBand.astro';
@@ -154,6 +153,29 @@ const erfolge = [
       ))}
     </FotoBand>
 
+    <!-- ══ Erfolge: Natur und Umwelt ══ -->
+    <section class="bg-white py-[60px]">
+      <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+        <img src={erfolge[0].bild} alt={erfolge[0].alt} width="600" height="400" loading="lazy" decoding="async"
+             class="reveal w-full rounded-2xl object-cover" />
+        <div class="reveal">
+          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[0].titel}</h2>
+          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[0].text}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Zwischen-CTA ══ -->
+    <section class="bg-white pb-[60px] pt-0">
+      <div class="container-hsp text-center">
+        <p class="text-[18px] font-bold text-hsp-ink sm:text-[20px]">Engagiere dich als Fundraiser!</p>
+        <p class="mt-1 text-[16px] text-hsp-body">und hilf der Organisation zu wachsen</p>
+        <a href="#anfrage" class="btn-primary mt-6 gap-2 px-8 py-3.5 text-[15px]">
+          <span aria-hidden="true">›</span> Jetzt anfragen
+        </a>
+      </div>
+    </section>
+
     <!-- ══ Stimmen: Umwelt & Natur, auf Naturfoto ══ -->
     <FotoBand bild="/images/org-natur-luftbild.webp"
               scrim="rgba(0,0,0,0.45)" abstand="space-y-16 py-[70px] sm:space-y-24 sm:py-[120px]">
@@ -172,20 +194,20 @@ const erfolge = [
       ))}
     </FotoBand>
 
-    <!-- ══ Erfolge: Natur und Umwelt ══ -->
-    <section class="bg-white py-[60px]">
+    <!-- ══ Erfolge: Humanitäre Hilfe ══ -->
+    <section class="bg-hsp-light py-[60px]">
       <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-        <img src={erfolge[0].bild} alt={erfolge[0].alt} width="600" height="400" loading="lazy" decoding="async"
-             class="reveal w-full rounded-2xl object-cover" />
+        <img src={erfolge[1].bild} alt={erfolge[1].alt} width="600" height="400" loading="lazy" decoding="async"
+             class="reveal w-full rounded-2xl object-cover lg:order-2" />
         <div class="reveal">
-          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[0].titel}</h2>
-          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[0].text}</p>
+          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[1].titel}</h2>
+          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[1].text}</p>
         </div>
       </div>
     </section>
 
     <!-- ══ Zwischen-CTA ══ -->
-    <section class="bg-white pb-[60px]">
+    <section class="bg-hsp-light pb-[60px] pt-0">
       <div class="container-hsp text-center">
         <p class="text-[18px] font-bold text-hsp-ink sm:text-[20px]">Engagiere dich als Fundraiser!</p>
         <p class="mt-1 text-[16px] text-hsp-body">und hilf der Organisation zu wachsen</p>
@@ -213,20 +235,7 @@ const erfolge = [
       ))}
     </FotoBand>
 
-    <!-- ══ Erfolge: Humanitäre Hilfe ══ -->
-    <section class="bg-hsp-light py-[60px]">
-      <div class="container-hsp grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-        <img src={erfolge[1].bild} alt={erfolge[1].alt} width="600" height="400" loading="lazy" decoding="async"
-             class="reveal w-full rounded-2xl object-cover lg:order-2" />
-        <div class="reveal">
-          <h2 class="mb-4 text-[28px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{erfolge[1].titel}</h2>
-          <p class="text-[16px] leading-relaxed text-hsp-ink sm:text-[18px]">{erfolge[1].text}</p>
-        </div>
-      </div>
-    </section>
-
     <Stimmen />
-    <Bewertungen />
     <Faq />
     <AbschlussCta />
   </main>
