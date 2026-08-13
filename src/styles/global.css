@@ -143,3 +143,10 @@ html:has(#anfrage-dialog[open]) { overflow: hidden; }
    hoehere Spezifitaet als die [hidden]-Regel des Browsers. Ohne das hier
    standen im ersten Schritt "Weiter" und "Anfrage abschicken" nebeneinander. */
 [hidden] { display: none !important; }
+
+/* Auf Fotobaendern und dunklen Flaechen erben Ueberschriften die helle
+   Schriftfarbe. Sonst gewinnt die Grundregel h1-h4 { text-hsp-ink } und
+   die Ueberschrift wird dunkel, obwohl der Abschnitt hell schreiben soll. */
+.auf-foto h1, .auf-foto h2, .auf-foto h3, .auf-foto h4 {
+  color: inherit;
+}

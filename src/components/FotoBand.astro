@@ -8,6 +8,10 @@
  *
  * Der Abdunkler (scrim) liegt als Verlauf ueber dem Foto, damit die weisse
  * Schrift auf jedem Motiv lesbar bleibt.
+ *
+ * Die Klasse .auf-foto sorgt dafuer, dass auch Ueberschriften hell bleiben.
+ * Ohne sie greift die globale Regel h1-h4 { text-hsp-ink } und faerbt jede
+ * Ueberschrift dunkel - auf einem hellen Foto war sie dann kaum lesbar.
  */
 export interface Props {
   bild:      string;
@@ -34,7 +38,7 @@ const hintergrund = [
   Schrift auf Dunkelgrau statt auf Weiss und bleibt damit lesbar.
 -->
 <section
-  class={`bg-hsp-ink bg-cover bg-no-repeat text-white ${abstand}`}
+  class={`auf-foto bg-hsp-ink bg-cover bg-no-repeat text-white ${abstand}`}
   style={`background-image:${hintergrund};background-position:${position};`}>
   <slot />
 </section>

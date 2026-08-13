@@ -1,22 +1,14 @@
 /**
  * Adressen der drei Interviewfilme.
  *
- * Sie liegen nicht im Repo, sondern bei Vercel Blob. Sobald eine Datei dort
- * hochgeladen ist, hier die Adresse eintragen - das ist die einzige Stelle,
- * die dafuer angefasst werden muss.
+ * Sie liegen im Repo unter public/videos. Zusammen 19,4 MB - das ist
+ * vertretbar und spart den Umweg ueber einen zweiten Speicherort.
  *
- * Solange ein Eintrag leer bleibt, zeigt die Seite an dieser Stelle einen
- * sichtbaren Platzhalter statt eines Abspielknopfes.
- *
- * Hochladen: Vercel -> Projekt hsp-derjob-at -> Storage -> Blob -> Upload.
- * Danach die angezeigte Adresse (endet auf .mp4) hier einsetzen.
- *
- * Der Rundgang im Hero liegt bewusst im Repo (public/videos/rundgang.mp4):
- * Er laedt sofort beim Seitenaufruf, da waere ein zweiter Server nur ein
- * zusaetzlicher Verbindungsaufbau.
+ * Falls sie spaeter doch nach Vercel Blob wandern: hier die Adressen
+ * eintragen, das ist die einzige Stelle, die dafuer angefasst wird.
  */
 export const videos = {
-  anfrage:       '',   // Final_HSP_Anfrage       - 1:42 - Kennenlernprozess
-  arbeitsalltag: '',   // Final_HSP_Arbeitsalltag - 2:20 - Alltag im Job
-  stimmen:       '',   // Final_HSP               - 1:40 - Warum die Leute dabei sind
+  anfrage:       '/videos/anfrage.mp4',        // 1:42 - Kennenlernprozess
+  arbeitsalltag: '/videos/arbeitsalltag.mp4',  // 2:20 - Alltag im Job
+  stimmen:       '/videos/stimmen.mp4',        // 1:40 - Warum die Leute dabei sind
 } as const;

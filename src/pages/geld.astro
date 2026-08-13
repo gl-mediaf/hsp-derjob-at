@@ -122,8 +122,30 @@ const folderInhalt = [
       </div>
     </FotoBand>
 
+    <!-- ══ Film: wie das Kennenlernen ablief ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="film-kennenlernen">
+      <div class="container-hsp">
+        <h2 id="film-kennenlernen"
+            class="reveal mb-3 text-center text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px]">
+          Wie lief das Kennenlernen ab?
+        </h2>
+        <p class="reveal mx-auto mb-10 max-w-[620px] text-center text-[16px] leading-relaxed text-hsp-body sm:text-[18px]">
+          Vier Fundraiser erzählen, was zwischen der Anfrage und dem ersten Einsatz
+          passiert ist.
+        </p>
+        <div class="mx-auto max-w-[880px]">
+          <VideoBlock
+            quelle={videos.anfrage}
+            poster="/videos/video-anfrage-poster.webp"
+            alt="Vier Fundraiser erzählen, wie ihr Kennenlernen und Einstieg ablief"
+            dauer="1:42"
+          />
+        </div>
+      </div>
+    </section>
+
     <!-- ══ Provisionsmodell / Folder ══ -->
-    <section class="bg-white py-[70px]" aria-labelledby="folder-titel">
+    <section class="bg-white pb-[70px]" aria-labelledby="folder-titel">
       <div class="container-hsp">
         <p class="reveal text-center text-[17px] text-hsp-body sm:text-[20px]">
           Im Kennenlerngespräch erklären wir dir
@@ -135,17 +157,6 @@ const folderInhalt = [
             class="reveal mb-12 mt-1 text-center text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[44px]">
           Alles Wichtige zu deiner Provision
         </h2>
-
-        <div class="reveal mx-auto mb-12 max-w-[820px]">
-          <VideoBlock
-            quelle={videos.anfrage}
-            poster="/videos/video-anfrage-poster.webp"
-            alt="Vier Fundraiser erzählen, wie ihr Kennenlernen und Einstieg ablief"
-            titel="Wie lief das Kennenlernen ab?"
-            unterzeile="Vier Fundraiser erzählen, was zwischen der Anfrage und dem ersten Einsatz passiert ist."
-            dauer="1:42"
-          />
-        </div>
 
         <div class="reveal rounded-2xl bg-hsp-light px-7 py-10 sm:px-12 sm:py-12">
           <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
