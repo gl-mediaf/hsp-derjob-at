@@ -1,0 +1,36 @@
+---
+import AnfrageFormular from './AnfrageFormular.astro';
+
+/**
+ * Formular als Overlay. Wird von jedem Knopf mit href="#anfrage" oder
+ * [data-anfrage] geoeffnet - die Steuerung dafuer liegt in Layout.astro.
+ *
+ * Ohne JavaScript bleibt der Dialog geschlossen und die Knoepfe springen
+ * wie bisher zum Formular unten auf der Seite.
+ */
+---
+
+<dialog id="anfrage-dialog" aria-labelledby="anfrage-dialog-titel"
+        class="relative w-[min(92vw,660px)] rounded-2xl p-0 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop:bg-black/60">
+  <div class="max-h-[90vh] overflow-y-auto px-6 py-8 sm:px-9 sm:py-10">
+
+    <button type="button" data-dialog-schliessen aria-label="Schließen"
+            class="absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-full
+                   text-hsp-ink transition-colors hover:bg-hsp-light">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" />
+      </svg>
+    </button>
+
+    <h2 id="anfrage-dialog-titel"
+        class="mb-1 pr-12 text-[22px] font-bold leading-tight text-hsp-ink sm:text-[26px]">
+      Neugierig? Dann melde dich.
+    </h2>
+    <p class="mb-6 text-[15px] text-hsp-body">
+      Wir antworten in der Regel innerhalb von 24 Stunden.
+    </p>
+
+    <AnfrageFormular kuerzel="d" />
+  </div>
+</dialog>

@@ -2,37 +2,41 @@
 /**
  * Anfrageformular. Sendet an /api/anfrage, die Route reicht an Make weiter.
  *
- * Das Formular funktioniert auch ohne JavaScript: dann laedt die Seite neu und
- * zeigt die Antwort der Route. Mit JavaScript bleibt man auf der Seite.
+ * Kann mehrfach auf einer Seite stehen (unten im Abschluss und im Dialog),
+ * deshalb bekommt jede Fassung ein eigenes Kuerzel fuer die Feld-Kennungen.
  *
- * Pflichtfelder prueft der Browser (Attribut `required`). Der Server weist
- * nichts mehr ab - jede Anfrage geht an Make, dort greift der Spamschutz.
+ * Die Steuerung liegt in Layout.astro und gilt fuer alle Formulare mit
+ * [data-anfrage-formular]. So steht das Skript nur einmal im HTML.
+ *
+ * Ohne JavaScript laedt die Seite neu und zeigt die Antwort der Route.
+ * Pflichtfelder prueft der Browser. Der Server weist nichts ab.
  */
 export interface Props {
+  kuerzel?: string;
   datenschutzPfad?: string;
 }
-const { datenschutzPfad = '/datenschutz' } = Astro.props;
+const { kuerzel = 'a', datenschutzPfad = '/datenschutz' } = Astro.props;
 
 const felder = [
-  { name: 'vorname',  label: 'Vorname',      typ: 'text',  autocomplete: 'given-name',  spalte: 'sm:col-span-1' },
-  { name: 'nachname', label: 'Nachname',     typ: 'text',  autocomplete: 'family-name', spalte: 'sm:col-span-1' },
-  { name: 'email',    label: 'E-Mail',       typ: 'email', autocomplete: 'email',       spalte: 'sm:col-span-2' },
-  { name: 'telefon',  label: 'Telefonnummer',typ: 'tel',   autocomplete: 'tel',         spalte: 'sm:col-span-2' },
+  { name: 'vorname',  label: 'Vorname',       typ: 'text',  autocomplete: 'given-name',  spalte: 'sm:col-span-1' },
+  { name: 'nachname', label: 'Nachname',      typ: 'text',  autocomplete: 'family-name', spalte: 'sm:col-span-1' },
+  { name: 'email',    label: 'E-Mail',        typ: 'email', autocomplete: 'email',       spalte: 'sm:col-span-2' },
+  { name: 'telefon',  label: 'Telefonnummer', typ: 'tel',   autocomplete: 'tel',         spalte: 'sm:col-span-2' },
 ];
 ---
 
-<form id="anfrage-formular" method="POST" action="/api/anfrage"
-      class="mx-auto max-w-[620px] text-left">
+<form data-anfrage-formular method="POST" action="/api/anfrage"
+      class="mx-auto w-full max-w-[620px] text-left">
 
   <div class="grid gap-5 sm:grid-cols-2">
     {felder.map((f) => (
       <div class={f.spalte}>
-        <label for={`f-${f.name}`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+        <label for={`${kuerzel}-${f.name}`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
           {f.label}
         </label>
         <input
           type={f.typ}
-          id={`f-${f.name}`}
+          id={`${kuerzel}-${f.name}`}
           name={f.name}
           required
           autocomplete={f.autocomplete}
@@ -47,19 +51,19 @@ const felder = [
   </div>
 
   <div class="mt-5">
-    <label for="f-motivation" class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+    <label for={`${kuerzel}-motivation`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
       Was macht dich zum perfekten Fundraiser?
     </label>
-    <p id="motivation-hinweis" class="mb-2 text-[13px] text-hsp-body">
+    <p id={`${kuerzel}-motivation-hinweis`} class="mb-2 text-[13px] text-hsp-body">
       Zwei bis drei Sätze reichen völlig.
     </p>
     <textarea
-      id="f-motivation"
+      id={`${kuerzel}-motivation`}
       name="motivation"
       rows="4"
       required
       maxlength="1200"
-      aria-describedby="motivation-hinweis"
+      aria-describedby={`${kuerzel}-motivation-hinweis`}
       class="w-full resize-y rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px]
              leading-relaxed text-hsp-ink outline-none transition-colors
              placeholder:text-black/35 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
@@ -70,8 +74,8 @@ const felder = [
 
   {/* Honigtopf gegen Bots. Fuer Menschen unsichtbar, fuer Screenreader versteckt. */}
   <div aria-hidden="true" class="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-    <label for="f-website">Bitte nicht ausfüllen</label>
-    <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+    <label for={`${kuerzel}-website`}>Bitte nicht ausfüllen</label>
+    <input type="text" id={`${kuerzel}-website`} name="website" tabindex="-1" autocomplete="off" />
   </div>
 
   <input type="hidden" name="seite" value="" data-seite />
@@ -89,84 +93,3 @@ const felder = [
   <p data-status role="status" aria-live="polite" hidden
      class="mt-4 rounded-xl px-4 py-3 text-[15px] font-bold"></p>
 </form>
-
-<script is:inline>
-  (function () {
-    var form = document.getElementById('anfrage-formular');
-    if (!form) return;
-
-    var status = form.querySelector('[data-status]');
-    var knopf  = form.querySelector('[data-senden]');
-    var text   = form.querySelector('[data-senden-text]');
-    var seite  = form.querySelector('[data-seite]');
-    if (seite) seite.value = location.pathname;
-
-    function meldung(art, inhalt) {
-      status.hidden = false;
-      status.textContent = inhalt;
-      status.className = 'mt-4 rounded-xl px-4 py-3 text-[15px] font-bold ' +
-        (art === 'ok' ? 'bg-hsp-teal/10 text-hsp-teal' : 'bg-red-50 text-hsp-red');
-    }
-
-    var texte = {
-      vorname:    'Bitte trag deinen Vornamen ein',
-      nachname:   'Bitte trag deinen Nachnamen ein',
-      email:      'Bitte prüf deine E-Mail-Adresse',
-      telefon:    'Bitte trag eine Telefonnummer ein',
-      motivation: 'Schreib uns bitte zwei bis drei Sätze'
-    };
-
-    function feldFehler(namen) {
-      form.querySelectorAll('[data-fehler]').forEach(function (p) {
-        p.hidden = true;
-        var feld = form.elements[p.getAttribute('data-fehler')];
-        if (feld) feld.removeAttribute('aria-invalid');
-      });
-      (namen || []).forEach(function (n) {
-        var p = form.querySelector('[data-fehler="' + n + '"]');
-        var feld = form.elements[n];
-        if (p) { p.textContent = texte[n] || 'Bitte prüfen'; p.hidden = false; }
-        if (feld) feld.setAttribute('aria-invalid', 'true');
-      });
-      if (namen && namen.length && form.elements[namen[0]]) form.elements[namen[0]].focus();
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      knopf.disabled = true;
-      text.textContent = 'Wird gesendet …';
-      status.hidden = true;
-
-      var daten = {};
-      new FormData(form).forEach(function (wert, schluessel) { daten[schluessel] = wert; });
-
-      fetch('/api/anfrage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(daten)
-      })
-        .then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
-        .then(function (a) {
-          if (a.j && a.j.ok) {
-            form.querySelectorAll('input, textarea').forEach(function (i) {
-              if (i.type !== 'hidden') i.value = '';
-            });
-            feldFehler([]);
-            meldung('ok', 'Danke! Wir melden uns in der Regel innerhalb von 24 Stunden.');
-            text.textContent = 'Anfrage abschicken';
-            knopf.disabled = false;
-            return;
-          }
-          feldFehler(a.j && a.j.felder);
-          meldung('fehler', (a.j && a.j.fehler) || 'Das hat nicht geklappt. Bitte versuch es nochmal.');
-          text.textContent = 'Anfrage abschicken';
-          knopf.disabled = false;
-        })
-        .catch(function () {
-          meldung('fehler', 'Keine Verbindung. Bitte versuch es gleich nochmal.');
-          text.textContent = 'Anfrage abschicken';
-          knopf.disabled = false;
-        });
-    });
-  })();
-</script>

@@ -1,4 +1,5 @@
 ---
+import AnfrageDialog from '../components/AnfrageDialog.astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -60,6 +61,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       Zum Inhalt springen
     </a>
     <slot />
+
+    <AnfrageDialog />
 
     <script is:inline>
       // Sektionen beim Hereinscrollen einblenden
@@ -148,6 +151,116 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       start();
     }
   })();
+    </script>
+    <script is:inline>
+      // ══ Anfrageformular: gilt fuer jede Fassung auf der Seite ══
+      (function () {
+        var texte = {
+          vorname:    'Bitte trag deinen Vornamen ein',
+          nachname:   'Bitte trag deinen Nachnamen ein',
+          email:      'Bitte pr\u00fcf deine E-Mail-Adresse',
+          telefon:    'Bitte trag eine Telefonnummer ein',
+          motivation: 'Schreib uns bitte zwei bis drei S\u00e4tze'
+        };
+
+        document.querySelectorAll('[data-anfrage-formular]').forEach(function (form) {
+          var status = form.querySelector('[data-status]');
+          var knopf  = form.querySelector('[data-senden]');
+          var text   = form.querySelector('[data-senden-text]');
+          var seite  = form.querySelector('[data-seite]');
+          if (seite) seite.value = location.pathname;
+
+          function meldung(art, inhalt) {
+            status.hidden = false;
+            status.textContent = inhalt;
+            status.className = 'mt-4 rounded-xl px-4 py-3 text-[15px] font-bold ' +
+              (art === 'ok' ? 'bg-hsp-teal/10 text-hsp-teal' : 'bg-red-50 text-hsp-red');
+          }
+
+          function feldFehler(namen) {
+            form.querySelectorAll('[data-fehler]').forEach(function (p) {
+              p.hidden = true;
+              var feld = form.elements[p.getAttribute('data-fehler')];
+              if (feld) feld.removeAttribute('aria-invalid');
+            });
+            (namen || []).forEach(function (n) {
+              var p = form.querySelector('[data-fehler="' + n + '"]');
+              var feld = form.elements[n];
+              if (p) { p.textContent = texte[n] || 'Bitte pr\u00fcfen'; p.hidden = false; }
+              if (feld) feld.setAttribute('aria-invalid', 'true');
+            });
+            if (namen && namen.length && form.elements[namen[0]]) form.elements[namen[0]].focus();
+          }
+
+          function zurueck() {
+            text.textContent = 'Anfrage abschicken';
+            knopf.disabled = false;
+          }
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            knopf.disabled = true;
+            text.textContent = 'Wird gesendet \u2026';
+            status.hidden = true;
+
+            var daten = {};
+            new FormData(form).forEach(function (wert, schluessel) { daten[schluessel] = wert; });
+
+            fetch('/api/anfrage', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(daten)
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (j) {
+                if (j && j.ok) {
+                  form.querySelectorAll('input, textarea').forEach(function (i) {
+                    if (i.type !== 'hidden') i.value = '';
+                  });
+                  feldFehler([]);
+                  meldung('ok', 'Danke! Wir melden uns in der Regel innerhalb von 24 Stunden.');
+                  zurueck();
+                  return;
+                }
+                feldFehler(j && j.felder);
+                meldung('fehler', (j && j.fehler) || 'Das hat nicht geklappt. Bitte versuch es nochmal.');
+                zurueck();
+              })
+              .catch(function () {
+                meldung('fehler', 'Keine Verbindung. Bitte versuch es gleich nochmal.');
+                zurueck();
+              });
+          });
+        });
+      })();
+
+      // ══ Formular als Overlay oeffnen ══
+      (function () {
+        var dialog = document.getElementById('anfrage-dialog');
+        if (!dialog || typeof dialog.showModal !== 'function') return;
+
+        function oeffnen(e) {
+          if (e) e.preventDefault();
+          dialog.showModal();
+          var erstes = dialog.querySelector('input:not([type=hidden]):not([tabindex="-1"])');
+          if (erstes) setTimeout(function () { erstes.focus(); }, 60);
+        }
+
+        // Jeder Knopf, der bisher zum Formular gesprungen ist, oeffnet jetzt das
+        // Overlay. Ohne JavaScript bleibt der Sprung als Rueckfalloption bestehen.
+        document.querySelectorAll('a[href="#anfrage"], [data-anfrage]').forEach(function (el) {
+          el.addEventListener('click', oeffnen);
+        });
+
+        dialog.querySelectorAll('[data-dialog-schliessen]').forEach(function (b) {
+          b.addEventListener('click', function () { dialog.close(); });
+        });
+
+        // Klick auf die abgedunkelte Flaeche schliesst ebenfalls
+        dialog.addEventListener('click', function (e) {
+          if (e.target === dialog) dialog.close();
+        });
+      })();
     </script>
   </body>
 </html>
