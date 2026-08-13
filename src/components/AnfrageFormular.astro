@@ -43,6 +43,28 @@ const felder = [
     ))}
   </div>
 
+  <div class="mt-5">
+    <label for="f-motivation" class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+      Was macht dich zum perfekten Fundraiser?
+    </label>
+    <p id="motivation-hinweis" class="mb-2 text-[13px] text-hsp-body">
+      Zwei bis drei Sätze reichen völlig.
+    </p>
+    <textarea
+      id="f-motivation"
+      name="motivation"
+      rows="4"
+      required
+      maxlength="1200"
+      aria-describedby="motivation-hinweis"
+      class="w-full resize-y rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px]
+             leading-relaxed text-hsp-ink outline-none transition-colors
+             placeholder:text-black/35 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
+             aria-[invalid=true]:border-hsp-red"
+    ></textarea>
+    <p data-fehler="motivation" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+  </div>
+
   {/* Honigtopf gegen Bots. Fuer Menschen unsichtbar, fuer Screenreader versteckt. */}
   <div aria-hidden="true" class="absolute left-[-9999px] h-0 w-0 overflow-hidden">
     <label for="f-website">Bitte nicht ausfüllen</label>
@@ -83,6 +105,14 @@ const felder = [
         (art === 'ok' ? 'bg-hsp-teal/10 text-hsp-teal' : 'bg-red-50 text-hsp-red');
     }
 
+    var texte = {
+      vorname:    'Bitte trag deinen Vornamen ein',
+      nachname:   'Bitte trag deinen Nachnamen ein',
+      email:      'Bitte prüf deine E-Mail-Adresse',
+      telefon:    'Bitte trag eine Telefonnummer ein',
+      motivation: 'Schreib uns bitte zwei bis drei Sätze'
+    };
+
     function feldFehler(namen) {
       form.querySelectorAll('[data-fehler]').forEach(function (p) {
         p.hidden = true;
@@ -92,7 +122,7 @@ const felder = [
       (namen || []).forEach(function (n) {
         var p = form.querySelector('[data-fehler="' + n + '"]');
         var feld = form.elements[n];
-        if (p) { p.textContent = 'Bitte prüfen'; p.hidden = false; }
+        if (p) { p.textContent = texte[n] || 'Bitte prüfen'; p.hidden = false; }
         if (feld) feld.setAttribute('aria-invalid', 'true');
       });
       if (namen && namen.length && form.elements[namen[0]]) form.elements[namen[0]].focus();
@@ -115,7 +145,7 @@ const felder = [
         .then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
         .then(function (a) {
           if (a.j && a.j.ok) {
-            form.querySelectorAll('input').forEach(function (i) {
+            form.querySelectorAll('input, textarea').forEach(function (i) {
               if (i.type !== 'hidden') i.value = '';
             });
             feldFehler([]);

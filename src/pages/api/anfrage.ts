@@ -11,7 +11,7 @@ export const prerender = false;
  * wollte, kaeme nur an diese Route - und die prueft vorher.
  */
 
-const MAX = { vorname: 80, nachname: 80, email: 160, telefon: 40 };
+const MAX = { vorname: 80, nachname: 80, email: 160, telefon: 40, motivation: 1200 };
 
 function sauber(wert: unknown, grenze: number): string {
   if (typeof wert !== 'string') return '';
@@ -55,6 +55,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     nachname: sauber(roh.nachname, MAX.nachname),
     email:    sauber(roh.email,    MAX.email),
     telefon:  sauber(roh.telefon,  MAX.telefon),
+    motivation: sauber(roh.motivation, MAX.motivation),
   };
 
   const fehlend: string[] = [];
@@ -63,6 +64,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   if (!istEmail(daten.email))    fehlend.push('email');
   // Ziffern zaehlen statt Zeichen: +43 660 123 45 67 hat viele Leerzeichen.
   if ((daten.telefon.match(/\d/g) ?? []).length < 6) fehlend.push('telefon');
+  // Gewuenscht sind zwei bis drei Saetze. 20 Zeichen als unterste Grenze,
+  // damit ein blosses Wort nicht durchgeht.
+  if (daten.motivation.length < 20) fehlend.push('motivation');
 
   if (fehlend.length > 0) {
     return antwort(422, { ok: false, fehler: 'Bitte alle Felder ausfüllen.', felder: fehlend });
