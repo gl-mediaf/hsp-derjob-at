@@ -8,7 +8,6 @@ import Stimmen      from '../components/Stimmen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import LogoSlider   from '../components/LogoSlider.astro';
 import VideoBlock   from '../components/VideoBlock.astro';
-import { videos }   from '../data/videos';
 
 const vorteile = [
   {
@@ -116,27 +115,37 @@ const einstieg = [
     <!-- ══ Hero: Bildband mit nur zwei Zeilen, unten links ══ -->
     <section class="relative isolate flex min-h-[420px] items-end overflow-hidden
                     sm:min-h-[560px] lg:min-h-[760px]">
-      <!-- Standbild liegt darunter: es ist sofort da und bleibt stehen, falls
-           das Video nicht startet (Datensparmodus, reduzierte Bewegung). -->
-      <img src="/videos/rundgang-poster.webp"
-           alt="Eine Fundraiserin im Gespräch an einer Haustür"
-           width="1280" height="720" fetchpriority="high" decoding="async"
-           class="absolute inset-0 -z-20 h-full w-full object-cover object-[center_35%]" />
-      <video data-hero-video muted loop playsinline preload="metadata"
-             poster="/videos/rundgang-poster.webp"
-             class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_35%]"
-             aria-hidden="true">
-        <source src="/videos/rundgang.mp4" type="video/mp4" />
-      </video>
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/15 to-black/10"></div>
+      <img src="/images/hero.webp"
+           alt="Fundraiserin lehnt an einem Einsatzfahrzeug und blickt in die Ferne"
+           width="1500" height="600" fetchpriority="high" decoding="async"
+           class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
-      <div class="container-hsp pb-14 lg:pb-16">
-        <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
-          Der flexible Ferienjob
-        </h1>
-        <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
-          Arbeite WANN du willst!
-        </p>
+      <div class="container-hsp w-full pb-12 pt-24 lg:pb-16">
+        <div class="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-14">
+
+          <div>
+            <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
+              Der flexible Ferienjob
+            </h1>
+            <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
+              Arbeite WANN du willst!
+            </p>
+          </div>
+
+          <!-- Film als eigene Kachel: klar abgegrenzt, stoert die Ueberschrift nicht -->
+          <div class="w-full lg:w-[360px] xl:w-[400px]">
+            <VideoBlock
+              quelle="/videos/rundgang.mp4"
+              poster="/videos/rundgang-poster.webp"
+              alt="Ein Tag mit einer Fundraiserin: von der Unterkunft bis an die Haustür"
+              titel="Ein Tag im Einsatz"
+              unterzeile="50 Sekunden Rundgang – schau dir an, wie der Job wirklich aussieht."
+              dauer="0:50"
+            />
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -342,16 +351,6 @@ const einstieg = [
           </p>
         </div>
 
-        <div class="mx-auto mt-12 max-w-[820px]">
-          <VideoBlock
-            quelle={videos.arbeitsalltag}
-            poster="/videos/video-arbeitsalltag-poster.webp"
-            alt="Fundraiserinnen und Fundraiser erzählen von ihrem Arbeitsalltag"
-            titel="So sieht ein Tag wirklich aus"
-            unterzeile="Kein Hochglanz: Was gut läuft, was anstrengend ist und was einen trägt."
-            dauer="2:20"
-          />
-        </div>
 
       </div>
     </section>
@@ -384,14 +383,10 @@ const einstieg = [
         </div>
 
         <div class="reveal">
-          <VideoBlock
-            quelle={videos.anfrage}
-            poster="/videos/video-anfrage-poster.webp"
-            alt="Fundraiserinnen und Fundraiser erzählen, wie ihr Einstieg ablief"
-            titel="Wie lief das Kennenlernen ab?"
-            unterzeile="Vier Fundraiser erzählen, was zwischen Anfrage und erstem Einsatz passiert ist."
-            dauer="1:42"
-          />
+          <img src="/images/galerie-06.webp"
+               alt="Zwei Fundraiserinnen stehen Arm in Arm vor ihrer Crew-Unterkunft"
+               width="600" height="400" loading="lazy" decoding="async"
+               class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
 
           <h2 class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
             Wie werde ich Fundraiser?
@@ -415,29 +410,6 @@ const einstieg = [
           </a>
         </div>
 
-      </div>
-    </section>
-
-    <!-- ══ Film: warum die Leute dabei sind ══ -->
-    <section class="bg-hsp-light py-[70px]" aria-labelledby="film-titel">
-      <div class="container-hsp">
-        <h2 id="film-titel"
-            class="reveal mb-3 text-center text-[30px] font-bold leading-tight text-hsp-ink sm:text-[44px]">
-          Warum machen die das?
-        </h2>
-        <p class="reveal mx-auto mb-10 max-w-[620px] text-center text-[16px] leading-relaxed text-hsp-body sm:text-[18px]">
-          Vier Fundraiser über das, was sie am Job hält – und worauf sie sich beim
-          nächsten Einsatz freuen.
-        </p>
-        <div class="mx-auto max-w-[900px]">
-          <VideoBlock
-            quelle={videos.stimmen}
-            poster="/videos/video-stimmen-poster.webp"
-            alt="Vier Fundraiserinnen und Fundraiser im Interview"
-            titel="Vier Stimmen aus der Crew"
-            dauer="1:40"
-          />
-        </div>
       </div>
     </section>
 

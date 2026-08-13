@@ -349,16 +349,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         });
       })();
 
-      // ══ Hero-Video: laeuft stumm in Schleife, Ton gibt es dort nicht ══
-      (function () {
-        var v = document.querySelector('[data-hero-video]');
-        if (!v) return;
-        // Bei sparsamem Datentarif oder reduzierter Bewegung gar nicht erst starten
-        var sparsam = navigator.connection && navigator.connection.saveData;
-        var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (sparsam || ruhig) { v.remove(); return; }
-        v.play().catch(function () { v.remove(); });
-      })();
     </script>
   </body>
 </html>

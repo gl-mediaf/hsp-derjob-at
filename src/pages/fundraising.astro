@@ -8,6 +8,8 @@ import Stimmen      from '../components/Stimmen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import SeitenHero   from '../components/SeitenHero.astro';
 import FotoBand     from '../components/FotoBand.astro';
+import VideoBlock   from '../components/VideoBlock.astro';
+import { videos }   from '../data/videos';
 
 const einsatz = [
   'Du bist ein paar Wochen unterwegs und hast die Möglichkeit, mit anderen Fundraisern in einer Ferienwohnung zu wohnen und von dort ins Einsatzgebiet zu starten. Du kannst das Ganze aber auch von zu Hause aus machen – das ist komplett dir überlassen.',
@@ -103,6 +105,29 @@ const bloecke = [
         </div>
       </div>
     </FotoBand>
+
+    <!-- ══ Film: der Alltag im Job ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="film-alltag">
+      <div class="container-hsp">
+        <h2 id="film-alltag"
+            class="reveal mb-3 text-center text-[30px] font-bold leading-tight text-hsp-ink sm:text-[40px]">
+          So sieht ein Tag wirklich aus
+        </h2>
+        <p class="reveal mx-auto mb-10 max-w-[620px] text-center text-[16px] leading-relaxed text-hsp-body sm:text-[18px]">
+          Kein Hochglanz: Vier Fundraiser erzählen, was gut läuft, was anstrengend
+          ist und was einen durch den Tag trägt.
+        </p>
+        <div class="mx-auto max-w-[880px]">
+          <VideoBlock
+            quelle={videos.arbeitsalltag}
+            poster="/videos/video-arbeitsalltag-poster.webp"
+            alt="Vier Fundraiserinnen und Fundraiser erzählen von ihrem Arbeitsalltag"
+            titel="Der Arbeitsalltag"
+            dauer="2:20"
+          />
+        </div>
+      </div>
+    </section>
 
     <!-- ══ Wechselnde Bild-Text-Blöcke ══ -->
     {bloecke.map((b) => (

@@ -8,6 +8,8 @@ import Stimmen      from '../components/Stimmen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import SeitenHero   from '../components/SeitenHero.astro';
 import FotoBand     from '../components/FotoBand.astro';
+import VideoBlock   from '../components/VideoBlock.astro';
+import { videos }   from '../data/videos';
 
 const folderInhalt = [
   { titel: 'Das Provisionsmodell:',        text: 'Verständlich und auf den Punkt.' },
@@ -133,6 +135,17 @@ const folderInhalt = [
             class="reveal mb-12 mt-1 text-center text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[44px]">
           Alles Wichtige zu deiner Provision
         </h2>
+
+        <div class="reveal mx-auto mb-12 max-w-[820px]">
+          <VideoBlock
+            quelle={videos.anfrage}
+            poster="/videos/video-anfrage-poster.webp"
+            alt="Vier Fundraiser erzählen, wie ihr Kennenlernen und Einstieg ablief"
+            titel="Wie lief das Kennenlernen ab?"
+            unterzeile="Vier Fundraiser erzählen, was zwischen der Anfrage und dem ersten Einsatz passiert ist."
+            dauer="1:42"
+          />
+        </div>
 
         <div class="reveal rounded-2xl bg-hsp-light px-7 py-10 sm:px-12 sm:py-12">
           <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
