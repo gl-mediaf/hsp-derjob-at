@@ -1,0 +1,63 @@
+---
+/**
+ * Videoblock mit Vorschaubild. Das Video wird erst geladen, wenn jemand auf
+ * den Abspielknopf tippt - vorher liegt nur das Standbild auf der Seite.
+ *
+ * Ohne `quelle` erscheint ein Platzhalter mit Hinweis. So kann die Stelle im
+ * Seitenaufbau schon beurteilt werden, bevor die Datei eingebunden ist.
+ */
+export interface Props {
+  poster:      string;
+  alt:         string;
+  quelle?:     string;   // Pfad zur MP4-Datei
+  titel?:      string;
+  unterzeile?: string;
+  dauer?:      string;
+}
+const { poster, alt, quelle, titel, unterzeile, dauer } = Astro.props;
+---
+
+<figure class="reveal overflow-hidden rounded-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
+  <div class="relative aspect-video bg-hsp-ink" data-video-halter data-quelle={quelle}>
+    <img src={poster} alt={alt} width="1000" height="562" loading="lazy" decoding="async"
+         class="absolute inset-0 h-full w-full object-cover" data-video-poster />
+
+    {quelle ? (
+      <button type="button" data-video-start
+              class="absolute inset-0 grid place-items-center bg-black/25 transition-colors hover:bg-black/35"
+              aria-label={`Video abspielen${titel ? ': ' + titel : ''}`}>
+        <span class="grid h-[76px] w-[76px] place-items-center rounded-full bg-white/95 shadow-lg
+                     transition-transform duration-200 hover:scale-105">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"
+               class="ml-1 text-hsp-ink" aria-hidden="true">
+            <path d="M6 4l14 8-14 8V4z" />
+          </svg>
+        </span>
+      </button>
+    ) : (
+      <div class="absolute inset-0 grid place-items-center bg-black/55 px-6 text-center">
+        <div>
+          <p class="text-[15px] font-bold uppercase tracking-wide text-hsp-yellow">Platz für das Video</p>
+          <p class="mt-2 text-[18px] font-bold text-white sm:text-[20px]">{titel}</p>
+          <p class="mx-auto mt-2 max-w-[420px] text-[14px] leading-relaxed text-white/85">
+            Die Datei ist noch nicht eingebunden. Das Standbild zeigt, wie der
+            Abschnitt an dieser Stelle wirkt.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {dauer && (
+      <span class="absolute bottom-3 right-3 rounded-md bg-black/70 px-2 py-1 text-[12px] font-bold text-white">
+        {dauer}
+      </span>
+    )}
+  </div>
+
+  {(titel || unterzeile) && (
+    <figcaption class="px-5 py-4 sm:px-6">
+      {titel && <p class="text-[18px] font-bold leading-snug text-hsp-ink sm:text-[20px]">{titel}</p>}
+      {unterzeile && <p class="mt-1 text-[15px] leading-relaxed text-hsp-body">{unterzeile}</p>}
+    </figcaption>
+  )}
+</figure>

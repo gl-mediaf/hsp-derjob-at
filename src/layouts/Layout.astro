@@ -323,5 +323,42 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         });
       })();
     </script>
+
+    <script is:inline>
+      // ══ Videoblock: Datei erst laden, wenn abgespielt werden soll ══
+      (function () {
+        document.querySelectorAll('[data-video-start]').forEach(function (knopf) {
+          knopf.addEventListener('click', function () {
+            var halter = knopf.closest('[data-video-halter]');
+            var quelle = halter && halter.getAttribute('data-quelle');
+            if (!quelle) return;
+
+            var video = document.createElement('video');
+            video.src = quelle;
+            video.controls = true;
+            video.autoplay = true;
+            video.playsInline = true;
+            video.preload = 'auto';
+            video.className = 'absolute inset-0 h-full w-full bg-black object-contain';
+            halter.appendChild(video);
+
+            knopf.remove();
+            var poster = halter.querySelector('[data-video-poster]');
+            if (poster) poster.remove();
+          });
+        });
+      })();
+
+      // ══ Hero-Video: laeuft stumm in Schleife, Ton gibt es dort nicht ══
+      (function () {
+        var v = document.querySelector('[data-hero-video]');
+        if (!v) return;
+        // Bei sparsamem Datentarif oder reduzierter Bewegung gar nicht erst starten
+        var sparsam = navigator.connection && navigator.connection.saveData;
+        var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (sparsam || ruhig) { v.remove(); return; }
+        v.play().catch(function () { v.remove(); });
+      })();
+    </script>
   </body>
 </html>
