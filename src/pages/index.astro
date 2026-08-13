@@ -121,31 +121,44 @@ const einstieg = [
            class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
-      <div class="container-hsp w-full pb-12 pt-24 lg:pb-16">
-        <div class="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-14">
+      <div class="container-hsp pb-14 lg:pb-16">
+        <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
+          Der flexible Ferienjob
+        </h1>
+        <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
+          Arbeite WANN du willst!
+        </p>
+      </div>
+    </section>
 
-          <div>
-            <h1 class="text-[38px] font-medium leading-[1.15] text-white sm:text-[52px] lg:text-[70px] lg:leading-[84px]">
-              Der flexible Ferienjob
-            </h1>
-            <p class="mt-1 text-[24px] font-medium leading-[1.2] text-white sm:text-[32px] lg:text-[40px] lg:leading-[48px]">
-              Arbeite WANN du willst!
-            </p>
-          </div>
+    <!-- ══ Film: der Rundgang, direkt unter dem Hero ══ -->
+    <section class="bg-hsp-light py-[60px] sm:py-[80px]" aria-labelledby="rundgang-titel">
+      <div class="container-hsp grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
 
-          <!-- Film als eigene Kachel: klar abgegrenzt, stoert die Ueberschrift nicht -->
-          <div class="w-full lg:w-[360px] xl:w-[400px]">
-            <VideoBlock
-              quelle="/videos/rundgang.mp4"
-              poster="/videos/rundgang-poster.webp"
-              alt="Ein Tag mit einer Fundraiserin: von der Unterkunft bis an die Haustür"
-              titel="Ein Tag im Einsatz"
-              unterzeile="50 Sekunden Rundgang – schau dir an, wie der Job wirklich aussieht."
-              dauer="0:50"
-            />
-          </div>
-
+        <div>
+          <p class="reveal mb-2 text-[14px] font-bold uppercase tracking-wide text-hsp-teal">
+            In 50 Sekunden
+          </p>
+          <h2 id="rundgang-titel"
+              class="reveal text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px]">
+            Ein Tag im Einsatz
+          </h2>
+          <p class="reveal mt-4 max-w-[440px] text-[16px] leading-[1.7] text-hsp-body sm:text-[18px]">
+            Von der Unterkunft am Morgen bis zum Gespräch an der Haustür: Schau dir an,
+            wie der Job wirklich aussieht – ohne Hochglanz.
+          </p>
+          <a href="#anfrage" class="btn-primary mt-7 gap-2 px-8 py-3.5 text-[16px]">
+            <span aria-hidden="true">›</span> Jetzt anfragen
+          </a>
         </div>
+
+        <VideoBlock
+          quelle="/videos/rundgang.mp4"
+          poster="/videos/rundgang-poster.webp"
+          alt="Ein Tag mit einer Fundraiserin: von der Unterkunft bis an die Haustür"
+          dauer="0:50"
+        />
+
       </div>
     </section>
 
