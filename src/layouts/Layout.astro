@@ -170,6 +170,66 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           var seite  = form.querySelector('[data-seite]');
           if (seite) seite.value = location.pathname;
 
+          // ── Schritte ──────────────────────────────────────────────
+          var schritte = [].slice.call(form.querySelectorAll('.schritt'));
+          var weiter   = form.querySelector('[data-weiter]');
+          var zurueck  = form.querySelector('[data-zurueck]');
+          var balken   = form.querySelector('[data-fortschritt]');
+          var bahn     = form.querySelector('[data-fortschritt-bahn]');
+          var titel    = form.querySelector('[data-schritt-titel]');
+          var zaehler  = form.querySelector('[data-schritt-zaehler]');
+          var titelListe = ['Wie hei\u00dft du?', 'Wie erreichen wir dich?',
+                            'Und deine E-Mail?', 'Fast geschafft'];
+          var aktuell = 0;
+
+          function zeigen(i, fokus) {
+            aktuell = Math.max(0, Math.min(i, schritte.length - 1));
+            schritte.forEach(function (s, n) { s.classList.toggle('ist-aktiv', n === aktuell); });
+
+            var anteil = ((aktuell + 1) / schritte.length) * 100;
+            if (balken) balken.style.width = anteil + '%';
+            if (bahn) bahn.setAttribute('aria-valuenow', String(aktuell + 1));
+            if (titel) titel.textContent = titelListe[aktuell] || '';
+            if (zaehler) zaehler.textContent = 'Schritt ' + (aktuell + 1) + ' von ' + schritte.length;
+
+            var letzter = aktuell === schritte.length - 1;
+            if (weiter) weiter.hidden = letzter;
+            if (knopf)  knopf.hidden  = !letzter;
+            if (zurueck) zurueck.hidden = aktuell === 0;
+
+            if (fokus) {
+              var erstes = schritte[aktuell].querySelector('input, textarea');
+              if (erstes) erstes.focus();
+            }
+          }
+
+          // Prueft nur die Felder des aktuellen Schritts
+          function schrittGueltig() {
+            var felder = [].slice.call(schritte[aktuell].querySelectorAll('input, textarea'));
+            for (var i = 0; i < felder.length; i++) {
+              if (!felder[i].checkValidity()) { felder[i].reportValidity(); return false; }
+            }
+            return true;
+          }
+
+          if (schritte.length) {
+            zeigen(0, false);
+            if (weiter)  weiter.addEventListener('click', function () {
+              if (schrittGueltig()) zeigen(aktuell + 1, true);
+            });
+            if (zurueck) zurueck.addEventListener('click', function () { zeigen(aktuell - 1, true); });
+
+            // Enter soll blaettern statt vorzeitig abzuschicken
+            form.addEventListener('keydown', function (e) {
+              if (e.key !== 'Enter') return;
+              if (e.target.tagName === 'TEXTAREA') return;
+              if (aktuell < schritte.length - 1) {
+                e.preventDefault();
+                if (schrittGueltig()) zeigen(aktuell + 1, true);
+              }
+            });
+          }
+
           function meldung(art, inhalt) {
             status.hidden = false;
             status.textContent = inhalt;
@@ -192,7 +252,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             if (namen && namen.length && form.elements[namen[0]]) form.elements[namen[0]].focus();
           }
 
-          function zurueck() {
+          function knopfZurueck() {
             text.textContent = 'Anfrage abschicken';
             knopf.disabled = false;
           }
@@ -218,17 +278,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
                     if (i.type !== 'hidden') i.value = '';
                   });
                   feldFehler([]);
+                  if (schritte.length) zeigen(0, false);
                   meldung('ok', 'Danke! Wir melden uns in der Regel innerhalb von 24 Stunden.');
-                  zurueck();
+                  knopfZurueck();
                   return;
                 }
                 feldFehler(j && j.felder);
                 meldung('fehler', (j && j.fehler) || 'Das hat nicht geklappt. Bitte versuch es nochmal.');
-                zurueck();
+                knopfZurueck();
               })
               .catch(function () {
                 meldung('fehler', 'Keine Verbindung. Bitte versuch es gleich nochmal.');
-                zurueck();
+                knopfZurueck();
               });
           });
         });
