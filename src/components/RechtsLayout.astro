@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav    from './Nav.astro';
+import Footer from './Footer.astro';
+
+export interface Props {
+  titel: string;
+  beschreibung: string;
+}
+const { titel, beschreibung } = Astro.props;
+---
+
+<Layout title={titel} description={beschreibung}>
+  <Nav />
+
+  <main id="inhalt">
+    <section class="bg-hsp-light py-[50px]">
+      <div class="container-hsp max-w-[820px]">
+        <h1 class="text-[30px] font-bold leading-tight text-hsp-ink sm:text-[44px]">{titel}</h1>
+      </div>
+    </section>
+
+    <article class="bg-white py-[60px]">
+      <div class="container-hsp max-w-[820px] rechtstext">
+        <slot />
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Fliesstext fuer Rechtsseiten. Bewusst schlicht und gut lesbar. */
+  .rechtstext h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1c1e21;
+  }
+  .rechtstext h2:first-child { margin-top: 0; }
+  .rechtstext h3 {
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #1c1e21;
+  }
+  .rechtstext p,
+  .rechtstext li {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #1c1e21;
+  }
+  .rechtstext p { margin-bottom: 1rem; }
+  .rechtstext ul {
+    margin: 0 0 1rem 1.25rem;
+    list-style: disc;
+  }
+  .rechtstext li { margin-bottom: 0.4rem; }
+  .rechtstext a {
+    color: #319ea3;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .rechtstext dl { margin-bottom: 1rem; }
+  .rechtstext dt { font-weight: 700; }
+  .rechtstext dd { margin: 0 0 0.5rem 0; }
+</style>

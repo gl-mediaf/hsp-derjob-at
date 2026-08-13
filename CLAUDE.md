@@ -5,6 +5,24 @@ Astro-Website für Österreich. Schwesterprojekt: `hsp-derjob-de`.
 Zwei Personen arbeiten parallel über getrennte Claude-Sessions, die nichts
 voneinander wissen. Deshalb ist der Ablauf verbindlich.
 
+## Welches Repo? (bitte vor dem ersten Push pruefen)
+
+| Ordner | Repo |
+|---|---|
+| `hsp-homepage-de` | `github.com/gl-mediaf/hsp-derjob-de` |
+| `hsp-homepage-at` | `github.com/gl-mediaf/hsp-derjob-at` |
+
+**Es gibt zwei aehnlich benannte Repos, in die nichts gehoert:**
+`hsp-landingpage` und `hsp-landingpage-at`. Das sind andere Projekte mit
+eigener Geschichte, ohne gemeinsame Wurzel mit diesem hier. Ein Merge dorthin
+wuerde entweder scheitern oder fremde Arbeit ueberschreiben.
+
+Im Zweifel kurz nachsehen:
+
+```
+git remote -v
+```
+
 ## Vor jeder Arbeit
 
 ```

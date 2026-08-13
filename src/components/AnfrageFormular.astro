@@ -1,0 +1,95 @@
+---
+/**
+ * Anfrageformular. Sendet an /api/anfrage, die Route reicht an Make weiter.
+ *
+ * Kann mehrfach auf einer Seite stehen (unten im Abschluss und im Dialog),
+ * deshalb bekommt jede Fassung ein eigenes Kuerzel fuer die Feld-Kennungen.
+ *
+ * Die Steuerung liegt in Layout.astro und gilt fuer alle Formulare mit
+ * [data-anfrage-formular]. So steht das Skript nur einmal im HTML.
+ *
+ * Ohne JavaScript laedt die Seite neu und zeigt die Antwort der Route.
+ * Pflichtfelder prueft der Browser. Der Server weist nichts ab.
+ */
+export interface Props {
+  kuerzel?: string;
+  datenschutzPfad?: string;
+}
+const { kuerzel = 'a', datenschutzPfad = '/datenschutz' } = Astro.props;
+
+const felder = [
+  { name: 'vorname',  label: 'Vorname',       typ: 'text',  autocomplete: 'given-name',  spalte: 'sm:col-span-1' },
+  { name: 'nachname', label: 'Nachname',      typ: 'text',  autocomplete: 'family-name', spalte: 'sm:col-span-1' },
+  { name: 'email',    label: 'E-Mail',        typ: 'email', autocomplete: 'email',       spalte: 'sm:col-span-2' },
+  { name: 'telefon',  label: 'Telefonnummer', typ: 'tel',   autocomplete: 'tel',         spalte: 'sm:col-span-2' },
+];
+---
+
+<form data-anfrage-formular method="POST" action="/api/anfrage"
+      class="mx-auto w-full max-w-[620px] text-left">
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    {felder.map((f) => (
+      <div class={f.spalte}>
+        <label for={`${kuerzel}-${f.name}`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+          {f.label}
+        </label>
+        <input
+          type={f.typ}
+          id={`${kuerzel}-${f.name}`}
+          name={f.name}
+          required
+          autocomplete={f.autocomplete}
+          class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px] text-hsp-ink
+                 outline-none transition-colors placeholder:text-black/35
+                 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
+                 aria-[invalid=true]:border-hsp-red"
+        />
+        <p data-fehler={f.name} hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-5">
+    <label for={`${kuerzel}-motivation`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+      Was macht dich zum perfekten Fundraiser?
+    </label>
+    <p id={`${kuerzel}-motivation-hinweis`} class="mb-2 text-[13px] text-hsp-body">
+      Zwei bis drei Sätze reichen völlig.
+    </p>
+    <textarea
+      id={`${kuerzel}-motivation`}
+      name="motivation"
+      rows="4"
+      required
+      maxlength="1200"
+      aria-describedby={`${kuerzel}-motivation-hinweis`}
+      class="w-full resize-y rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px]
+             leading-relaxed text-hsp-ink outline-none transition-colors
+             placeholder:text-black/35 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
+             aria-[invalid=true]:border-hsp-red"
+    ></textarea>
+    <p data-fehler="motivation" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+  </div>
+
+  {/* Honigtopf gegen Bots. Fuer Menschen unsichtbar, fuer Screenreader versteckt. */}
+  <div aria-hidden="true" class="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+    <label for={`${kuerzel}-website`}>Bitte nicht ausfüllen</label>
+    <input type="text" id={`${kuerzel}-website`} name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <input type="hidden" name="seite" value="" data-seite />
+
+  <p class="mt-5 text-[13px] leading-relaxed text-hsp-body">
+    Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung deiner Anfrage
+    verwenden. Mehr dazu in der <a href={datenschutzPfad} class="font-bold text-hsp-teal underline">Datenschutzerklärung</a>.
+  </p>
+
+  <button type="submit" data-senden
+          class="btn-primary mt-6 w-full justify-center gap-2 px-8 py-4 text-[17px] disabled:opacity-60">
+    <span data-senden-text>Anfrage abschicken</span>
+  </button>
+
+  <p data-status role="status" aria-live="polite" hidden
+     class="mt-4 rounded-xl px-4 py-3 text-[15px] font-bold"></p>
+</form>
