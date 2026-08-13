@@ -2,8 +2,8 @@
 
 Astro-Website für Österreich. Schwesterprojekt: `hsp-derjob-de`.
 
-Zwei Personen arbeiten parallel über getrennte Claude-Sessions, die nichts
-voneinander wissen. Deshalb ist der Ablauf verbindlich.
+Aktuell arbeitet **eine Person allein** am Projekt. Deshalb wird direkt auf
+`main` gearbeitet, ohne Branch und ohne Pull Request.
 
 ## Welches Repo? (bitte vor dem ersten Push pruefen)
 
@@ -28,15 +28,40 @@ git remote -v
 ```
 git checkout main
 git pull
+```
+
+Danach wird direkt auf `main` gearbeitet und committet. Jeder Push baut sofort
+die Produktionsseite bei Vercel.
+
+**Das gilt nur, solange eine Person allein arbeitet.** Zwei Bedingungen kehren
+den Ablauf wieder um:
+
+1. **Sobald eine zweite Person dazukommt** — sonst ueberschreiben sich zwei
+   Sessions gegenseitig, die nichts voneinander wissen.
+2. **Sobald die Seite live ist** — ab dann ist `main` das, was Bewerber sehen.
+   Ein Fehler ist dann sofort oeffentlich.
+
+In beiden Faellen wieder so arbeiten:
+
+```
 git checkout -b <branchname>
 ```
 
-**Nie direkt auf `main` arbeiten.** Auch nicht „nur schnell". Jede Änderung läuft
-über einen Branch und einen Pull Request.
+und die Branch-Protection auf `main` in den Repo-Einstellungen wieder
+einschalten (Settings -> Branches). Branchname beschreibt die Aenderung, nicht
+die Person, und bleibt unter 25 Zeichen (sonst wird die Vercel-Preview-URL
+abgeschnitten): `nav-mobile-fix`, nicht `gabriel-test`.
 
-Branchname beschreibt die Änderung, nicht die Person, und bleibt unter 25 Zeichen
-(sonst wird die Vercel-Preview-URL abgeschnitten): `nav-mobile-fix`, nicht
-`gabriel-test`.
+## Was bei jeder Aenderung trotzdem gilt
+
+Ohne Pull Request faellt der Zwischenschritt weg, in dem jemand drueberschaut.
+Deshalb vor dem Push:
+
+```
+npm run build
+```
+
+Laeuft der Build nicht durch, ist die Produktionsseite nach dem Push kaputt.
 
 ## Design-Regel: Bilder auf dem Handy
 
