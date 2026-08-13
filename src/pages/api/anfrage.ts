@@ -44,11 +44,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return antwort(400, { ok: false, fehler: 'Anfrage konnte nicht gelesen werden.' });
   }
 
-  // Honigtopf: ein fuer Menschen unsichtbares Feld. Nur Bots fuellen es aus.
-  // Wir melden trotzdem Erfolg, damit der Bot nichts dazulernt.
-  if (sauber(roh.website, 100) !== '') {
-    return antwort(200, { ok: true });
-  }
+  // Honigtopf: ein fuer Menschen unsichtbares Feld. Normalerweise fuellen es
+  // nur Bots aus. Wir werfen die Anfrage deswegen NICHT weg, sondern haengen
+  // einen Hinweis an - das Aussortieren uebernimmt der Spamschutz in Make.
+  const honigtopf = sauber(roh.website, 100) !== '';
 
   const daten = {
     vorname:  sauber(roh.vorname,  MAX.vorname),
@@ -58,19 +57,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     motivation: sauber(roh.motivation, MAX.motivation),
   };
 
-  const fehlend: string[] = [];
-  if (daten.vorname.length  < 2) fehlend.push('vorname');
-  if (daten.nachname.length < 2) fehlend.push('nachname');
-  if (!istEmail(daten.email))    fehlend.push('email');
+  // Es wird nichts mehr abgewiesen: Jede Anfrage geht an Make. Wir merken nur
+  // an, was auffaellig aussieht, damit der Ablauf in Make danach filtern kann.
+  const auffaellig: string[] = [];
+  if (daten.vorname.length  < 2) auffaellig.push('vorname');
+  if (daten.nachname.length < 2) auffaellig.push('nachname');
+  if (!istEmail(daten.email))    auffaellig.push('email');
   // Ziffern zaehlen statt Zeichen: +43 660 123 45 67 hat viele Leerzeichen.
-  if ((daten.telefon.match(/\d/g) ?? []).length < 6) fehlend.push('telefon');
-  // Gewuenscht sind zwei bis drei Saetze. 20 Zeichen als unterste Grenze,
-  // damit ein blosses Wort nicht durchgeht.
-  if (daten.motivation.length < 20) fehlend.push('motivation');
-
-  if (fehlend.length > 0) {
-    return antwort(422, { ok: false, fehler: 'Bitte alle Felder ausfüllen.', felder: fehlend });
-  }
+  if ((daten.telefon.match(/\d/g) ?? []).length < 6) auffaellig.push('telefon');
+  // Gewuenscht sind zwei bis drei Saetze.
+  if (daten.motivation.length < 20) auffaellig.push('motivation');
 
   const ziel = import.meta.env.MAKE_WEBHOOK_URL;
   if (!ziel) {
@@ -80,10 +76,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
   const nutzlast = {
     ...daten,
-    quelle:    'hsp-derjob.at',
-    seite:     sauber(roh.seite, 200),
-    zeitpunkt: new Date().toISOString(),
-    ip:        clientAddress ?? '',
+    quelle:      'hsp-derjob.at',
+    seite:       sauber(roh.seite, 200),
+    zeitpunkt:   new Date().toISOString(),
+    ip:          clientAddress ?? '',
+    // Hinweise fuer den Spamschutz in Make. Beide Felder sind nur Information,
+    // die Anfrage wurde hier bewusst nicht abgewiesen.
+    honigtopf,
+    auffaellig,
   };
 
   try {

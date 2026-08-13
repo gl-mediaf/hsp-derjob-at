@@ -4,6 +4,9 @@
  *
  * Das Formular funktioniert auch ohne JavaScript: dann laedt die Seite neu und
  * zeigt die Antwort der Route. Mit JavaScript bleibt man auf der Seite.
+ *
+ * Pflichtfelder prueft der Browser (Attribut `required`). Der Server weist
+ * nichts mehr ab - jede Anfrage geht an Make, dort greift der Spamschutz.
  */
 export interface Props {
   datenschutzPfad?: string;
@@ -18,7 +21,7 @@ const felder = [
 ];
 ---
 
-<form id="anfrage-formular" method="POST" action="/api/anfrage" novalidate
+<form id="anfrage-formular" method="POST" action="/api/anfrage"
       class="mx-auto max-w-[620px] text-left">
 
   <div class="grid gap-5 sm:grid-cols-2">
