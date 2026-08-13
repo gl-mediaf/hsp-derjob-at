@@ -1,0 +1,139 @@
+---
+/**
+ * Anfrageformular. Sendet an /api/anfrage, die Route reicht an Make weiter.
+ *
+ * Das Formular funktioniert auch ohne JavaScript: dann laedt die Seite neu und
+ * zeigt die Antwort der Route. Mit JavaScript bleibt man auf der Seite.
+ */
+export interface Props {
+  datenschutzPfad?: string;
+}
+const { datenschutzPfad = '/datenschutz' } = Astro.props;
+
+const felder = [
+  { name: 'vorname',  label: 'Vorname',      typ: 'text',  autocomplete: 'given-name',  spalte: 'sm:col-span-1' },
+  { name: 'nachname', label: 'Nachname',     typ: 'text',  autocomplete: 'family-name', spalte: 'sm:col-span-1' },
+  { name: 'email',    label: 'E-Mail',       typ: 'email', autocomplete: 'email',       spalte: 'sm:col-span-2' },
+  { name: 'telefon',  label: 'Telefonnummer',typ: 'tel',   autocomplete: 'tel',         spalte: 'sm:col-span-2' },
+];
+---
+
+<form id="anfrage-formular" method="POST" action="/api/anfrage" novalidate
+      class="mx-auto max-w-[620px] text-left">
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    {felder.map((f) => (
+      <div class={f.spalte}>
+        <label for={`f-${f.name}`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
+          {f.label}
+        </label>
+        <input
+          type={f.typ}
+          id={`f-${f.name}`}
+          name={f.name}
+          required
+          autocomplete={f.autocomplete}
+          class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px] text-hsp-ink
+                 outline-none transition-colors placeholder:text-black/35
+                 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
+                 aria-[invalid=true]:border-hsp-red"
+        />
+        <p data-fehler={f.name} hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+      </div>
+    ))}
+  </div>
+
+  {/* Honigtopf gegen Bots. Fuer Menschen unsichtbar, fuer Screenreader versteckt. */}
+  <div aria-hidden="true" class="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+    <label for="f-website">Bitte nicht ausfüllen</label>
+    <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <input type="hidden" name="seite" value="" data-seite />
+
+  <p class="mt-5 text-[13px] leading-relaxed text-hsp-body">
+    Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung deiner Anfrage
+    verwenden. Mehr dazu in der <a href={datenschutzPfad} class="font-bold text-hsp-teal underline">Datenschutzerklärung</a>.
+  </p>
+
+  <button type="submit" data-senden
+          class="btn-primary mt-6 w-full justify-center gap-2 px-8 py-4 text-[17px] disabled:opacity-60">
+    <span data-senden-text>Anfrage abschicken</span>
+  </button>
+
+  <p data-status role="status" aria-live="polite" hidden
+     class="mt-4 rounded-xl px-4 py-3 text-[15px] font-bold"></p>
+</form>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('anfrage-formular');
+    if (!form) return;
+
+    var status = form.querySelector('[data-status]');
+    var knopf  = form.querySelector('[data-senden]');
+    var text   = form.querySelector('[data-senden-text]');
+    var seite  = form.querySelector('[data-seite]');
+    if (seite) seite.value = location.pathname;
+
+    function meldung(art, inhalt) {
+      status.hidden = false;
+      status.textContent = inhalt;
+      status.className = 'mt-4 rounded-xl px-4 py-3 text-[15px] font-bold ' +
+        (art === 'ok' ? 'bg-hsp-teal/10 text-hsp-teal' : 'bg-red-50 text-hsp-red');
+    }
+
+    function feldFehler(namen) {
+      form.querySelectorAll('[data-fehler]').forEach(function (p) {
+        p.hidden = true;
+        var feld = form.elements[p.getAttribute('data-fehler')];
+        if (feld) feld.removeAttribute('aria-invalid');
+      });
+      (namen || []).forEach(function (n) {
+        var p = form.querySelector('[data-fehler="' + n + '"]');
+        var feld = form.elements[n];
+        if (p) { p.textContent = 'Bitte prüfen'; p.hidden = false; }
+        if (feld) feld.setAttribute('aria-invalid', 'true');
+      });
+      if (namen && namen.length && form.elements[namen[0]]) form.elements[namen[0]].focus();
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      knopf.disabled = true;
+      text.textContent = 'Wird gesendet …';
+      status.hidden = true;
+
+      var daten = {};
+      new FormData(form).forEach(function (wert, schluessel) { daten[schluessel] = wert; });
+
+      fetch('/api/anfrage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(daten)
+      })
+        .then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
+        .then(function (a) {
+          if (a.j && a.j.ok) {
+            form.querySelectorAll('input').forEach(function (i) {
+              if (i.type !== 'hidden') i.value = '';
+            });
+            feldFehler([]);
+            meldung('ok', 'Danke! Wir melden uns in der Regel innerhalb von 24 Stunden.');
+            text.textContent = 'Anfrage abschicken';
+            knopf.disabled = false;
+            return;
+          }
+          feldFehler(a.j && a.j.felder);
+          meldung('fehler', (a.j && a.j.fehler) || 'Das hat nicht geklappt. Bitte versuch es nochmal.');
+          text.textContent = 'Anfrage abschicken';
+          knopf.disabled = false;
+        })
+        .catch(function () {
+          meldung('fehler', 'Keine Verbindung. Bitte versuch es gleich nochmal.');
+          text.textContent = 'Anfrage abschicken';
+          knopf.disabled = false;
+        });
+    });
+  })();
+</script>

@@ -1,42 +1,50 @@
 ---
+import AnfrageFormular from './AnfrageFormular.astro';
+
 export interface Props {
   titel?: string;
   unterzeile?: string;
-  buttonText?: string;
 }
 const {
   titel = 'Bist du bereit für den Sommer deines Lebens?',
   unterzeile = 'Sichere dir jetzt deinen Platz in der Crew und starte dein Abenteuer als Fundraiser.',
-  buttonText = 'Jetzt Anfragen',
 } = Astro.props;
----
-<section id="anfrage" class="relative isolate overflow-hidden" aria-labelledby="cta-titel">
-  <img src="/images/cta-sonnenuntergang.webp"
-       alt="Drei Fundraiser gehen bei Sonnenuntergang über einen Feldweg"
-       width="900" height="600" loading="lazy" decoding="async"
-       class="absolute inset-0 -z-10 h-full w-full object-cover" />
-  <div class="absolute inset-0 -z-10 bg-black/35"></div>
 
-  <div class="container-hsp">
-    <div class="py-[100px] text-center sm:py-[120px]">
+// Foto als CSS-Hintergrund statt als <img> mit loading="lazy": ein solches
+// Bild wurde in Chrome nicht geladen, solange es hinter dem Inhalt lag.
+const hintergrund = [
+  'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45))',
+  "url('/images/cta-sonnenuntergang.webp')",
+].join(', ');
+---
+
+<section id="anfrage"
+         class="bg-hsp-ink bg-cover bg-center bg-no-repeat"
+         style={`background-image:${hintergrund};`}
+         aria-labelledby="cta-titel">
+  <div class="container-hsp py-[70px] sm:py-[90px]">
+
+    <div class="text-center">
       <h2 id="cta-titel"
           class="mx-auto max-w-[1000px] text-[30px] font-bold leading-[1.15] text-white sm:text-[50px] sm:leading-[60px]">
         {titel}
       </h2>
-      <p class="mx-auto mt-4 max-w-[727px] text-[17px] font-bold leading-[34px] text-white sm:text-[20px]">
+      <p class="mx-auto mt-4 max-w-[727px] text-[17px] font-bold leading-[30px] text-white sm:text-[20px]">
         {unterzeile}
       </p>
+    </div>
 
-      <p class="mt-8 text-[15px] text-white">Neugierig?</p>
+    <div class="mx-auto mt-10 max-w-[680px] rounded-2xl bg-white px-6 py-8 shadow-[0_12px_50px_rgba(0,0,0,0.3)] sm:px-10 sm:py-10">
+      <p class="mb-6 text-center text-[20px] font-bold text-hsp-ink sm:text-[24px]">
+        Neugierig? Dann melde dich.
+      </p>
 
-      <!-- Platzhalter: bekommt sein Ziel, sobald das Anfrage-Formular existiert -->
-      <button type="button" class="btn-primary mt-3 gap-2 px-8 py-3.5 text-[15px]">
-        <span aria-hidden="true">›</span> {buttonText}
-      </button>
+      <AnfrageFormular />
 
-      <p class="mt-4 text-[12px] text-white/90">
+      <p class="mt-5 text-center text-[12px] text-hsp-body">
         * Auf Anfragen wird in der Regel innerhalb von 24 Stunden geantwortet
       </p>
     </div>
+
   </div>
 </section>
