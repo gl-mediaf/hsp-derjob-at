@@ -137,3 +137,9 @@ html:has(#anfrage-dialog[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .js .schritt.ist-aktiv { animation: none; }
 }
+
+/* Das hidden-Attribut muss staerker sein als Klassen, die display setzen.
+   btn-primary bringt inline-flex mit, der Zurueck-Knopf grid - beide haben
+   hoehere Spezifitaet als die [hidden]-Regel des Browsers. Ohne das hier
+   standen im ersten Schritt "Weiter" und "Anfrage abschicken" nebeneinander. */
+[hidden] { display: none !important; }
