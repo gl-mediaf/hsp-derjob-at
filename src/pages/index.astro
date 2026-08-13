@@ -8,6 +8,7 @@ import Stimmen      from '../components/Stimmen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import LogoSlider   from '../components/LogoSlider.astro';
 import VideoBlock   from '../components/VideoBlock.astro';
+import { videos }   from '../data/videos';
 
 const vorteile = [
   {
@@ -343,6 +344,7 @@ const einstieg = [
 
         <div class="mx-auto mt-12 max-w-[820px]">
           <VideoBlock
+            quelle={videos.arbeitsalltag}
             poster="/videos/video-arbeitsalltag-poster.webp"
             alt="Fundraiserinnen und Fundraiser erzählen von ihrem Arbeitsalltag"
             titel="So sieht ein Tag wirklich aus"
@@ -383,6 +385,7 @@ const einstieg = [
 
         <div class="reveal">
           <VideoBlock
+            quelle={videos.anfrage}
             poster="/videos/video-anfrage-poster.webp"
             alt="Fundraiserinnen und Fundraiser erzählen, wie ihr Einstieg ablief"
             titel="Wie lief das Kennenlernen ab?"
@@ -428,6 +431,7 @@ const einstieg = [
         </p>
         <div class="mx-auto max-w-[900px]">
           <VideoBlock
+            quelle={videos.stimmen}
             poster="/videos/video-stimmen-poster.webp"
             alt="Vier Fundraiserinnen und Fundraiser im Interview"
             titel="Vier Stimmen aus der Crew"
