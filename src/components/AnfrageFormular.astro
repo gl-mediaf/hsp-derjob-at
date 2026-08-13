@@ -1,6 +1,7 @@
 ---
 /**
- * Anfrageformular. Sendet an /api/anfrage, die Route reicht an Make weiter.
+ * Anfrageformular in vier Schritten. Sendet an /api/anfrage, die Route
+ * reicht an Make weiter.
  *
  * Kann mehrfach auf einer Seite stehen (unten im Abschluss und im Dialog),
  * deshalb bekommt jede Fassung ein eigenes Kuerzel fuer die Feld-Kennungen.
@@ -8,8 +9,8 @@
  * Die Steuerung liegt in Layout.astro und gilt fuer alle Formulare mit
  * [data-anfrage-formular]. So steht das Skript nur einmal im HTML.
  *
- * Ohne JavaScript laedt die Seite neu und zeigt die Antwort der Route.
- * Pflichtfelder prueft der Browser. Der Server weist nichts ab.
+ * Ohne JavaScript stehen alle vier Schritte untereinander und es gibt nur
+ * den Absendeknopf - das Formular bleibt also in jedem Fall benutzbar.
  */
 export interface Props {
   kuerzel?: string;
@@ -17,59 +18,90 @@ export interface Props {
 }
 const { kuerzel = 'a', datenschutzPfad = '/datenschutz' } = Astro.props;
 
-const felder = [
-  { name: 'vorname',  label: 'Vorname',       typ: 'text',  autocomplete: 'given-name',  spalte: 'sm:col-span-1' },
-  { name: 'nachname', label: 'Nachname',      typ: 'text',  autocomplete: 'family-name', spalte: 'sm:col-span-1' },
-  { name: 'email',    label: 'E-Mail',        typ: 'email', autocomplete: 'email',       spalte: 'sm:col-span-2' },
-  { name: 'telefon',  label: 'Telefonnummer', typ: 'tel',   autocomplete: 'tel',         spalte: 'sm:col-span-2' },
+const eingabe = `w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px]
+                 text-hsp-ink outline-none transition-colors placeholder:text-black/35
+                 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
+                 aria-[invalid=true]:border-hsp-red`;
+
+const schritte = [
+  { nr: 1, titel: 'Wie heißt du?' },
+  { nr: 2, titel: 'Wie erreichen wir dich?' },
+  { nr: 3, titel: 'Und deine E-Mail?' },
+  { nr: 4, titel: 'Fast geschafft' },
 ];
 ---
 
 <form data-anfrage-formular method="POST" action="/api/anfrage"
       class="mx-auto w-full max-w-[620px] text-left">
 
-  <div class="grid gap-5 sm:grid-cols-2">
-    {felder.map((f) => (
-      <div class={f.spalte}>
-        <label for={`${kuerzel}-${f.name}`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
-          {f.label}
-        </label>
-        <input
-          type={f.typ}
-          id={`${kuerzel}-${f.name}`}
-          name={f.name}
-          required
-          autocomplete={f.autocomplete}
-          class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px] text-hsp-ink
-                 outline-none transition-colors placeholder:text-black/35
-                 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
-                 aria-[invalid=true]:border-hsp-red"
-        />
-        <p data-fehler={f.name} hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
-      </div>
-    ))}
+  <!-- ══ Fortschritt ══ -->
+  <div class="nur-mit-js mb-7">
+    <div class="mb-2 flex items-baseline justify-between">
+      <p data-schritt-titel class="text-[17px] font-bold text-hsp-ink">{schritte[0].titel}</p>
+      <p data-schritt-zaehler class="text-[13px] font-bold text-hsp-body">Schritt 1 von {schritte.length}</p>
+    </div>
+    <div class="h-2 w-full overflow-hidden rounded-full bg-black/10"
+         role="progressbar" aria-valuemin="0" aria-valuemax={schritte.length}
+         aria-valuenow="1" aria-label="Fortschritt" data-fortschritt-bahn>
+      <div data-fortschritt class="h-full rounded-full bg-hsp-teal transition-[width] duration-300"
+           style={`width:${100 / schritte.length}%`}></div>
+    </div>
   </div>
 
-  <div class="mt-5">
+  <!-- ══ Schritt 1: Name ══ -->
+  <div class="schritt" data-schritt="1">
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for={`${kuerzel}-vorname`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">Vorname</label>
+        <input type="text" id={`${kuerzel}-vorname`} name="vorname" required
+               autocomplete="given-name" class={eingabe} />
+        <p data-fehler="vorname" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+      </div>
+      <div>
+        <label for={`${kuerzel}-nachname`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">Nachname</label>
+        <input type="text" id={`${kuerzel}-nachname`} name="nachname" required
+               autocomplete="family-name" class={eingabe} />
+        <p data-fehler="nachname" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Schritt 2: Telefon ══ -->
+  <div class="schritt" data-schritt="2">
+    <label for={`${kuerzel}-telefon`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">Telefonnummer</label>
+    <p id={`${kuerzel}-telefon-hinweis`} class="mb-2 text-[13px] text-hsp-body">
+      Damit wir dich für das kurze Kennenlerngespräch erreichen.
+    </p>
+    <input type="tel" id={`${kuerzel}-telefon`} name="telefon" required
+           autocomplete="tel" aria-describedby={`${kuerzel}-telefon-hinweis`} class={eingabe} />
+    <p data-fehler="telefon" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+  </div>
+
+  <!-- ══ Schritt 3: E-Mail ══ -->
+  <div class="schritt" data-schritt="3">
+    <label for={`${kuerzel}-email`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">E-Mail</label>
+    <input type="email" id={`${kuerzel}-email`} name="email" required
+           autocomplete="email" class={eingabe} />
+    <p data-fehler="email" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+  </div>
+
+  <!-- ══ Schritt 4: Motivation ══ -->
+  <div class="schritt" data-schritt="4">
     <label for={`${kuerzel}-motivation`} class="mb-1.5 block text-[15px] font-bold text-hsp-ink">
       Was macht dich zum perfekten Fundraiser?
     </label>
     <p id={`${kuerzel}-motivation-hinweis`} class="mb-2 text-[13px] text-hsp-body">
       Zwei bis drei Sätze reichen völlig.
     </p>
-    <textarea
-      id={`${kuerzel}-motivation`}
-      name="motivation"
-      rows="4"
-      required
-      maxlength="1200"
-      aria-describedby={`${kuerzel}-motivation-hinweis`}
-      class="w-full resize-y rounded-xl border border-black/15 bg-white px-4 py-3 text-[16px]
-             leading-relaxed text-hsp-ink outline-none transition-colors
-             placeholder:text-black/35 focus:border-hsp-teal focus:ring-2 focus:ring-hsp-teal/25
-             aria-[invalid=true]:border-hsp-red"
-    ></textarea>
+    <textarea id={`${kuerzel}-motivation`} name="motivation" rows="4" required maxlength="1200"
+              aria-describedby={`${kuerzel}-motivation-hinweis`}
+              class={`${eingabe} resize-y leading-relaxed`}></textarea>
     <p data-fehler="motivation" hidden class="mt-1.5 text-[13px] font-bold text-hsp-red"></p>
+
+    <p class="mt-5 text-[13px] leading-relaxed text-hsp-body">
+      Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung deiner Anfrage
+      verwenden. Mehr dazu in der <a href={datenschutzPfad} class="font-bold text-hsp-teal underline">Datenschutzerklärung</a>.
+    </p>
   </div>
 
   {/* Honigtopf gegen Bots. Fuer Menschen unsichtbar, fuer Screenreader versteckt. */}
@@ -80,15 +112,28 @@ const felder = [
 
   <input type="hidden" name="seite" value="" data-seite />
 
-  <p class="mt-5 text-[13px] leading-relaxed text-hsp-body">
-    Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung deiner Anfrage
-    verwenden. Mehr dazu in der <a href={datenschutzPfad} class="font-bold text-hsp-teal underline">Datenschutzerklärung</a>.
-  </p>
+  <!-- ══ Steuerung ══ -->
+  <div class="mt-7 flex items-center gap-3">
+    <button type="button" data-zurueck hidden
+            class="grid h-[54px] w-[54px] shrink-0 place-items-center rounded-full border
+                   border-black/15 text-hsp-ink transition-colors hover:bg-hsp-light"
+            aria-label="Ein Schritt zurück">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="19" y1="12" x2="5" y2="12" /><polyline points="11 6 5 12 11 18" />
+      </svg>
+    </button>
 
-  <button type="submit" data-senden
-          class="btn-primary mt-6 w-full justify-center gap-2 px-8 py-4 text-[17px] disabled:opacity-60">
-    <span data-senden-text>Anfrage abschicken</span>
-  </button>
+    <button type="button" data-weiter
+            class="btn-primary nur-mit-js w-full justify-center gap-2 px-8 py-4 text-[17px]">
+      Weiter
+    </button>
+
+    <button type="submit" data-senden
+            class="btn-primary w-full justify-center gap-2 px-8 py-4 text-[17px] disabled:opacity-60">
+      <span data-senden-text>Anfrage abschicken</span>
+    </button>
+  </div>
 
   <p data-status role="status" aria-live="polite" hidden
      class="mt-4 rounded-xl px-4 py-3 text-[15px] font-bold"></p>

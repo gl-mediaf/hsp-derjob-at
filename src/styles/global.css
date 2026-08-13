@@ -119,3 +119,21 @@
   #anfrage-dialog[open] { animation: none; }
 }
 html:has(#anfrage-dialog[open]) { overflow: hidden; }
+
+/* ── Mehrschrittiges Anfrageformular ─────────────────────────────────
+   Ohne JavaScript stehen alle Schritte untereinander und es gibt nur den
+   Absendeknopf. Erst wenn JS laeuft (html.js), wird geblaettert.        */
+.nur-mit-js { display: none; }
+.js .nur-mit-js { display: block; }
+.js button.nur-mit-js { display: inline-flex; }
+
+.js .schritt { display: none; }
+.js .schritt.ist-aktiv { display: block; animation: schrittAuf 0.2s ease both; }
+
+@keyframes schrittAuf {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .schritt.ist-aktiv { animation: none; }
+}
