@@ -2,6 +2,9 @@
 /**
  * Erfahrungsberichte als anklickbare Videos.
  *
+ * Beim Klick oeffnet sich der Film im Overlay (FilmDialog) - die Karten hier
+ * sind zu klein, um darin etwas zu erkennen.
+ *
  * Die Filme liegen bei YouTube. Eingebunden wird erst beim Klick und ueber
  * youtube-nocookie.com: Vor dem Klick geht keine einzige Anfrage an Google,
  * das Standbild kommt aus dem eigenen Ordner. Erst danach laedt der Player.
@@ -31,7 +34,7 @@ const stimmen = [
                  class="absolute inset-0 h-full w-full object-cover" data-film-bild />
 
             {s.video && (
-              <button type="button" data-film-start data-video={s.video}
+              <button type="button" data-film-start data-film-gross data-video={s.video}
                       class="absolute inset-0 grid place-items-center transition-colors hover:bg-black/20"
                       aria-label={`Video von ${s.name} abspielen`}>
                 <svg class="h-16 w-16 drop-shadow-lg" viewBox="0 0 64 64" fill="none" aria-hidden="true">

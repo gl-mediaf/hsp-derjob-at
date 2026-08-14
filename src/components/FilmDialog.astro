@@ -1,0 +1,33 @@
+---
+/**
+ * Overlay fuer Videos.
+ *
+ * Steht einmal je Seite im Layout und wird von den Erfahrungsberichten
+ * benutzt: Deren Karten sind klein, ein Player darin waere kaum lesbar.
+ * Beim Klick wandert der Film hierher und laeuft ueber die volle Breite.
+ *
+ * Der Rahmen bekommt seine Adresse erst beim Oeffnen und verliert sie beim
+ * Schliessen wieder. Das ist wichtig: Bliebe sie stehen, liefe der Ton im
+ * Hintergrund weiter.
+ */
+---
+
+<dialog id="film-dialog" aria-label="Video"
+        class="w-[min(94vw,1000px)] rounded-2xl bg-transparent p-0 backdrop:bg-black/80">
+
+  <button type="button" data-film-schliessen aria-label="Video schließen"
+          class="absolute right-0 top-0 z-10 grid h-11 w-11 -translate-y-14 place-items-center
+                 rounded-full bg-white/15 text-white transition-colors hover:bg-white/30
+                 sm:-translate-y-14">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+      <line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" />
+    </svg>
+  </button>
+
+  <div class="relative aspect-video w-full overflow-hidden rounded-2xl bg-black shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+    <iframe data-film-rahmen title="Video" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            class="absolute inset-0 h-full w-full border-0"></iframe>
+  </div>
+</dialog>

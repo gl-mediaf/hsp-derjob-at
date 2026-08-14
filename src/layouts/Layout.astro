@@ -1,5 +1,6 @@
 ---
 import AnfrageDialog from '../components/AnfrageDialog.astro';
+import FilmDialog    from '../components/FilmDialog.astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -63,6 +64,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     <slot />
 
     <AnfrageDialog />
+    <FilmDialog />
 
     <script is:inline>
       // Sektionen beim Hereinscrollen einblenden
@@ -334,28 +336,64 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       // Player gleich mit der Seite laden, ginge bei jedem Aufruf eine
       // Anfrage an Google - auch bei Leuten, die nie ein Video starten.
       (function () {
+        var overlay = document.getElementById('film-dialog');
+        var rahmen  = overlay && overlay.querySelector('[data-film-rahmen]');
+        var kannOverlay = !!(overlay && rahmen && typeof overlay.showModal === 'function');
+
+        function adresse(kennung) {
+          return 'https://www.youtube-nocookie.com/embed/' + kennung +
+                 '?autoplay=1&rel=0&modestbranding=1&hl=de';
+        }
+
+        function overlayZu() {
+          if (!kannOverlay) return;
+          // Adresse loeschen, sonst laeuft der Ton im Hintergrund weiter.
+          rahmen.removeAttribute('src');
+          if (overlay.open) overlay.close();
+        }
+
+        if (kannOverlay) {
+          overlay.addEventListener('close', function () { rahmen.removeAttribute('src'); });
+          overlay.querySelectorAll('[data-film-schliessen]').forEach(function (b) {
+            b.addEventListener('click', overlayZu);
+          });
+          // Klick neben das Video schliesst ebenfalls
+          overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) overlayZu();
+          });
+        }
+
         document.querySelectorAll('[data-film-start]').forEach(function (knopf) {
           knopf.addEventListener('click', function () {
-            var halter = knopf.closest('[data-film-halter]');
             var kennung = knopf.getAttribute('data-video');
-            if (!halter || !kennung) return;
+            if (!kennung) return;
 
-            var rahmen = document.createElement('iframe');
-            rahmen.src =
-              'https://www.youtube-nocookie.com/embed/' + kennung +
-              '?autoplay=1&rel=0&modestbranding=1&hl=de';
-            rahmen.title = knopf.getAttribute('aria-label') || 'Video';
-            rahmen.allow =
+            // Kleine Karten oeffnen den Film im Overlay, grosse Bloecke
+            // spielen an Ort und Stelle - die sind ohnehin breit genug.
+            if (knopf.hasAttribute('data-film-gross') && kannOverlay) {
+              rahmen.title = knopf.getAttribute('aria-label') || 'Video';
+              rahmen.src = adresse(kennung);
+              overlay.showModal();
+              return;
+            }
+
+            var halter = knopf.closest('[data-film-halter]');
+            if (!halter) return;
+
+            var eingebettet = document.createElement('iframe');
+            eingebettet.src = adresse(kennung);
+            eingebettet.title = knopf.getAttribute('aria-label') || 'Video';
+            eingebettet.allow =
               'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            rahmen.allowFullscreen = true;
-            rahmen.loading = 'eager';
-            rahmen.className = 'absolute inset-0 h-full w-full border-0';
-            halter.appendChild(rahmen);
+            eingebettet.allowFullscreen = true;
+            eingebettet.loading = 'eager';
+            eingebettet.className = 'absolute inset-0 h-full w-full border-0';
+            halter.appendChild(eingebettet);
 
             // Standbild, Knopf und Laufzeit weg - der Player uebernimmt.
             knopf.remove();
-            [' [data-film-bild]', ' [data-film-dauer]'].forEach(function (w) {
-              var e = halter.querySelector(w.trim());
+            ['[data-film-bild]', '[data-film-dauer]'].forEach(function (w) {
+              var e = halter.querySelector(w);
               if (e) e.remove();
             });
           });

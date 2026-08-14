@@ -150,3 +150,14 @@ html:has(#anfrage-dialog[open]) { overflow: hidden; }
 .auf-foto h1, .auf-foto h2, .auf-foto h3, .auf-foto h4 {
   color: inherit;
 }
+
+/* ── Video-Overlay ───────────────────────────────────────────────────
+   Gleiche Erscheinung wie beim Anfrage-Overlay: sanft einblenden und die
+   Seite dahinter festhalten, damit nicht im Hintergrund gescrollt wird. */
+#film-dialog[open] {
+  animation: dialogAuf 0.22s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  #film-dialog[open] { animation: none; }
+}
+html:has(#film-dialog[open]) { overflow: hidden; }
