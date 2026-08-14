@@ -1,11 +1,21 @@
 ---
+/**
+ * Erfahrungsberichte als anklickbare Videos.
+ *
+ * Die Filme liegen bei YouTube. Eingebunden wird erst beim Klick und ueber
+ * youtube-nocookie.com: Vor dem Klick geht keine einzige Anfrage an Google,
+ * das Standbild kommt aus dem eigenen Ordner. Erst danach laedt der Player.
+ *
+ * Karten ohne `video` zeigen nur das Standbild ohne Abspielknopf. So bleibt
+ * die Reihe vollstaendig, auch wenn ein Film noch fehlt.
+ */
 const stimmen = [
-  { bild: '/images/testimonial-melanie.webp', name: 'Melanie', alter: 22, rolle: 'Studentin' },
+  { bild: '/images/testimonial-melanie.webp', name: 'Melanie', alter: 22, rolle: 'Studentin', video: 'ilydcRQS614' },
   { bild: '/images/testimonial-linda.webp',   name: 'Linda',   alter: 21, rolle: 'Studentin' },
-  { bild: '/images/testimonial-jasmin.webp',  name: 'Jasmin',  alter: 22, rolle: 'Studentin' },
+  { bild: '/images/testimonial-jasmin.webp',  name: 'Jasmin',  alter: 22, rolle: 'Studentin', video: 'wUgbjrHSdos' },
 ];
 ---
-<section class="bg-white pb-5 pt-[70px]" aria-labelledby="stimmen-titel">
+<section class="bg-hsp-light pb-5 pt-[70px]" aria-labelledby="stimmen-titel">
   <div class="container-hsp">
     <h2 id="stimmen-titel"
         class="reveal mb-10 text-center text-[34px] font-bold leading-[44px] text-black sm:text-[50px] sm:leading-[70px]">
@@ -15,16 +25,21 @@ const stimmen = [
     <ul class="reveal karten-slider mx-auto max-w-[940px] gap-8 sm:grid-cols-3">
       {stimmen.map((s) => (
         <li class="overflow-hidden rounded-2xl bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-          <div class="relative overflow-hidden rounded-xl">
+          <div class="relative aspect-video overflow-hidden rounded-xl bg-black" data-stimme-halter>
             <img src={s.bild} alt={`${s.name}, ${s.alter} Jahre, ${s.rolle}`}
                  width="400" height="225" loading="lazy" decoding="async"
-                 class="aspect-video w-full object-cover" />
-            <span class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
-              <svg class="h-16 w-16 drop-shadow-lg" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="30" stroke="white" stroke-width="3" />
-                <path d="M26 21l18 11-18 11V21z" fill="white" />
-              </svg>
-            </span>
+                 class="absolute inset-0 h-full w-full object-cover" data-stimme-bild />
+
+            {s.video && (
+              <button type="button" data-stimme-start data-video={s.video}
+                      class="absolute inset-0 grid place-items-center transition-colors hover:bg-black/20"
+                      aria-label={`Video von ${s.name} abspielen`}>
+                <svg class="h-16 w-16 drop-shadow-lg" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <circle cx="32" cy="32" r="30" stroke="white" stroke-width="3" />
+                  <path d="M26 21l18 11-18 11V21z" fill="white" />
+                </svg>
+              </button>
+            )}
           </div>
           <div class="pt-3">
             <p class="text-[18px] font-bold leading-[25px] text-hsp-muted">{s.name} ({s.alter})</p>

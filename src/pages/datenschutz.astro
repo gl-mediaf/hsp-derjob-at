@@ -6,8 +6,11 @@ import RechtsLayout from '../components/RechtsLayout.astro';
  *
  * Diese Erklärung beschreibt bewusst NUR das, was auf dieser Seite tatsächlich
  * passiert. Die alte Fassung auf hsp-derjob.de nennt Google Analytics, Google
- * Ads, reCAPTCHA, Facebook Pixel, Snap Pixel, TikTok Pixel, MailChimp, YouTube,
- * Google Web Fonts und Zendesk. Nichts davon ist hier eingebunden. Eine
+ * Ads, reCAPTCHA, Facebook Pixel, Snap Pixel, TikTok Pixel, MailChimp,
+ * Google Web Fonts und Zendesk. Nichts davon ist hier eingebunden.
+ *
+ * YouTube ist die einzige Ausnahme: Die Erfahrungsberichte liegen dort und
+ * werden erst auf Klick geladen (Abschnitt 5). Eine
  * Erklärung, die Verarbeitungen behauptet, die es nicht gibt, ist genauso
  * falsch wie eine, die welche verschweigt.
  *
@@ -171,12 +174,40 @@ import RechtsLayout from '../components/RechtsLayout.astro';
 
   <h2>4. Cookies</h2>
   <p>
-    Diese Website setzt <strong>keine</strong> Cookies. Es werden weder technisch notwendige noch
-    analytische oder werbliche Cookies gespeichert. Aus diesem Grund gibt es auf dieser Seite auch
-    keinen Einwilligungsbanner.
+    Diese Website setzt von sich aus <strong>keine</strong> Cookies. Es werden weder analytische
+    noch werbliche Cookies gespeichert. Aus diesem Grund gibt es auf dieser Seite auch keinen
+    Einwilligungsbanner. Cookies können erst entstehen, wenn Sie ein Video aktiv starten – siehe
+    Abschnitt 5.
   </p>
 
-  <h2>5. Schriftarten</h2>
+  <h2>5. Videos von YouTube</h2>
+  <p>
+    Auf einigen Seiten sind Erfahrungsberichte als Video eingebunden. Diese Videos liegen bei
+    YouTube, betrieben von der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4,
+    Irland.
+  </p>
+  <p>
+    <strong>Solange Sie kein Video starten, wird keine Verbindung zu Google hergestellt.</strong>
+    Zu sehen ist zunächst nur ein Standbild, das von unserem eigenen Server geladen wird. Erst wenn
+    Sie auf den Abspielknopf klicken, wird der YouTube-Player nachgeladen. Dabei erfährt YouTube
+    Ihre IP-Adresse, welches Video Sie ansehen und technische Angaben zu Ihrem Gerät und Browser.
+    Sind Sie gleichzeitig bei YouTube angemeldet, kann der Abruf Ihrem Konto zugeordnet werden.
+    Das können Sie verhindern, indem Sie sich vorher abmelden.
+  </p>
+  <p>
+    Wir verwenden den erweiterten Datenschutzmodus (youtube-nocookie.com). Nach Angaben von Google
+    werden dabei erst beim Abspielen Cookies gesetzt.
+  </p>
+  <p>
+    Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO, die Sie mit dem Klick
+    auf den Abspielknopf erteilen. Sie können sie jederzeit für die Zukunft widerrufen, indem Sie
+    keine weiteren Videos starten. Eine Übermittlung in die USA ist nicht auszuschließen; Google
+    stützt sich hierfür auf den EU-US Data Privacy Framework sowie auf Standardvertragsklauseln.
+    Näheres in der Datenschutzerklärung von Google:
+    <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">policies.google.com/privacy</a>.
+  </p>
+
+  <h2>6. Schriftarten</h2>
   <p>
     Diese Seite verwendet zur einheitlichen Darstellung von Schriftarten ausschließlich lokal
     gespeicherte Schriften. Es findet <strong>keine</strong> Verbindung zu Servern von Google oder
@@ -184,7 +215,7 @@ import RechtsLayout from '../components/RechtsLayout.astro';
     übermittelt.
   </p>
 
-  <h2>6. Anfrageformular</h2>
+  <h2>7. Anfrageformular</h2>
   <p>
     Wenn Sie uns über das Anfrageformular auf dieser Website kontaktieren, erheben wir folgende Daten:
   </p>
@@ -230,7 +261,7 @@ import RechtsLayout from '../components/RechtsLayout.astro';
     Zwingende gesetzliche Bestimmungen, insbesondere Aufbewahrungsfristen, bleiben unberührt.
   </p>
 
-  <h2>7. Einwilligung zur Speicherung von Bewerberdaten</h2>
+  <h2>8. Einwilligung zur Speicherung von Bewerberdaten</h2>
   <p>
     Sofern es zu einer Zusammenarbeit kommt, werden Ihre Daten zur Abwicklung des Vertragsverhältnisses
     unter Beachtung der gesetzlichen Vorschriften gespeichert. Kommt es nicht zu einer Zusammenarbeit,

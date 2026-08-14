@@ -348,7 +348,39 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           });
         });
       })();
+    </script>
 
+    <script is:inline>
+      // ══ Erfahrungsberichte: YouTube erst nach dem Klick laden ══
+      //
+      // Bewusst ueber youtube-nocookie.com und erst auf Klick. Wuerde der
+      // Player gleich mit der Seite laden, ginge bei jedem Aufruf eine
+      // Anfrage an Google - auch bei Leuten, die das Video nie starten.
+      (function () {
+        document.querySelectorAll('[data-stimme-start]').forEach(function (knopf) {
+          knopf.addEventListener('click', function () {
+            var halter = knopf.closest('[data-stimme-halter]');
+            var kennung = knopf.getAttribute('data-video');
+            if (!halter || !kennung) return;
+
+            var rahmen = document.createElement('iframe');
+            rahmen.src =
+              'https://www.youtube-nocookie.com/embed/' + kennung +
+              '?autoplay=1&rel=0&modestbranding=1&hl=de';
+            rahmen.title = knopf.getAttribute('aria-label') || 'Video';
+            rahmen.allow =
+              'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            rahmen.allowFullscreen = true;
+            rahmen.loading = 'eager';
+            rahmen.className = 'absolute inset-0 h-full w-full border-0';
+            halter.appendChild(rahmen);
+
+            knopf.remove();
+            var bild = halter.querySelector('[data-stimme-bild]');
+            if (bild) bild.remove();
+          });
+        });
+      })();
     </script>
   </body>
 </html>
