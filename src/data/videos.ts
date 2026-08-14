@@ -1,18 +1,19 @@
 /**
- * Adressen der drei Interviewfilme.
+ * Kennungen der Filme auf YouTube.
  *
- * Sie liegen im Repo unter public/videos. Diese drei zusammen rund 20 MB,
- * mit dem Rundgangfilm auf der Startseite rund 27 MB im ganzen Ordner.
- * Das ist vertretbar und spart den Umweg ueber einen zweiten Speicherort.
+ * Frueher lagen die Dateien als MP4 im Ordner public/videos und wogen
+ * zusammen 27 MB. Seit sie auf dem eigenen YouTube-Kanal liegen, holt der
+ * Browser sie von dort - und zwar erst, wenn jemand auf Abspielen tippt.
  *
- * Vercel deckelt ein Deployment bei 100 MB. Wenn spaeter weitere Filme
- * dazukommen, wird es eng - dann nach Vercel Blob umziehen.
+ * Die Standbilder bleiben bewusst bei uns im Ordner public/videos. Sie sind
+ * klein, sehen besser aus als die Vorschaubilder von YouTube, und vor allem
+ * geht dadurch vor dem Klick keine Anfrage an Google.
  *
- * Falls sie spaeter doch nach Vercel Blob wandern: hier die Adressen
- * eintragen, das ist die einzige Stelle, die dafuer angefasst wird.
+ * Die Kennung ist der Teil hinter youtu.be/ in der Adresse.
  */
 export const videos = {
-  anfrage:       '/videos/anfrage.mp4',        // 1:42 - Kennenlernprozess
-  arbeitsalltag: '/videos/arbeitsalltag.mp4',  // 2:20 - Alltag im Job
-  stimmen:       '/videos/stimmen.mp4',        // 1:40 - Warum die Leute dabei sind
+  rundgang:      '-wOUb7opqPk',  // "Einblicke ins Fundraising"  - Startseite
+  anfrage:       'l3ksGFkfiX4',  // "So lernst du uns kennen!"   - /geld
+  arbeitsalltag: 'RSx-P2qevfg',  // "Der Alltag"                 - /fundraising
+  stimmen:       '1xsphAXXCvc',  // "Testimonials Karriere AT"   - /erlebnis
 } as const;

@@ -325,41 +325,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </script>
 
     <script is:inline>
-      // ══ Videoblock: Datei erst laden, wenn abgespielt werden soll ══
-      (function () {
-        document.querySelectorAll('[data-video-start]').forEach(function (knopf) {
-          knopf.addEventListener('click', function () {
-            var halter = knopf.closest('[data-video-halter]');
-            var quelle = halter && halter.getAttribute('data-quelle');
-            if (!quelle) return;
-
-            var video = document.createElement('video');
-            video.src = quelle;
-            video.controls = true;
-            video.autoplay = true;
-            video.playsInline = true;
-            video.preload = 'auto';
-            video.className = 'absolute inset-0 h-full w-full bg-black object-contain';
-            halter.appendChild(video);
-
-            knopf.remove();
-            var poster = halter.querySelector('[data-video-poster]');
-            if (poster) poster.remove();
-          });
-        });
-      })();
-    </script>
-
-    <script is:inline>
-      // ══ Erfahrungsberichte: YouTube erst nach dem Klick laden ══
+      // ══ Filme: YouTube erst nach dem Klick laden ══
+      //
+      // Gilt fuer alle Bloecke mit [data-film-halter] - die grossen
+      // Videobloecke auf den Unterseiten wie auch die Erfahrungsberichte.
       //
       // Bewusst ueber youtube-nocookie.com und erst auf Klick. Wuerde der
       // Player gleich mit der Seite laden, ginge bei jedem Aufruf eine
-      // Anfrage an Google - auch bei Leuten, die das Video nie starten.
+      // Anfrage an Google - auch bei Leuten, die nie ein Video starten.
       (function () {
-        document.querySelectorAll('[data-stimme-start]').forEach(function (knopf) {
+        document.querySelectorAll('[data-film-start]').forEach(function (knopf) {
           knopf.addEventListener('click', function () {
-            var halter = knopf.closest('[data-stimme-halter]');
+            var halter = knopf.closest('[data-film-halter]');
             var kennung = knopf.getAttribute('data-video');
             if (!halter || !kennung) return;
 
@@ -375,9 +352,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             rahmen.className = 'absolute inset-0 h-full w-full border-0';
             halter.appendChild(rahmen);
 
+            // Standbild, Knopf und Laufzeit weg - der Player uebernimmt.
             knopf.remove();
-            var bild = halter.querySelector('[data-stimme-bild]');
-            if (bild) bild.remove();
+            [' [data-film-bild]', ' [data-film-dauer]'].forEach(function (w) {
+              var e = halter.querySelector(w.trim());
+              if (e) e.remove();
+            });
           });
         });
       })();

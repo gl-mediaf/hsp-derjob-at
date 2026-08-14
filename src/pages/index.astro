@@ -8,6 +8,7 @@ import Stimmen      from '../components/Stimmen.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
 import LogoSlider   from '../components/LogoSlider.astro';
 import VideoBlock   from '../components/VideoBlock.astro';
+import { videos }   from '../data/videos';
 
 const vorteile = [
   {
@@ -153,7 +154,7 @@ const einstieg = [
         </div>
 
         <VideoBlock
-          quelle="/videos/rundgang.mp4"
+          video={videos.rundgang}
           poster="/videos/rundgang-poster.webp"
           alt="Ein Tag mit einer Fundraiserin: von der Unterkunft bis an die Haustür"
           dauer="0:50"

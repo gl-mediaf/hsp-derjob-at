@@ -1,29 +1,33 @@
 ---
 /**
- * Videoblock mit Vorschaubild. Das Video wird erst geladen, wenn jemand auf
- * den Abspielknopf tippt - vorher liegt nur das Standbild auf der Seite.
+ * Grosser Videoblock mit Vorschaubild.
  *
- * Ohne `quelle` erscheint ein Platzhalter mit Hinweis. So kann die Stelle im
- * Seitenaufbau schon beurteilt werden, bevor die Datei eingebunden ist.
+ * Der Film liegt auf unserem YouTube-Kanal, das Standbild bei uns im Ordner.
+ * Vor dem Klick geht keine Anfrage an Google - erst danach wird der Player
+ * ueber youtube-nocookie.com nachgeladen. Die Steuerung dafuer steht in
+ * Layout.astro und gilt fuer alle Bloecke mit [data-film-halter].
+ *
+ * Ohne `video` erscheint ein Platzhalter mit Hinweis. So kann die Stelle im
+ * Seitenaufbau schon beurteilt werden, bevor der Film da ist.
  */
 export interface Props {
   poster:      string;
   alt:         string;
-  quelle?:     string;   // Pfad zur MP4-Datei
+  video?:      string;   // YouTube-Kennung, z. B. 'l3ksGFkfiX4'
   titel?:      string;
   unterzeile?: string;
   dauer?:      string;
 }
-const { poster, alt, quelle, titel, unterzeile, dauer } = Astro.props;
+const { poster, alt, video, titel, unterzeile, dauer } = Astro.props;
 ---
 
 <figure class="reveal overflow-hidden rounded-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
-  <div class="relative aspect-video bg-hsp-ink" data-video-halter data-quelle={quelle}>
+  <div class="relative aspect-video bg-hsp-ink" data-film-halter>
     <img src={poster} alt={alt} width="1000" height="562" loading="lazy" decoding="async"
-         class="absolute inset-0 h-full w-full object-cover" data-video-poster />
+         class="absolute inset-0 h-full w-full object-cover" data-film-bild />
 
-    {quelle ? (
-      <button type="button" data-video-start
+    {video ? (
+      <button type="button" data-film-start data-video={video}
               class="absolute inset-0 grid place-items-center bg-black/25 transition-colors hover:bg-black/35"
               aria-label={`Video abspielen${titel ? ': ' + titel : ''}`}>
         <span class="grid h-[76px] w-[76px] place-items-center rounded-full bg-white/95 shadow-lg
@@ -40,7 +44,7 @@ const { poster, alt, quelle, titel, unterzeile, dauer } = Astro.props;
           <p class="text-[15px] font-bold uppercase tracking-wide text-hsp-yellow">Platz für das Video</p>
           <p class="mt-2 text-[18px] font-bold text-white sm:text-[20px]">{titel}</p>
           <p class="mx-auto mt-2 max-w-[420px] text-[14px] leading-relaxed text-white/85">
-            Die Datei ist noch nicht eingebunden. Das Standbild zeigt, wie der
+            Der Film ist noch nicht verknüpft. Das Standbild zeigt, wie der
             Abschnitt an dieser Stelle wirkt.
           </p>
         </div>
@@ -48,7 +52,8 @@ const { poster, alt, quelle, titel, unterzeile, dauer } = Astro.props;
     )}
 
     {dauer && (
-      <span class="absolute bottom-3 right-3 rounded-md bg-black/70 px-2 py-1 text-[12px] font-bold text-white">
+      <span class="pointer-events-none absolute bottom-3 right-3 rounded-md bg-black/70 px-2 py-1
+                   text-[12px] font-bold text-white" data-film-dauer>
         {dauer}
       </span>
     )}
