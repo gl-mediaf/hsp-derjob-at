@@ -161,3 +161,22 @@ html:has(#anfrage-dialog[open]) { overflow: hidden; }
   #film-dialog[open] { animation: none; }
 }
 html:has(#film-dialog[open]) { overflow: hidden; }
+
+/* ── Hero auf Fensterhoehe ───────────────────────────────────────────
+   Ab Desktopbreite fuellen Navi und Hero zusammen genau den sichtbaren
+   Bereich: Das Foto endet exakt an der Unterkante des Fensters.
+
+   --kopf-hoehe wird in Layout.astro gemessen und gesetzt, weil die Navi
+   nicht ueberall gleich hoch ist (bei 1024 px bricht sie um: 126 statt
+   111 px). Der Ersatzwert greift, bis das Skript gelaufen ist.
+
+   dvh statt vh: Bei Browsern mit ein- und ausfahrenden Leisten meint vh
+   die groesstmoegliche Hoehe, dvh die tatsaechlich sichtbare.
+
+   max(...) als Notbremse fuer sehr flache Fenster - sonst wird der Hero
+   auf einem niedrigen Laptopfenster zum Streifen.                      */
+@media (min-width: 1024px) {
+  .hero-fensterhoch {
+    min-height: max(460px, calc(100dvh - var(--kopf-hoehe, 111px)));
+  }
+}

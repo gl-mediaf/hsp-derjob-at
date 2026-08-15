@@ -400,5 +400,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         });
       })();
     </script>
+
+    <script is:inline>
+      // ══ Hoehe der Navileiste messen ══
+      //
+      // Der Hero soll zusammen mit der Navi genau eine Fensterhoehe fuellen.
+      // Die Navi ist aber nicht ueberall gleich hoch - bei 1024 px Breite
+      // bricht sie um. Deshalb wird sie gemessen statt geschaetzt.
+      (function () {
+        var kopf = document.querySelector('header');
+        if (!kopf) return;
+        function messen() {
+          document.documentElement.style.setProperty(
+            '--kopf-hoehe', kopf.offsetHeight + 'px');
+        }
+        messen();
+        addEventListener('resize', messen, { passive: true });
+        // Nach dem Laden der Schriften aendert sich die Hoehe oft noch einmal
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(messen);
+      })();
+    </script>
   </body>
 </html>
