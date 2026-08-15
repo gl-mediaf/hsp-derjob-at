@@ -176,7 +176,11 @@ html:has(#film-dialog[open]) { overflow: hidden; }
    max(...) als Notbremse fuer sehr flache Fenster - sonst wird der Hero
    auf einem niedrigen Laptopfenster zum Streifen.                      */
 @media (min-width: 1024px) {
-  .hero-fensterhoch {
+  /* section davor, damit die Regel schwerer wiegt als eine Tailwind-Klasse.
+     Astro verteilt das CSS auf mehrere Dateien; welche zuerst geladen wird,
+     ist nicht garantiert. Bei gleicher Gewichtung gewaenne sonst mal die
+     eine, mal die andere - genau das ist hier passiert. */
+  section.hero-fensterhoch {
     min-height: max(460px, calc(100dvh - var(--kopf-hoehe, 111px)));
   }
 }
