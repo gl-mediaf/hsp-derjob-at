@@ -1,4 +1,5 @@
 ---
+import Bild from './Bild.astro';
 export interface Props {
   bild: string;
   alt: string;
@@ -9,9 +10,9 @@ const { bild, alt, titel, unterzeile } = Astro.props;
 ---
 <section class="hero-fensterhoch relative isolate flex min-h-[380px] items-end overflow-hidden
                 sm:min-h-[500px]">
-  <img src={bild} alt={alt} width="2400" height="960"
-       fetchpriority="high" decoding="async"
-       class="absolute inset-0 -z-10 h-full w-full object-cover object-center" />
+  <Bild src={bild} alt={alt} sizes="100vw"
+        loading="eager" fetchpriority="high"
+        class="absolute inset-0 -z-10 h-full w-full object-cover object-center" />
   <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/45 via-black/10 to-transparent"></div>
 
   <div class="container-hsp pb-14 lg:pb-16">

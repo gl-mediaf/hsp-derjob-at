@@ -1,4 +1,5 @@
 ---
+import Bild from '../components/Bild.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav    from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -116,10 +117,10 @@ const einstieg = [
     <!-- ══ Hero: Bildband mit nur zwei Zeilen, unten links ══ -->
     <section class="hero-fensterhoch relative isolate flex min-h-[420px] items-end overflow-hidden
                     sm:min-h-[560px]">
-      <img src="/images/hero.webp"
-           alt="Eine Fundraiserin steht an der geöffneten Autotür und blickt in die Ferne"
-           width="2400" height="1500" fetchpriority="high" decoding="async"
-           class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
+      <Bild src="/images/hero.webp"
+            alt="Eine Fundraiserin steht an der geöffneten Autotür und blickt in die Ferne"
+            sizes="100vw" loading="eager" fetchpriority="high"
+            class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
       <div class="container-hsp pb-14 lg:pb-16">
@@ -203,9 +204,9 @@ const einstieg = [
     <!-- ══ Vorteile: Bild links, 2×2-Raster rechts ══ -->
     <section class="bg-white py-[70px]" aria-labelledby="vorteile-titel">
       <div class="container-hsp grid gap-10 lg:grid-cols-[280px_1fr] lg:gap-14">
-        <img src="/images/vorteile-huckepack.webp"
+        <Bild src="/images/vorteile-huckepack.webp"
              alt="Zwei Fundraiserinnen im Einsatz, eine trägt die andere lachend huckepack"
-             width="400" height="600" loading="lazy" decoding="async"
+             sizes="(min-width: 1024px) 280px, 70vw"
              class="reveal mx-auto w-full max-w-[280px] rounded-2xl object-cover lg:mx-0" />
 
         <div class="reveal">
@@ -260,8 +261,8 @@ const einstieg = [
         <ul class="reveal karten-slider gap-8 md:grid-cols-3">
           {karten.map((k) => (
             <li class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-              <img src={k.bild} alt={k.alt} width="935" height="624" loading="lazy" decoding="async"
-                   class="aspect-[3/2] w-full object-cover" />
+              <Bild src={k.bild} alt={k.alt} sizes="(min-width: 1024px) 380px, 85vw"
+                    class="aspect-[3/2] w-full object-cover" />
               <div class="flex flex-1 flex-col items-center px-6 pb-8 pt-6 text-center">
                 <h3 class="mb-3 text-[16px] font-bold leading-6 text-black">{k.titel}</h3>
                 <p class="mb-6 flex-1 text-[15px] leading-[22.4px] text-black sm:text-[16px]">{k.text}</p>
@@ -302,9 +303,9 @@ const einstieg = [
         </div>
 
         <div class="reveal relative pb-10 lg:pb-0">
-          <img src="/images/fr-haustuer.webp"
+          <Bild src="/images/fr-haustuer.webp"
                alt="Eine Fundraiserin steht mit ihrem Crew-Beutel vor einer Haustür"
-               width="600" height="400" loading="lazy" decoding="async"
+               sizes="(min-width: 1024px) 560px, 92vw"
                class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
           <div class="absolute bottom-0 left-4 rounded-2xl bg-hsp-teal px-6 py-4 text-white
                       shadow-[0_8px_24px_rgba(0,0,0,0.18)] sm:left-6 lg:-bottom-7 lg:left-auto lg:right-6">
@@ -336,8 +337,8 @@ const einstieg = [
           {tagesablauf.map((s) => (
             <li class="rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
               <div class="relative">
-                <img src={s.bild} alt={s.alt} width="600" height="400" loading="lazy" decoding="async"
-                     class="aspect-[3/2] w-full rounded-t-2xl object-cover" />
+                <Bild src={s.bild} alt={s.alt} sizes="(min-width: 1024px) 380px, 85vw"
+                      class="aspect-[3/2] w-full rounded-t-2xl object-cover" />
                 <span class="absolute -bottom-6 left-6 grid h-12 w-12 place-items-center rounded-full
                              bg-hsp-teal text-[17px] font-bold text-white shadow-[0_6px_18px_rgba(0,0,0,0.2)]"
                       aria-hidden="true">{s.n}</span>
@@ -394,9 +395,9 @@ const einstieg = [
         </div>
 
         <div class="reveal">
-          <img src="/images/galerie-06.webp"
+          <Bild src="/images/galerie-06.webp"
                alt="Zwei Fundraiserinnen stehen Arm in Arm vor ihrer Crew-Unterkunft"
-               width="600" height="400" loading="lazy" decoding="async"
+               sizes="(min-width: 1024px) 560px, 92vw"
                class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
 
           <h2 class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">

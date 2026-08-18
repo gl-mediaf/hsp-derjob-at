@@ -184,3 +184,16 @@ html:has(#film-dialog[open]) { overflow: hidden; }
     min-height: max(460px, calc(100dvh - var(--kopf-hoehe, 111px)));
   }
 }
+
+/* ── Fotobaender: kleine Fassung auf schmalen Fenstern ───────────────
+   Hintergrundbilder kennen kein srcset. Deshalb liefert FotoBand.astro
+   zwei Adressen als Variablen mit, und hier wird umgeschaltet. Sonst
+   laedt ein Handy die volle Breite und rechnet sie herunter.          */
+.fotoband {
+  background-image: var(--band-verlauf), var(--band-klein);
+}
+@media (min-width: 1025px) {
+  .fotoband {
+    background-image: var(--band-verlauf), var(--band-gross);
+  }
+}

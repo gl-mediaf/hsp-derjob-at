@@ -1,4 +1,5 @@
 ---
+import Bild from './Bild.astro';
 /**
  * Erfahrungsberichte als anklickbare Videos.
  *
@@ -29,9 +30,9 @@ const stimmen = [
       {stimmen.map((s) => (
         <li class="overflow-hidden rounded-2xl bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
           <div class="relative aspect-video overflow-hidden rounded-xl bg-black" data-film-halter>
-            <img src={s.bild} alt={`${s.name}, ${s.alter} Jahre, ${s.rolle}`}
-                 width="400" height="225" loading="lazy" decoding="async"
-                 class="absolute inset-0 h-full w-full object-cover" data-film-bild />
+            <Bild src={s.bild} alt={`${s.name}, ${s.alter} Jahre, ${s.rolle}`}
+                  sizes="(min-width: 640px) 300px, 85vw"
+                  class="absolute inset-0 h-full w-full object-cover" data-film-bild />
 
             {s.video && (
               <button type="button" data-film-start data-film-gross data-video={s.video}

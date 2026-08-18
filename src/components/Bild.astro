@@ -1,0 +1,66 @@
+---
+import masse from '../data/bildmasse.json';
+
+/**
+ * Bild mit mehreren Groessen.
+ *
+ * Statt einer einzigen Datei fuer alle Geraete bekommt der Browser eine Liste
+ * und sucht sich die passende aus. Auf dem Handy sind das oft 640 statt 2400
+ * Pixel Breite - rund vier Fuenftel weniger Daten.
+ *
+ * Masse und verfuegbare Stufen kommen aus src/data/bildmasse.json, die
+ * scripts/bildgroessen.mjs vor jedem Bauen neu schreibt. Deshalb muessen hier
+ * keine Zahlen von Hand gepflegt werden - im alten Markup standen an vielen
+ * Stellen falsche.
+ *
+ * `sizes` sagt dem Browser, wie breit das Bild im Layout tatsaechlich wird.
+ * Ohne die Angabe nimmt er die volle Fensterbreite an und laedt zu gross.
+ * Also immer mitgeben, wenn das Bild nicht ueber die ganze Breite laeuft.
+ */
+export interface Props {
+  src:      string;                 // z. B. /images/hero.webp
+  alt:      string;
+  sizes?:   string;
+  class?:   string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  decoding?: 'async' | 'sync' | 'auto';
+  [key: string]: unknown;           // durchgereichte Zusaetze, etwa data-film-bild
+}
+
+const {
+  src, alt,
+  sizes = '100vw',
+  class: klasse = '',
+  loading = 'lazy',
+  fetchpriority,
+  decoding = 'async',
+  ...rest
+} = Astro.props;
+
+// Schluessel wie in der Tabelle: Pfad ohne fuehrenden Schraegstrich und
+// ohne Endung, also etwa 'images/hero' oder 'videos/rundgang-poster'.
+const name = src.replace(/^\//, '').replace(/\.webp$/, '');
+const dateiname = name.replace(/\//g, '_');
+const eintrag = (masse as Record<string, { w: number; h: number; stufen: number[] }>)[name];
+
+// Unbekanntes Bild: ohne srcset ausliefern statt auf Dateien zu verweisen,
+// die es nicht gibt.
+const srcset = eintrag?.stufen?.length
+  ? [...eintrag.stufen.map((b) => `/images/g/${dateiname}-${b}.webp ${b}w`), `${src} ${eintrag.w}w`].join(', ')
+  : undefined;
+---
+
+<img
+  src={src}
+  srcset={srcset}
+  sizes={srcset ? sizes : undefined}
+  alt={alt}
+  width={eintrag?.w}
+  height={eintrag?.h}
+  loading={loading}
+  fetchpriority={fetchpriority}
+  decoding={decoding}
+  class={klasse}
+  {...rest}
+/>

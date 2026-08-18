@@ -1,4 +1,5 @@
 ---
+import Bild from './Bild.astro';
 import Layout       from '../layouts/Layout.astro';
 import Nav          from './Nav.astro';
 import Footer       from './Footer.astro';
@@ -54,8 +55,8 @@ const weitere = alleArtikel.filter((a) => a.pfad !== pfad);
       </div>
     </section>
 
-    <img src={bild} alt={alt} width="1500" height="600" fetchpriority="high" decoding="async"
-         class="h-[220px] w-full object-cover sm:h-[340px] lg:h-[420px]" />
+    <Bild src={bild} alt={alt} sizes="100vw" loading="eager" fetchpriority="high"
+          class="h-[220px] w-full object-cover sm:h-[340px] lg:h-[420px]" />
 
     <!-- ══ Artikeltext ══ -->
     <article class="bg-white py-[60px]">

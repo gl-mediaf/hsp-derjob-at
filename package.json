@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "build": "node scripts/bildgroessen.mjs && astro build",
+    "preview": "astro preview",
+    "bildgroessen": "node scripts/bildgroessen.mjs"
   },
   "dependencies": {
     "@astrojs/tailwind": "6.0.2",

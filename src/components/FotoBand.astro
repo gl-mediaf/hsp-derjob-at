@@ -1,10 +1,17 @@
 ---
+import masse from '../data/bildmasse.json';
+
 /**
  * Vollbreiter Abschnitt mit Foto im Hintergrund und heller Schrift darueber.
  *
  * Das Foto liegt als CSS-Hintergrund auf dem Abschnitt selbst – so wie auf der
  * Originalseite. Ein <img> mit loading="lazy" wurde hier bewusst NICHT benutzt:
  * es wurde in Chrome nicht geladen, solange es hinter dem Inhalt lag.
+ *
+ * Weil es ein Hintergrund ist, greift kein srcset. Stattdessen bekommt der
+ * Abschnitt zwei Adressen mit: eine kleine und die volle. Welche gilt,
+ * entscheidet eine Medienabfrage in global.css. Ohne das laedt ein Handy die
+ * 1800 Pixel breite Fassung und rechnet sie auf 390 herunter.
  *
  * Der Abdunkler (scrim) liegt als Verlauf ueber dem Foto, damit die weisse
  * Schrift auf jedem Motiv lesbar bleibt.
@@ -27,18 +34,27 @@ const {
   abstand  = 'py-[60px] sm:py-[100px]',
 } = Astro.props;
 
-const hintergrund = [
-  `linear-gradient(${scrim}, ${scrim})`,
-  `url('${bild}')`,
-].join(', ');
+const name    = bild.replace(/^\//, '').replace(/\.webp$/, '');
+const eintrag = (masse as Record<string, { w: number; stufen: number[] }>)[name];
+
+// Fuer schmale Fenster die 1024er Fassung, falls es sie gibt.
+const klein   = eintrag?.stufen?.includes(1024)
+  ? `/images/g/${name.replace(/\//g, '_')}-1024.webp`
+  : bild;
+const verlauf = `linear-gradient(${scrim}, ${scrim})`;
+
+const stil = [
+  `--band-verlauf:${verlauf}`,
+  `--band-klein:url('${klein}')`,
+  `--band-gross:url('${bild}')`,
+  `background-position:${position}`,
+].join(';');
 ---
 
 <!--
   bg-hsp-ink als Notnagel: sollte das Foto einmal nicht laden, steht die weisse
   Schrift auf Dunkelgrau statt auf Weiss und bleibt damit lesbar.
 -->
-<section
-  class={`auf-foto bg-hsp-ink bg-cover bg-no-repeat text-white ${abstand}`}
-  style={`background-image:${hintergrund};background-position:${position};`}>
+<section class={`fotoband auf-foto bg-hsp-ink bg-cover bg-no-repeat text-white ${abstand}`} style={stil}>
   <slot />
 </section>

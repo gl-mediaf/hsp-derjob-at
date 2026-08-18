@@ -6,3 +6,6 @@ dist/
 !.env.example
 .DS_Store
 .vercel
+
+# Abgeleitete Bildgroessen - werden beim Bauen erzeugt
+public/images/g/
