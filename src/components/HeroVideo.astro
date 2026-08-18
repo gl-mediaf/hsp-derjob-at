@@ -1,0 +1,72 @@
+---
+import Bild from './Bild.astro';
+
+/**
+ * Hintergrundfilm im Hero.
+ *
+ * Gezeigt wird zuerst das Standbild. Der Film wird nachgeladen und startet
+ * stumm in Schleife, sobald er genug Daten hat - so steht sofort ein Bild und
+ * nichts blinkt.
+ *
+ * Bewusst NICHT geladen wird er
+ *   - bei prefers-reduced-motion (Systemeinstellung gegen Bewegung),
+ *   - auf schmalen Fenstern unter 640 px, wo er nur Daten kostet,
+ *   - bei gedrosselter Verbindung oder aktivem Datensparmodus.
+ * In all diesen Faellen bleibt das Standbild stehen. Die Sektion funktioniert
+ * also auch ganz ohne Film.
+ *
+ * Zwei Formate: WebM ist kleiner, MP4 versteht jeder Browser. Zwei Groessen,
+ * damit ein Handy nicht die Desktopfassung zieht.
+ */
+export interface Props {
+  poster: string;
+  alt:    string;
+  basis:  string;   // z. B. /videos/hero - ohne Groesse und Endung
+}
+const { poster, alt, basis } = Astro.props;
+---
+
+<div class="absolute inset-0 -z-10 overflow-hidden" data-hero-film data-basis={basis}>
+  <Bild src={poster} alt={alt} sizes="100vw" loading="eager" fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover object-[center_30%]" />
+</div>
+
+<script is:inline>
+  (function () {
+    var halter = document.querySelector('[data-hero-film]');
+    if (!halter) return;
+
+    var ruhig  = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var schmal = matchMedia('(max-width: 639px)').matches;
+    var v      = navigator.connection || {};
+    var sparen = v.saveData === true || /^(slow-2g|2g|3g)$/.test(v.effectiveType || '');
+    if (ruhig || schmal || sparen) return;
+
+    var basis  = halter.getAttribute('data-basis');
+    var breite = matchMedia('(min-width: 1024px)').matches ? '1600' : '960';
+
+    var film = document.createElement('video');
+    film.muted = true; film.defaultMuted = true;
+    film.loop = true; film.autoplay = true; film.playsInline = true;
+    film.setAttribute('muted', ''); film.setAttribute('playsinline', '');
+    film.preload = 'auto';
+    film.setAttribute('aria-hidden', 'true'); film.tabIndex = -1;
+    film.className =
+      'absolute inset-0 h-full w-full object-cover object-[center_30%] opacity-0 transition-opacity duration-700';
+
+    [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (f) {
+      var q = document.createElement('source');
+      q.src = basis + '-' + breite + '.' + f[0];
+      q.type = f[1];
+      film.appendChild(q);
+    });
+
+    // Erst einblenden, wenn wirklich Bilder da sind - sonst blitzt Schwarz auf.
+    film.addEventListener('canplay', function () { film.classList.remove('opacity-0'); }, { once: true });
+    film.addEventListener('error', function () { film.remove(); });
+
+    halter.appendChild(film);
+    var start = film.play();
+    if (start && start.catch) start.catch(function () { film.remove(); });
+  })();
+</script>

@@ -1,5 +1,6 @@
 ---
 import Bild from '../components/Bild.astro';
+import HeroVideo from '../components/HeroVideo.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav    from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -117,10 +118,11 @@ const einstieg = [
     <!-- ══ Hero: Bildband mit nur zwei Zeilen, unten links ══ -->
     <section class="hero-fensterhoch relative isolate flex min-h-[420px] items-end overflow-hidden
                     sm:min-h-[560px]">
-      <Bild src="/images/hero.webp"
-            alt="Eine Fundraiserin steht an der geöffneten Autotür und blickt in die Ferne"
-            sizes="100vw" loading="eager" fetchpriority="high"
-            class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_30%]" />
+      <HeroVideo
+        basis="/videos/hero"
+        poster="/videos/hero-poster.webp"
+        alt="Eine Fundraiserin steigt in ein Fahrzeug des Österreichischen Roten Kreuzes und fährt los"
+      />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
       <div class="container-hsp pb-14 lg:pb-16">
