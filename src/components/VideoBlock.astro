@@ -18,8 +18,14 @@ export interface Props {
   titel?:      string;
   unterzeile?: string;
   dauer?:      string;
+  /**
+   * Film im Overlay statt an Ort und Stelle abspielen. Sinnvoll ueberall dort,
+   * wo der Block schmal ist - etwa auf der Startseite, wo er nur die halbe
+   * Spaltenbreite hat.
+   */
+  gross?:      boolean;
 }
-const { poster, alt, video, titel, unterzeile, dauer } = Astro.props;
+const { poster, alt, video, titel, unterzeile, dauer, gross = false } = Astro.props;
 ---
 
 <figure class="reveal overflow-hidden rounded-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
@@ -28,7 +34,7 @@ const { poster, alt, video, titel, unterzeile, dauer } = Astro.props;
           class="absolute inset-0 h-full w-full object-cover" data-film-bild />
 
     {video ? (
-      <button type="button" data-film-start data-video={video}
+      <button type="button" data-film-start data-film-gross={gross ? '' : undefined} data-video={video}
               class="absolute inset-0 grid place-items-center bg-black/25 transition-colors hover:bg-black/35"
               aria-label={`Video abspielen${titel ? ': ' + titel : ''}`}>
         <span class="grid h-[76px] w-[76px] place-items-center rounded-full bg-white/95 shadow-lg
