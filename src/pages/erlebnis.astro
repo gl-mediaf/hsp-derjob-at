@@ -32,11 +32,6 @@ const galerie = [
   { n: '12', alt: 'Ein Fundraiser bei seinem Ferienjob an einer Tür' },
 ];
 
-const clips = [
-  { titel: 'Coachings auf Malle',       bild: '/images/erl-krankenwagen.webp', alt: 'Eine Fundraiserin lehnt lächelnd an einem Einsatzfahrzeug' },
-  { titel: 'Ein ganz normales Coaching', bild: '/images/galerie-04.webp',      alt: 'Ein Fundraiser sitzt mit einem Bürger am Tablet' },
-  { titel: 'Das Leben in der Crew',      bild: '/images/galerie-05.webp',      alt: 'Eine Gruppe Fundraiser sitzt am Bordstein zusammen' },
-];
 ---
 
 <Layout
@@ -48,7 +43,7 @@ const clips = [
   <main id="inhalt">
     <SeitenHero
       bild="/images/hero-erlebnis.webp"
-      alt="Eine Gruppe Fundraiser klatscht gemeinsam ab"
+      alt="Eine Fundraiserin steht lächelnd an einem Geländer, im Hintergrund ein Dorf"
       titel="Dein Erlebnis"
       unterzeile="Für unvergessliche Momente!"
     />
@@ -71,27 +66,24 @@ const clips = [
 
     <NgoBand />
 
-    <!-- ══ Clips ══ -->
-    <section class="bg-white py-[70px]" aria-labelledby="clips-titel">
+    <!-- ══ Film: warum die Leute dabei sind ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="film-stimmen">
       <div class="container-hsp">
-        <h2 id="clips-titel" class="sr-only">Eindrücke aus dem Crew-Alltag</h2>
-        <ul class="reveal karten-slider gap-8 md:grid-cols-3">
-          {clips.map((c) => (
-            <li class="overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-              <div class="relative">
-                <img src={c.bild} alt={c.alt} width="600" height="400" loading="lazy" decoding="async"
-                     class="aspect-[3/2] w-full object-cover" />
-                <span class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
-                  <svg class="h-14 w-14 drop-shadow-lg" viewBox="0 0 64 64" fill="none">
-                    <circle cx="32" cy="32" r="30" stroke="white" stroke-width="3" />
-                    <path d="M26 21l18 11-18 11V21z" fill="white" />
-                  </svg>
-                </span>
-              </div>
-              <p class="px-5 py-4 text-center text-[20px] font-bold text-hsp-ink sm:text-[24px]">{c.titel}</p>
-            </li>
-          ))}
-        </ul>
+        <h2 id="film-stimmen"
+            class="reveal mb-3 text-center text-[30px] font-bold leading-tight text-hsp-ink sm:text-[40px]">
+          Warum machen die das?
+        </h2>
+        <p class="reveal mx-auto mb-10 max-w-[620px] text-center text-[16px] leading-relaxed text-hsp-body sm:text-[18px]">
+          Eindrücke und Erfahrungen
+        </p>
+        <div class="mx-auto max-w-[880px]">
+          <VideoBlock
+            video={videos.stimmen}
+            poster="/videos/video-stimmen-poster.webp"
+            alt="Vier Fundraiserinnen und Fundraiser im Interview"
+            dauer="1:40"
+          />
+        </div>
       </div>
     </section>
 
@@ -119,31 +111,9 @@ const clips = [
         <p class="mt-2 text-[18px]">
           Nutze deine Zeit sinnvoll und erwerbe Fähigkeiten fürs Leben
         </p>
-        <a href="#anfrage" class="btn-primary mt-6 px-8 py-3.5 text-[17px]">Sichere dir deinen Ferienjob</a>
+        <a href="#anfrage" class="btn-primary mt-6 px-8 py-3.5 text-[17px]">Sichere dir deinen flexiblen Ferienjob</a>
       </div>
     </FotoBand>
-
-    <!-- ══ Film: warum die Leute dabei sind ══ -->
-    <section class="bg-white py-[70px]" aria-labelledby="film-stimmen">
-      <div class="container-hsp">
-        <h2 id="film-stimmen"
-            class="reveal mb-3 text-center text-[30px] font-bold leading-tight text-hsp-ink sm:text-[40px]">
-          Warum machen die das?
-        </h2>
-        <p class="reveal mx-auto mb-10 max-w-[620px] text-center text-[16px] leading-relaxed text-hsp-body sm:text-[18px]">
-          Vier Fundraiser über das, was sie am Job hält – und worauf sie sich beim
-          nächsten Einsatz freuen.
-        </p>
-        <div class="mx-auto max-w-[880px]">
-          <VideoBlock
-            video={videos.stimmen}
-            poster="/videos/video-stimmen-poster.webp"
-            alt="Vier Fundraiserinnen und Fundraiser im Interview"
-            dauer="1:40"
-          />
-        </div>
-      </div>
-    </section>
 
     <!-- ══ Galerie ══ -->
     <section class="bg-white py-[70px]" aria-labelledby="galerie-titel">

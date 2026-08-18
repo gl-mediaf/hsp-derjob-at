@@ -4,10 +4,11 @@ import LogoSlider from './LogoSlider.astro';
 /**
  * Partnerband.
  *
- * Bei mehreren Logos laeuft der Slider. Bei genau einem Logo waere der Slider
- * sinnlos - dort stand eine fast leere Flaeche mit Punktnavigation fuer ein
- * einziges Element. Deshalb in dem Fall eine kompakte Zeile: Text und Logo
- * nebeneinander, deutlich weniger Hoehe.
+ * Bei genau einem Logo waere ein Slider sinnlos. Frueher standen Titel und
+ * Logo nebeneinander in einer schmalen Zeile - das Logo war dabei so klein,
+ * dass man es kaum erkannte. Da das Oesterreichische Rote Kreuz in Oesterreich
+ * eine Institution ist, steht der Titel jetzt darueber und das Logo gross
+ * darunter.
  */
 export interface Props { titel?: string }
 const { titel = 'Unterwegs für die größte NGO Österreichs:' } = Astro.props;
@@ -19,13 +20,14 @@ const einzeln = ngos.length === 1;
 ---
 
 {einzeln ? (
-  <section class="border-y border-black/[0.06] bg-hsp-light py-7 sm:py-9" aria-labelledby="ngo-titel">
-    <div class="container-hsp flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
-      <h2 id="ngo-titel" class="text-center text-[16px] leading-snug text-hsp-body sm:text-[18px]">
+  <section class="border-y border-black/[0.06] bg-hsp-light py-10 sm:py-14" aria-labelledby="ngo-titel">
+    <div class="container-hsp text-center">
+      <h2 id="ngo-titel"
+          class="mb-6 text-[17px] font-bold leading-snug text-hsp-body sm:mb-8 sm:text-[20px]">
         {titel}
       </h2>
       <img src={ngos[0].src} alt={ngos[0].alt} width="600" height="400" loading="lazy" decoding="async"
-           class="h-14 w-auto object-contain sm:h-16" />
+           class="mx-auto h-24 w-auto object-contain sm:h-32 lg:h-36" />
     </div>
   </section>
 ) : (
