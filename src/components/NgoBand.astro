@@ -1,43 +1,65 @@
 ---
-import LogoSlider from './LogoSlider.astro';
+import Bild from './Bild.astro';
+import masse from '../data/bildmasse.json';
 
 /**
- * Partnerband.
+ * Partnerband: das Oesterreichische Rote Kreuz auf einem Einsatzfoto.
  *
- * Bei genau einem Logo waere ein Slider sinnlos. Frueher standen Titel und
- * Logo nebeneinander in einer schmalen Zeile - das Logo war dabei so klein,
- * dass man es kaum erkannte. Da das Oesterreichische Rote Kreuz in Oesterreich
- * eine Institution ist, steht der Titel jetzt darueber und das Logo gross
- * darunter.
+ * Vorher stand hier nur ein kleines Logo auf grauer Flaeche - viel Platz,
+ * wenig Wirkung. Jetzt traegt ein abgedunkeltes Foto die Sektion, das Logo
+ * sitzt mittig auf weisser Karte.
+ *
+ * Der Bildausschnitt ist bewusst so gewaehlt, dass die Person links neben der
+ * Karte steht und nicht dahinter verschwindet.
+ *
+ * Das Foto liegt als CSS-Hintergrund auf dem Abschnitt - wie bei FotoBand.
+ * Ein <img> dahinter wurde in Chrome nicht geladen, solange es hinter dem
+ * Inhalt lag. Fuer schmale Fenster gibt es eine kleinere Fassung, umgeschaltet
+ * wird in global.css ueber .fotoband.
  */
-export interface Props { titel?: string }
-const { titel = 'Unterwegs für die größte NGO Österreichs:' } = Astro.props;
+export interface Props {
+  titel?:      string;
+  unterzeile?: string;
+  bild?:       string;
+}
+const {
+  titel      = 'Unterwegs für',
+  unterzeile = 'die größte Non-Profit-Organisation Österreichs',
+  bild       = '/images/ngo-band.webp',
+} = Astro.props;
 
-const ngos = [
-  { src: '/images/ngo-oerk.webp', alt: 'Logo des Österreichischen Roten Kreuzes' },
-];
-const einzeln = ngos.length === 1;
+const name    = bild.replace(/^\//, '').replace(/\.webp$/, '');
+const eintrag = (masse as Record<string, { stufen: number[] }>)[name];
+const klein   = eintrag?.stufen?.includes(1024)
+  ? `/images/g/${name.replace(/\//g, '_')}-1024.webp`
+  : bild;
+
+const scrim = 'rgba(0,0,0,0.46)';
+const stil  = [
+  `--band-verlauf:linear-gradient(${scrim}, ${scrim})`,
+  `--band-klein:url('${klein}')`,
+  `--band-gross:url('${bild}')`,
+  'background-position:center',
+].join(';');
 ---
 
-{einzeln ? (
-  <section class="border-y border-black/[0.06] bg-hsp-light py-10 sm:py-14" aria-labelledby="ngo-titel">
-    <div class="container-hsp text-center">
-      <h2 id="ngo-titel"
-          class="mb-6 text-[17px] font-bold leading-snug text-hsp-body sm:mb-8 sm:text-[20px]">
-        {titel}
-      </h2>
-      <img src={ngos[0].src} alt={ngos[0].alt} width="600" height="400" loading="lazy" decoding="async"
-           class="mx-auto h-24 w-auto object-contain sm:h-32 lg:h-36" />
+<section class="fotoband bg-hsp-ink bg-cover bg-no-repeat py-14 text-white sm:py-20"
+         style={stil} aria-labelledby="ngo-titel">
+  <div class="container-hsp text-center">
+
+    <p class="text-[19px] leading-snug text-white/90 sm:text-[22px]">{titel}</p>
+
+    <div class="mx-auto mt-5 w-fit rounded-2xl bg-white/95 px-10 py-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)] sm:px-14 sm:py-10">
+      <Bild src="/images/ngo-oerk.webp"
+            alt="Logo des Österreichischen Roten Kreuzes"
+            sizes="(min-width: 640px) 200px, 150px"
+            class="h-[110px] w-auto object-contain sm:h-[150px]" />
     </div>
-  </section>
-) : (
-  <section class="bg-hsp-light pb-8 pt-[35px]" aria-labelledby="ngo-titel">
-    <div class="container-hsp">
-      <h2 id="ngo-titel" class="mb-8 text-center text-[17px] leading-6 text-hsp-ink sm:text-[20px]">
-        {titel}
-      </h2>
-      <LogoSlider id="ngo-slider" logos={ngos} hoehe="h-24 sm:h-24 lg:h-28"
-                  abstand="sm:gap-x-10 sm:gap-y-6" intervall={3000} />
-    </div>
-  </section>
-)}
+
+    <h2 id="ngo-titel"
+        class="mx-auto mt-7 max-w-[720px] text-[22px] font-bold leading-snug text-white sm:text-[28px]">
+      {unterzeile}
+    </h2>
+
+  </div>
+</section>
