@@ -4,6 +4,7 @@ import Layout       from '../layouts/Layout.astro';
 import Nav          from '../components/Nav.astro';
 import Footer       from '../components/Footer.astro';
 import AbschlussCta from '../components/AbschlussCta.astro';
+import NgoBand      from '../components/NgoBand.astro';
 
 const artikel = [
   {
@@ -109,6 +110,14 @@ const artikel = [
         </ul>
       </div>
     </section>
+
+
+    <!--
+      Partnerband. Steht bewusst nie direkt unter dem Hero, damit keine zwei
+      Sektionen mit Hintergrundbild aufeinanderfolgen - dazwischen liegt immer
+      mindestens ein Abschnitt auf ruhigem Grund.
+    -->
+    <NgoBand />
 
     <AbschlussCta />
   </main>

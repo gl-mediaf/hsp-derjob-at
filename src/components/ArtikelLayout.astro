@@ -4,6 +4,7 @@ import Layout       from '../layouts/Layout.astro';
 import Nav          from './Nav.astro';
 import Footer       from './Footer.astro';
 import AbschlussCta from './AbschlussCta.astro';
+import NgoBand      from './NgoBand.astro';
 
 export interface Abschnitt {
   h?: string;      // Hauptueberschrift des Abschnitts (h2)
@@ -90,6 +91,13 @@ const weitere = alleArtikel.filter((a) => a.pfad !== pfad);
         ))}
       </div>
     </article>
+
+    <!--
+      Partnerband. Steht bewusst nie direkt unter dem Hero, damit keine zwei
+      Sektionen mit Hintergrundbild aufeinanderfolgen - dazwischen liegt immer
+      mindestens ein Abschnitt auf ruhigem Grund.
+    -->
+    <NgoBand />
 
     <!-- ══ Weitere Artikel ══ -->
     <section class="bg-hsp-light py-[60px]" aria-labelledby="weitere-titel">
