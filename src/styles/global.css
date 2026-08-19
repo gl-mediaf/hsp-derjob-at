@@ -197,3 +197,38 @@ html:has(#film-dialog[open]) { overflow: hidden; }
     background-image: var(--band-verlauf), var(--band-gross);
   }
 }
+
+/* ── Verdienstrechner: Hinweis auf den Schieber ──────────────────────
+   Ein pulsierender Ring auf dem Griff, damit erkennbar ist, dass sich
+   hier etwas bewegen laesst. Sobald jemand den Schieber anfasst, hoert
+   das Pulsieren auf - danach waere es nur noch Unruhe.                */
+.puls-ring {
+  animation: pulsRing 1.9s ease-out infinite;
+}
+.puls-text {
+  animation: pulsText 1.9s ease-in-out infinite;
+}
+.ist-benutzt .puls-ring { animation: none; opacity: 0; }
+.ist-benutzt .puls-text { animation: none; }
+
+@keyframes pulsRing {
+  0%   { transform: translate(-50%, -50%) scale(0.75); opacity: 0.85; }
+  70%  { transform: translate(-50%, -50%) scale(1.7);  opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1.7);  opacity: 0; }
+}
+@keyframes pulsText {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puls-ring { animation: none; opacity: 0.6; }
+  .puls-text { animation: none; opacity: 1; }
+}
+
+/* Griff des Schiebers etwas groesser, damit er gut zu treffen ist */
+.rechner input[type='range'] {
+  height: 18px;
+  cursor: grab;
+}
+.rechner input[type='range']:active { cursor: grabbing; }

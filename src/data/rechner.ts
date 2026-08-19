@@ -25,10 +25,14 @@ export const wochen = [
  * mit Sinnbild und Text. Sobald Fotos vorliegen, hier eintragen.
  */
 export const belohnungen = [
-  { ab:    0, sinnbild: '🎒', text: 'Wochenend-Trip finanziert' },
-  { ab: 1200, sinnbild: '🎪', text: 'Festival-Sommer komplett' },
-  { ab: 1900, sinnbild: '✈️', text: 'Ein Monat Backpacking' },
+  { ab:    0, sinnbild: '🚗', text: 'Wochenend-Trip finanziert',
+    bild: '/images/lohn/wochenende.webp', alt: 'Eine Bergstraße, ein Auto unterwegs' },
+  { ab: 1200, sinnbild: '🎪', text: 'Festival-Sommer komplett',
+    bild: '/images/lohn/festival.webp',   alt: 'Eine Crew macht ein gemeinsames Selfie' },
+  { ab: 1900, sinnbild: '🥾', text: 'Ein Monat Backpacking',
+    bild: '/images/lohn/backpacking.webp', alt: 'Jemand steigt neben einem Wasserfall bergauf' },
   { ab: 2700, sinnbild: '🚴', text: 'Neues Rennrad' },
   { ab: 3300, sinnbild: '☕', text: 'Siebträgermaschine' },
-  { ab: 4500, sinnbild: '🌏', text: 'Drei Monate Südostasien' },
+  { ab: 4500, sinnbild: '🏔️', text: 'Drei Monate unterwegs',
+    bild: '/images/lohn/fernreise.webp',  alt: 'Blick über einen türkisen Stausee in den Bergen' },
 ] as const;

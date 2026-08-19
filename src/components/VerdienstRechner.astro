@@ -49,11 +49,17 @@ const schnitt = punkte.find((p) => p.woche === 4)!;
      data-wochen={JSON.stringify(wochen)}
      data-belohnungen={JSON.stringify(belohnungen)}>
 
-  {/* ── Belohnung ───────────────────────────────────────────────── */}
-  <figure class="order-2 flex min-h-[230px] flex-col justify-end rounded-2xl bg-hsp-teal p-7 text-white sm:min-h-[290px] lg:order-1">
-    <span class="text-[54px] leading-none sm:text-[68px]" aria-hidden="true" data-lohn-bild>🎒</span>
-    <figcaption class="mt-4">
-      <p class="text-[13px] font-bold uppercase tracking-wide text-white/70">Damit geht sich aus</p>
+  {/* ── Belohnung: Foto, wo eines passt, sonst Farbflaeche ──────── */}
+  <figure class="lohn order-2 relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl bg-hsp-teal p-7 text-white sm:min-h-[320px] lg:order-1">
+    <img data-lohn-foto src={belohnungen[0].bild} alt=""
+         width="1000" height="1000" loading="lazy" decoding="async"
+         class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300" />
+    {/* Abdunkler, damit die Schrift auf jedem Motiv lesbar bleibt */}
+    <div data-lohn-schleier class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"></div>
+
+    <span class="relative text-[46px] leading-none sm:text-[56px]" aria-hidden="true" data-lohn-bild>🚗</span>
+    <figcaption class="relative mt-3">
+      <p class="text-[13px] font-bold uppercase tracking-wide text-white/75">Damit geht sich aus</p>
       <p class="mt-1 text-[24px] font-bold leading-tight sm:text-[30px]" data-lohn-text>
         Wochenend-Trip finanziert
       </p>
@@ -98,14 +104,18 @@ const schnitt = punkte.find((p) => p.woche === 4)!;
       <span>~{maxGeld.toLocaleString('de-DE')} €</span>
     </div>
 
-    <label class="mt-4 block">
+    <label class="relative mt-4 block" data-schieber-huelle>
       <span class="sr-only">Wie viele Wochen bist du unterwegs?</span>
+      {/* Pulsierender Ring auf dem Griff. Verschwindet, sobald jemand den
+          Schieber anfasst - danach waere er nur noch Unruhe. */}
+      <span class="puls-ring pointer-events-none absolute top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2
+                   rounded-full border-2 border-hsp-teal" aria-hidden="true" data-puls></span>
       <input type="range" data-schieber
              min="1" max={wochen.length} step="0.1" value="4"
-             class="w-full accent-hsp-teal" />
+             class="relative w-full accent-hsp-teal" />
     </label>
-    <p class="mt-1 text-center text-[13px] text-hsp-body/70">
-      Schieb über die Kurve
+    <p class="puls-text mt-2 text-center text-[13px] font-bold text-hsp-teal" data-hinweis>
+      ← Schieb über die Kurve →
     </p>
 
     <div class="mt-4 rounded-xl border-t-[3px] border-hsp-teal bg-hsp-light px-5 py-4">
@@ -131,6 +141,9 @@ const schnitt = punkte.find((p) => p.woche === 4)!;
     var punkt    = wurzel.querySelector('[data-punkt]');
     var lohnBild = wurzel.querySelector('[data-lohn-bild]');
     var lohnText = wurzel.querySelector('[data-lohn-text]');
+    var foto     = wurzel.querySelector('[data-lohn-foto]');
+    var schleier = wurzel.querySelector('[data-lohn-schleier]');
+    var puls     = wurzel.querySelector('[data-puls]');
     var pfad     = wurzel.querySelector('path[stroke]');
 
     // de-DE, nicht de-AT: Oesterreich setzt ein schmales Leerzeichen als
@@ -174,9 +187,52 @@ const schnitt = punkte.find((p) => p.woche === 4)!;
       var b = belohnungZu(betrag);
       if (lohnBild.textContent !== b.sinnbild) lohnBild.textContent = b.sinnbild;
       if (lohnText.textContent.trim() !== b.text) lohnText.textContent = b.text;
+
+      // Foto nur dort, wo eines hinterlegt ist. Sonst bleibt die Farbflaeche.
+      if (foto) {
+        if (b.bild) {
+          if (foto.getAttribute('src') !== b.bild) {
+            // Direkt setzen und beim Ladeereignis einblenden. Ueber ein
+            // Vorlade-Bild war es unzuverlaessig - das Ereignis kam nicht
+            // in jeder Umgebung an, und das Foto blieb stehen.
+            foto.style.opacity = '0';
+            foto.setAttribute('src', b.bild);
+            foto.setAttribute('alt', b.alt || '');
+          }
+          foto.style.display = '';
+          if (schleier) schleier.style.display = '';
+        } else {
+          foto.style.display = 'none';
+          if (schleier) schleier.style.display = 'none';
+        }
+      }
     }
 
-    schieber.addEventListener('input', malen);
+    // Der pulsierende Ring sitzt auf dem Griff und laeuft mit.
+    function ringSetzen() {
+      if (!puls) return;
+      var f = (parseFloat(schieber.value) - 1) / (wochen.length - 1);
+      var breite = schieber.offsetWidth, griff = 18;
+      puls.style.left = (griff / 2 + f * (breite - griff)) + 'px';
+    }
+
+    function angefasst() {
+      wurzel.classList.add('ist-benutzt');
+      schieber.removeEventListener('pointerdown', angefasst);
+      schieber.removeEventListener('keydown', angefasst);
+    }
+
+    if (foto) {
+      foto.addEventListener('load', function () { foto.style.opacity = '1'; });
+      if (foto.complete) foto.style.opacity = '1';
+    }
+
+    schieber.addEventListener('input', function () { malen(); ringSetzen(); });
+    schieber.addEventListener('pointerdown', angefasst);
+    schieber.addEventListener('keydown', angefasst);
+    addEventListener('resize', ringSetzen, { passive: true });
+
     malen();
+    ringSetzen();
   })();
 </script>
