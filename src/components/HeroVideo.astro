@@ -15,8 +15,9 @@ import Bild from './Bild.astro';
  * In all diesen Faellen bleibt das Standbild stehen. Die Sektion funktioniert
  * also auch ganz ohne Film.
  *
- * Zwei Formate: WebM ist kleiner, MP4 versteht jeder Browser. Zwei Groessen,
- * damit ein Handy nicht die Desktopfassung zieht.
+ * Nur MP4: Bei diesem Material fiel die WebM-Fassung groesser aus als H.264,
+ * ein zweites Format haette also nur Platz gekostet. Zwei Groessen, damit ein
+ * Handy nicht die Desktopfassung zieht.
  */
 export interface Props {
   poster: string;
@@ -54,12 +55,10 @@ const { poster, alt, basis } = Astro.props;
     film.className =
       'absolute inset-0 h-full w-full object-cover object-[center_30%] opacity-0 transition-opacity duration-700';
 
-    [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (f) {
-      var q = document.createElement('source');
-      q.src = basis + '-' + breite + '.' + f[0];
-      q.type = f[1];
-      film.appendChild(q);
-    });
+    var q = document.createElement('source');
+    q.src = basis + '-' + breite + '.mp4';
+    q.type = 'video/mp4';
+    film.appendChild(q);
 
     // Erst einblenden, wenn wirklich Bilder da sind - sonst blitzt Schwarz auf.
     film.addEventListener('canplay', function () { film.classList.remove('opacity-0'); }, { once: true });
