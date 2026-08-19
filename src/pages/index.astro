@@ -251,17 +251,23 @@ const einstieg = [
     </section>
 
     <!-- ══ Einstieg in drei Schritten ══ -->
+    <!--
+      Zwei Spalten ab Desktop: Foto links, Weg zur Anfrage rechts. Auf einer
+      Spalte (Handy) steht das Foto oben, damit der Abschnitt nicht mit einer
+      Liste beginnt. items-center haelt beide Spalten auf gleicher Hoehe
+      mittig, auch wenn das Foto kuerzer ist als die drei Schritte.
+    -->
     <section class="bg-white py-[70px]" aria-labelledby="einstieg-titel">
-      <div class="container-hsp grid max-w-[1000px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div class="container-hsp grid max-w-[1100px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
+
+        <Bild src="/images/galerie-06.webp"
+              alt="Die Crew macht ein gemeinsames Selfie"
+              sizes="(min-width: 1024px) 520px, 92vw"
+              class="reveal aspect-[4/3] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
 
         <div class="reveal">
-          <Bild src="/images/galerie-06.webp"
-               alt="Die Crew macht ein gemeinsames Selfie"
-               sizes="(min-width: 1024px) 560px, 92vw"
-               class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
-
           <h2 id="einstieg-titel"
-              class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
+              class="mb-7 text-[28px] font-bold leading-[1.15] text-hsp-ink sm:text-[36px]">
             Wie werde ich Fundraiser?
           </h2>
 
