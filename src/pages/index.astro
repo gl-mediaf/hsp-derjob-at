@@ -46,22 +46,22 @@ const kununu = [
 
 const karten = [
   {
-    bild:  '/images/karte-geld-crew.webp',
-    alt:   'Die ganze Fundraising-Crew des Roten Kreuzes steht beisammen',
+    bild:  '/images/galerie-10.webp',
+    alt:   'Die Crew bespricht am Fahrzeug die Karte für den Tag',
     titel: 'Ø 3.300 € in 4 Wochen',
     text:  'Du willst mit deinem flexiblen Ferienjob deine nächste Reise oder ein neues Projekt finanzieren? Dann bist du hier richtig!',
     href:  '/geld',
   },
   {
-    bild:  '/images/karte-gute-sache.webp',
-    alt:   'Eine lächelnde Fundraiserin unterwegs mit ihrem Tablet',
+    bild:  '/images/galerie-01.webp',
+    alt:   'Zwei Fundraiser gehen durch einen Ort zum nächsten Haus',
     titel: 'Für die gute Sache unterwegs',
     text:  'Du möchtest dich für einen guten Zweck einsetzen und dabei die größte NGO des Landes unterstützen? Dann starte jetzt durch!',
     href:  '/organisationen',
   },
   {
-    bild:  '/images/karte-freunde.webp',
-    alt:   'Drei Fundraiser lachen gemeinsam neben ihrem Einsatzfahrzeug',
+    bild:  '/images/galerie-04.webp',
+    alt:   'Ein Fundraiser im Gespräch an einer Haustür',
     titel: 'Zusammen mit deinen Freunden',
     text:  'Du hast die Möglichkeit zusammen mit deinen Freunden zu arbeiten, denn du entscheidest selbst, wann, mit wem und wie lange du im Einsatz bist.',
     href:  '/erlebnis',
@@ -70,38 +70,7 @@ const karten = [
 
 const vorteileListe = ['Mach Ø 3.300 € in 4 Wochen', 'Unterwegs für den guten Zweck', 'Gemeinsam mit deinen Freunden'];
 
-const voraussetzungen = [
-  'Mindestens 18 Jahre alt (also auch als Schülerjob ab 18 möglich)',
-  'Motivation, im Fundraiser Job aktiv zu werden und dranzubleiben',
-  'Bereitschaft, mehrere Wochen am Stück unterwegs zu sein',
-  'Interesse daran, für eine gute Sache Spenden zu sammeln',
-  'Lust, mit anderen Fundraisern in einer Crew zusammenzuarbeiten',
-  'Überzeugungskraft ist von Vorteil, kann aber auch antrainiert werden',
-];
 
-const tagesablauf = [
-  {
-    n:     '01',
-    titel: 'Morgens in der Crew',
-    text:  'Ihr besprecht die Ziele des Tages, tauscht Erfahrungen aus und fahrt gemeinsam ins Einsatzgebiet.',
-    bild:  '/images/galerie-10.webp',
-    alt:   'Die Crew bespricht am Fahrzeug die Karte für den Tag',
-  },
-  {
-    n:     '02',
-    titel: 'Unterwegs von Tür zu Tür',
-    text:  'Vor Ort gehst du auf Menschen zu und entwickelst schnell ein Gefühl dafür, wie du unterschiedliche Leute erreichst.',
-    bild:  '/images/galerie-01.webp',
-    alt:   'Zwei Fundraiser gehen durch einen Ort zum nächsten Haus',
-  },
-  {
-    n:     '03',
-    titel: 'Das Gespräch an der Tür',
-    text:  'Du erklärst, wofür sich die Organisation einsetzt, beantwortest Fragen und gewinnst neue Unterstützer.',
-    bild:  '/images/galerie-04.webp',
-    alt:   'Ein Fundraiser im Gespräch an einer Haustür',
-  },
-];
 
 const einstieg = [
   { n: '1', titel: 'Online anfragen',           text: 'Ein kurzes Formular ausfüllen – mehr braucht es nicht.' },
@@ -159,50 +128,11 @@ const einstieg = [
           alt="Ein Tag mit einer Fundraiserin: von der Unterkunft bis an die Haustür"
           dauer="0:50"
           gross
+          blase={{ zahl: 'Ø 3.300 €', zusatz: 'in 4 Wochen' }}
         />
 
       </div>
     </section>
-
-    <!-- ══ Intro: zwei Spalten unter dem Hero ══ -->
-    <section class="bg-white pb-[35px] pt-10" aria-labelledby="intro-titel">
-      <div class="container-hsp grid gap-x-12 gap-y-8 lg:grid-cols-2">
-
-        <div>
-          <h2 id="intro-titel"
-              class="text-[30px] font-bold leading-[1.1] text-black sm:text-[40px] sm:leading-[44px]">
-            Werde jetzt Fundraiser für die gute Sache!
-          </h2>
-          <p class="mt-5 max-w-[555px] text-[16px] leading-[1.7] text-hsp-ink sm:text-[18px] sm:leading-[30.6px]">
-            Wir bieten aufgeschlossenen, neugierigen Menschen eine Tätigkeit, bei der sie in kurzer
-            Zeit nicht nur Geld, richtig viel Geld machen, sondern sich einen Schub sowohl für ihre
-            persönliche als auch für eine berufliche Entwicklung holen.
-          </p>
-        </div>
-
-        <div class="flex flex-col justify-center gap-8">
-          <ul class="space-y-3">
-            {vorteileListe.map((p) => (
-              <li class="flex items-start gap-3 text-[15px] font-bold text-hsp-ink">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 20 20"
-                     fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="4 11 8 15 16 5" />
-                </svg>
-                <span>{p}</span>
-              </li>
-            ))}
-          </ul>
-
-          <!-- Bündig mit der Häkchenliste darüber, nicht zentriert -->
-          <a href="#anfrage" class="btn-primary w-fit gap-2 self-start px-8 py-3.5 text-[15px]">
-            <span aria-hidden="true">›</span> Sichere dir deinen flexiblen Ferienjob
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <NgoBand />
 
     <!-- ══ Vorteile: Bild links, 2×2-Raster rechts ══ -->
     <section class="bg-white py-[70px]" aria-labelledby="vorteile-titel">
@@ -320,82 +250,9 @@ const einstieg = [
       </div>
     </section>
 
-    <!-- ══ Aufgaben und Herausforderungen ══ -->
-    <section class="bg-hsp-light py-[70px]" aria-labelledby="aufgaben-titel">
-      <div class="container-hsp">
-
-        <div class="reveal max-w-[720px]">
-          <h2 id="aufgaben-titel"
-              class="mb-5 text-[30px] font-bold leading-[1.15] text-hsp-ink sm:text-[40px]">
-            Deine Arbeit als Fundraiser: Aufgaben und Herausforderungen
-          </h2>
-          <p class="text-[16px] leading-[1.75] text-hsp-ink sm:text-[18px]">
-            Als Fundraiser bist du direkt im Kontakt mit Menschen. Deine wichtigste Aufgabe ist es,
-            im persönlichen Gespräch neue Unterstützer für Hilfsorganisationen zu gewinnen und aktiv
-            Spenden zu sammeln. So sieht ein typischer Tag aus:
-          </p>
-        </div>
-
-        <ol class="reveal karten-slider mt-11 gap-8 md:grid-cols-3">
-          {tagesablauf.map((s) => (
-            <li class="rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-              <div class="relative">
-                <Bild src={s.bild} alt={s.alt} sizes="(min-width: 1024px) 380px, 85vw"
-                      class="aspect-[3/2] w-full rounded-t-2xl object-cover" />
-                <span class="absolute -bottom-6 left-6 grid h-12 w-12 place-items-center rounded-full
-                             bg-hsp-teal text-[17px] font-bold text-white shadow-[0_6px_18px_rgba(0,0,0,0.2)]"
-                      aria-hidden="true">{s.n}</span>
-              </div>
-              <div class="px-6 pb-7 pt-9">
-                <h3 class="mb-2 text-[20px] font-bold leading-snug text-hsp-ink sm:text-[22px]">{s.titel}</h3>
-                <p class="text-[15px] leading-relaxed text-hsp-body sm:text-[16px]">{s.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        <div class="reveal mt-12 max-w-[720px] rounded-2xl border-l-4 border-hsp-teal bg-white p-7
-                    shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-          <p class="mb-2 text-[19px] font-bold text-hsp-ink sm:text-[21px]">
-            Und die größte Herausforderung?
-          </p>
-          <p class="text-[16px] leading-[1.75] text-hsp-ink sm:text-[17px]">
-            Dranzubleiben. Du lernst, klar zu kommunizieren, auf Einwände einzugehen und auch nach
-            einem „Nein" motiviert zu bleiben. Genau daran wächst du: Mit jedem Gespräch wirst du
-            sicherer, überzeugender und erfolgreicher.
-          </p>
-        </div>
-
-
-      </div>
-    </section>
-
-    <!-- ══ Voraussetzungen und Einstieg ══ -->
-    <section class="bg-white py-[70px]" aria-labelledby="voraussetzungen-titel">
-      <div class="container-hsp grid max-w-[1100px] items-start gap-10 lg:grid-cols-2 lg:gap-16">
-
-        <div class="reveal rounded-2xl bg-hsp-light p-7 sm:p-9">
-          <h2 id="voraussetzungen-titel"
-              class="mb-5 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
-            Voraussetzungen für den Fundraiser Job
-          </h2>
-          <ul class="space-y-3">
-            {voraussetzungen.map((v) => (
-              <li class="flex items-start gap-3 text-[16px] leading-relaxed text-hsp-ink">
-                <svg class="mt-1.5 h-4 w-4 shrink-0 text-hsp-teal" viewBox="0 0 20 20" fill="none"
-                     stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="4 11 8 15 16 5" />
-                </svg>
-                <span>{v}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="mt-6 border-t border-black/10 pt-5 text-[16px] leading-relaxed text-hsp-body">
-            Vorkenntnisse im Fundraising, Sales oder Marketing brauchst du nicht. Alles, was du für
-            deinen Start als Fundraiser brauchst, lernst du direkt im Job.
-          </p>
-        </div>
+    <!-- ══ Einstieg in drei Schritten ══ -->
+    <section class="bg-white py-[70px]" aria-labelledby="einstieg-titel">
+      <div class="container-hsp grid max-w-[1000px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
 
         <div class="reveal">
           <Bild src="/images/galerie-06.webp"
@@ -403,7 +260,8 @@ const einstieg = [
                sizes="(min-width: 1024px) 560px, 92vw"
                class="aspect-[3/2] w-full rounded-2xl object-cover shadow-[0_10px_40px_rgba(0,0,0,0.12)]" />
 
-          <h2 class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
+          <h2 id="einstieg-titel"
+              class="mb-6 mt-8 text-[26px] font-bold leading-[1.15] text-hsp-ink sm:text-[34px]">
             Wie werde ich Fundraiser?
           </h2>
 

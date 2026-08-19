@@ -13,6 +13,7 @@ export default {
         'hsp-muted':     '#424242',  // Namen unter Testimonials
         'hsp-light':     '#f9f9f9',  // graue Baender (NGO, Kununu)
         'hsp-red':       '#e2001a',  // Logo-Kreis
+        'hsp-gruen':     '#9bc53d',  // Kreisblase am Videofenster, wie auf starten.hsp-derjob.at
       },
       fontFamily: {
         sans:  ['"Bunday Slab"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
