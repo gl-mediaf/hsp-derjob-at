@@ -16,8 +16,11 @@ import Bild from './Bild.astro';
  * also auch ganz ohne Film.
  *
  * Nur MP4: Bei diesem Material fiel die WebM-Fassung groesser aus als H.264,
- * ein zweites Format haette also nur Platz gekostet. Zwei Groessen, damit ein
- * Handy nicht die Desktopfassung zieht.
+ * ein zweites Format haette also nur Platz gekostet.
+ *
+ * Drei Groessen. Wichtig ist vor allem, NICHT hochzurechnen: Eine 1600 Pixel
+ * breite Datei auf einem 1920er Bildschirm sieht sichtbar weicher aus als eine
+ * native. Deshalb bekommen grosse Fenster 1920, mittlere 1280, kleine 960.
  */
 export interface Props {
   poster: string;
@@ -44,7 +47,9 @@ const { poster, alt, basis } = Astro.props;
     if (ruhig || schmal || sparen) return;
 
     var basis  = halter.getAttribute('data-basis');
-    var breite = matchMedia('(min-width: 1024px)').matches ? '1600' : '960';
+    var breite = matchMedia('(min-width: 1281px)').matches ? '1920'
+               : matchMedia('(min-width: 961px)').matches  ? '1280'
+               : '960';
 
     var film = document.createElement('video');
     film.muted = true; film.defaultMuted = true;
