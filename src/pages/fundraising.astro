@@ -91,18 +91,17 @@ const bloecke = [
 
     <NgoBand />
 
-    <!-- ══ Einsatz-Band auf Crew-Foto ══ -->
-    <FotoBand bild="/images/fr-crew-gruppe.webp" position="center 30%" scrim="rgba(0,0,0,0.5)"
-              abstand="py-[60px] sm:py-[90px]">
+    <!-- ══ Einsatz: Text auf weiss ══ -->
+    <section class="bg-white py-[60px] sm:py-[90px]">
       <div class="container-hsp max-w-[860px] text-center">
-        <h2 class="reveal mb-6 text-[26px] font-bold leading-[1.2] sm:text-[34px]">
+        <h2 class="reveal mb-6 text-[26px] font-bold leading-[1.2] text-hsp-ink sm:text-[34px]">
           Unterwegs für Hilfsorganisationen! Dein Einsatz, deine Entscheidung
         </h2>
-        <div class="reveal space-y-4 text-[16px] leading-[1.7] sm:text-[18px]">
+        <div class="reveal space-y-4 text-[16px] leading-[1.7] text-hsp-body sm:text-[18px]">
           {einsatz.map((t) => <p>{t}</p>)}
         </div>
       </div>
-    </FotoBand>
+    </section>
 
     <!-- ══ Film: der Alltag im Job ══ -->
     <section class="bg-white py-[70px]" aria-labelledby="film-alltag">

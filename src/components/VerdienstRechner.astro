@@ -1,0 +1,182 @@
+---
+import { wochen, belohnungen } from '../data/rechner';
+
+/**
+ * Verdienstrechner: Man zieht ueber eine Kurve und sieht, was nach der
+ * jeweiligen Einsatzdauer zusammenkommt - und was sich damit ausgeht.
+ *
+ * Nachbau der Grafik von starten.hsp-derjob.at, hier ohne fremde Bilddienste.
+ *
+ * Bedienbar mit Maus, Finger UND Tastatur: Der Schieber ist ein echtes
+ * input[type=range]. Ohne JavaScript bleibt er benutzbar, nur die Kurve
+ * bewegt sich dann nicht mit.
+ *
+ * Die Kurve ist ein SVG mit fester Zeichenflaeche 600x260. Alle Werte kommen
+ * aus src/data/rechner.ts, damit Zahlen und Belohnungen an einer Stelle
+ * gepflegt werden.
+ */
+const BREITE = 600, HOEHE = 260, RAND = { l: 8, r: 8, o: 14, u: 8 };
+const maxGeld = wochen[wochen.length - 1].geld;
+
+// Punkte der Kurve in SVG-Koordinaten. x = Geld, y = Wochen (unten wenig).
+const punkte = wochen.map((w, i) => {
+  const fx = i / (wochen.length - 1);
+  const fy = w.geld / maxGeld;
+  return {
+    x: RAND.l + fx * (BREITE - RAND.l - RAND.r),
+    y: HOEHE - RAND.u - fy * (HOEHE - RAND.o - RAND.u),
+    ...w,
+  };
+});
+
+// Weiche Kurve durch die Punkte (Catmull-Rom, in Bezier uebersetzt)
+function kurve(p: typeof punkte) {
+  let d = `M ${p[0].x} ${p[0].y}`;
+  for (let i = 0; i < p.length - 1; i++) {
+    const v = p[i - 1] || p[i], a = p[i], b = p[i + 1], n = p[i + 2] || b;
+    d += ` C ${a.x + (b.x - v.x) / 6} ${a.y + (b.y - v.y) / 6},`
+       + ` ${b.x - (n.x - a.x) / 6} ${b.y - (n.y - a.y) / 6},`
+       + ` ${b.x} ${b.y}`;
+  }
+  return d;
+}
+const pfad   = kurve(punkte);
+const flaeche = `${pfad} L ${punkte[punkte.length - 1].x} ${HOEHE} L ${punkte[0].x} ${HOEHE} Z`;
+const schnitt = punkte.find((p) => p.woche === 4)!;
+---
+
+<div class="rechner grid gap-6 lg:grid-cols-2 lg:gap-8" data-rechner
+     data-wochen={JSON.stringify(wochen)}
+     data-belohnungen={JSON.stringify(belohnungen)}>
+
+  {/* ── Belohnung ───────────────────────────────────────────────── */}
+  <figure class="order-2 flex min-h-[230px] flex-col justify-end rounded-2xl bg-hsp-teal p-7 text-white sm:min-h-[290px] lg:order-1">
+    <span class="text-[54px] leading-none sm:text-[68px]" aria-hidden="true" data-lohn-bild>🎒</span>
+    <figcaption class="mt-4">
+      <p class="text-[13px] font-bold uppercase tracking-wide text-white/70">Damit geht sich aus</p>
+      <p class="mt-1 text-[24px] font-bold leading-tight sm:text-[30px]" data-lohn-text>
+        Wochenend-Trip finanziert
+      </p>
+    </figcaption>
+  </figure>
+
+  {/* ── Kurve und Schieber ──────────────────────────────────────── */}
+  <div class="order-1 rounded-2xl bg-white p-5 shadow-[0_10px_40px_rgba(0,0,0,0.12)] sm:p-6 lg:order-2">
+
+    <svg viewBox={`0 0 ${BREITE} ${HOEHE}`} class="block w-full" role="img"
+         aria-label={`Verdienstkurve: nach vier Wochen im Schnitt ${schnitt.geld.toLocaleString('de-DE')} Euro, nach sechs Wochen rund ${maxGeld.toLocaleString('de-DE')} Euro.`}>
+      <defs>
+        <linearGradient id="rechnerFlaeche" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#319ea3" stop-opacity="0.20" />
+          <stop offset="100%" stop-color="#319ea3" stop-opacity="0.02" />
+        </linearGradient>
+      </defs>
+
+      {punkte.map((p) => (
+        <g>
+          <line x1={p.x} y1={RAND.o} x2={p.x} y2={HOEHE - RAND.u}
+                stroke="#1c1e21" stroke-opacity="0.07" stroke-width="1" />
+          <text x={p.x} y={HOEHE - 1} text-anchor="middle"
+                font-size="11" fill="#565656" opacity="0.8">W{p.woche}</text>
+        </g>
+      ))}
+
+      <path d={flaeche} fill="url(#rechnerFlaeche)" />
+      <path d={pfad} fill="none" stroke="#319ea3" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+
+      <line x1={schnitt.x} y1={RAND.o} x2={schnitt.x} y2={HOEHE - RAND.u}
+            stroke="#319ea3" stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.6" />
+
+      <circle data-punkt cx={schnitt.x} cy={schnitt.y} r="7"
+              fill="#fff" stroke="#319ea3" stroke-width="3" />
+    </svg>
+
+    <div class="mt-3 flex items-baseline justify-between text-[12px] font-bold text-hsp-body/60">
+      <span>0 €</span>
+      <span class="text-hsp-teal">Ø {schnitt.geld.toLocaleString('de-DE')} € nach 4 Wochen</span>
+      <span>~{maxGeld.toLocaleString('de-DE')} €</span>
+    </div>
+
+    <label class="mt-4 block">
+      <span class="sr-only">Wie viele Wochen bist du unterwegs?</span>
+      <input type="range" data-schieber
+             min="1" max={wochen.length} step="0.1" value="4"
+             class="w-full accent-hsp-teal" />
+    </label>
+    <p class="mt-1 text-center text-[13px] text-hsp-body/70">
+      Schieb über die Kurve
+    </p>
+
+    <div class="mt-4 rounded-xl border-t-[3px] border-hsp-teal bg-hsp-light px-5 py-4">
+      <p class="text-[12px] font-bold uppercase tracking-wide text-hsp-body/70">Dein Geld</p>
+      <p class="text-[30px] font-bold leading-none text-hsp-ink sm:text-[36px]"
+         data-summe aria-live="polite">{schnitt.geld.toLocaleString('de-DE')} €</p>
+      <p class="mt-1 text-[13px] text-hsp-body" data-dauer>nach 4 Wochen</p>
+    </div>
+
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var wurzel = document.querySelector('[data-rechner]');
+    if (!wurzel) return;
+
+    var wochen      = JSON.parse(wurzel.getAttribute('data-wochen'));
+    var belohnungen = JSON.parse(wurzel.getAttribute('data-belohnungen'));
+    var schieber = wurzel.querySelector('[data-schieber]');
+    var summe    = wurzel.querySelector('[data-summe]');
+    var dauer    = wurzel.querySelector('[data-dauer]');
+    var punkt    = wurzel.querySelector('[data-punkt]');
+    var lohnBild = wurzel.querySelector('[data-lohn-bild]');
+    var lohnText = wurzel.querySelector('[data-lohn-text]');
+    var pfad     = wurzel.querySelector('path[stroke]');
+
+    // de-DE, nicht de-AT: Oesterreich setzt ein schmales Leerzeichen als
+    // Tausendertrenner. Auf der Seite steht ueberall sonst '3.300 €'.
+    var euro = new Intl.NumberFormat('de-DE');
+
+    // Zwischen den Stuetzstellen linear rechnen - reicht voellig und ist
+    // nachvollziehbarer als eine gefittete Formel.
+    function geldBei(w) {
+      if (w <= 1) return wochen[0].geld;
+      if (w >= wochen.length) return wochen[wochen.length - 1].geld;
+      var i = Math.floor(w) - 1, rest = w - Math.floor(w);
+      return wochen[i].geld + (wochen[i + 1].geld - wochen[i].geld) * rest;
+    }
+
+    function belohnungZu(betrag) {
+      var treffer = belohnungen[0];
+      for (var i = 0; i < belohnungen.length; i++) {
+        if (betrag >= belohnungen[i].ab) treffer = belohnungen[i];
+      }
+      return treffer;
+    }
+
+    function malen() {
+      var w = parseFloat(schieber.value);
+      var betrag = Math.round(geldBei(w) / 10) * 10;
+
+      summe.textContent = euro.format(betrag) + ' €';
+      var ganze = Math.round(w * 10) / 10;
+      dauer.textContent = 'nach ' + (ganze % 1 === 0 ? ganze : ganze.toFixed(1).replace('.', ',')) +
+                          (ganze === 1 ? ' Woche' : ' Wochen');
+
+      // Markierung auf der Kurve mitziehen
+      if (punkt && pfad && pfad.getTotalLength) {
+        var anteil = (w - 1) / (wochen.length - 1);
+        var stelle = pfad.getPointAtLength(pfad.getTotalLength() * anteil);
+        punkt.setAttribute('cx', stelle.x);
+        punkt.setAttribute('cy', stelle.y);
+      }
+
+      var b = belohnungZu(betrag);
+      if (lohnBild.textContent !== b.sinnbild) lohnBild.textContent = b.sinnbild;
+      if (lohnText.textContent.trim() !== b.text) lohnText.textContent = b.text;
+    }
+
+    schieber.addEventListener('input', malen);
+    malen();
+  })();
+</script>
