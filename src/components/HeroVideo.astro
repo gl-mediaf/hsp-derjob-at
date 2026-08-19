@@ -11,7 +11,13 @@ import Bild from './Bild.astro';
  * Bewusst NICHT geladen wird er
  *   - bei prefers-reduced-motion (Systemeinstellung gegen Bewegung),
  *   - auf schmalen Fenstern unter 640 px, wo er nur Daten kostet,
- *   - bei gedrosselter Verbindung oder aktivem Datensparmodus.
+ *   - bei eingeschaltetem Datensparmodus oder wirklich langsamer Leitung.
+ *
+ * Zur Leitungspruefung: navigator.connection.effectiveType meldet in Chrome
+ * auch auf ordentlichem Anschluss haeufig "3g" - der Wert stammt aus einer
+ * laufenden Schaetzung von Antwortzeit und Durchsatz und faellt sehr
+ * vorsichtig aus. Wer darauf sperrt, sperrt den Film bei vielen normalen
+ * Besuchern aus. Deshalb blocken hier nur noch 2g und slow-2g.
  * In all diesen Faellen bleibt das Standbild stehen. Die Sektion funktioniert
  * also auch ganz ohne Film.
  *
@@ -43,7 +49,7 @@ const { poster, alt, basis } = Astro.props;
     var ruhig  = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var schmal = matchMedia('(max-width: 639px)').matches;
     var v      = navigator.connection || {};
-    var sparen = v.saveData === true || /^(slow-2g|2g|3g)$/.test(v.effectiveType || '');
+    var sparen = v.saveData === true || /^(slow-2g|2g)$/.test(v.effectiveType || '');
     if (ruhig || schmal || sparen) return;
 
     var basis  = halter.getAttribute('data-basis');
@@ -66,7 +72,19 @@ const { poster, alt, basis } = Astro.props;
     film.appendChild(q);
 
     // Erst einblenden, wenn wirklich Bilder da sind - sonst blitzt Schwarz auf.
-    film.addEventListener('canplay', function () { film.classList.remove('opacity-0'); }, { once: true });
+    // Zwei Ereignisse, weil je nach Browser mal das eine, mal das andere
+    // zuerst kommt, und ein Notnagel nach vier Sekunden: Lieber ein Film,
+    // der eine Sekunde ruckelt, als einer, der nie erscheint.
+    var sichtbar = false;
+    function zeigen() {
+      if (sichtbar) return;
+      sichtbar = true;
+      film.classList.remove('opacity-0');
+    }
+    film.addEventListener('loadeddata', zeigen, { once: true });
+    film.addEventListener('canplay',    zeigen, { once: true });
+    setTimeout(function () { if (film.readyState >= 2) zeigen(); }, 4000);
+
     film.addEventListener('error', function () { film.remove(); });
 
     halter.appendChild(film);
